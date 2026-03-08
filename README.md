@@ -3,19 +3,14 @@
 
 # SecureWork - Enterprise B2B Freelance Marketplace & Escrow Engine 🚀
 
-### *Stopping contracts with paper, and securing them with code.*
-
 SecureWork is a production-ready freelance marketplace designed to solve the single biggest bottleneck in the gig economy: **Trust**.
-
-As a 3rd-year Computer Science student, I was fascinated by how software could enforce financial accountability between global actors. This project isn't just another CRUD application; it is a mathematical financial engine. SecureWork replaces insecure paper contracts with a cryptographic **Escrow Vault**. Clients deposit and lock funds safely before work begins, giving freelancers a 100% guarantee that the capital exists and is waiting for them upon approval.
+SecureWork replaces insecure paper contracts with a cryptographic **Escrow Vault**. Clients deposit and lock funds safely before work begins, giving freelancers a 100% guarantee that the capital exists and is waiting for them upon approval.
 
 By engineering a decoupled architecture with a focus on atomic transactions and Role-Based Access Control (RBAC), I built a platform that brings enterprise-level security and dynamic analytics to the freelancing workflow.
 
 ---
 
 ## 🔒 The Core Security Mechanism (How it Works)
-
-The entire business logic of SecureWork revolves around a tamper-proof state machine for payment milestones. Here is the detailed workflow that ensures financial integrity:
 
 1. **Contract Initialization**: A Client posts a job post. A Freelancer finds the job and submits an Application, proposing a specific list of milestones.
 2. **Hiring**: When the Client clicks 'Accept Proposal', the backend generates a `Milestone` model in a `pending` state.
