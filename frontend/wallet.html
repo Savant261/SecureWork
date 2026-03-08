@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet & Ledger - SecureWork</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'blob': 'blob 7s infinite',
+          },
+          keyframes: {
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            }
+          }
+        }
+      }
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-sans antialiased bg-[#0B0F19] text-slate-300 selection:bg-emerald-500/30">
+
+    <div class="fixed top-[-10%] left-[-10%] w-96 h-96 bg-emerald-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-10 animate-blob pointer-events-none z-0"></div>
+    <div class="fixed bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-10 animate-blob pointer-events-none z-0" style="animation-delay: 2s;"></div>
+
+    <div class="flex min-h-screen relative z-10">
+        <aside class="w-64 bg-[#06090F]/80 backdrop-blur-xl border-r border-slate-800/50 fixed h-full z-40">
+            <div class="flex flex-col h-full">
+                <div class="p-6 border-b border-slate-800/50">
+                    <div class="flex items-center space-x-3 group cursor-pointer">
+                        <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-display font-bold text-white tracking-tight">SecureWork</span>
+                    </div>
+                </div>
+
+                <nav class="flex-1 p-4 space-y-2 mt-4">
+                    <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-xl font-medium transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="contracts.html" class="flex items-center space-x-3 px-4 py-3.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-xl font-medium transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>Contracts</span>
+                    </a>
+                    <a href="wallet.html" class="flex items-center space-x-3 px-4 py-3.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-xl font-medium transition-all shadow-[inset_0_0_20px_rgba(16,185,129,0.05)]">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        <span>Wallet Hub</span>
+                    </a>
+                    <a href="settings.html" class="flex items-center space-x-3 px-4 py-3.5 text-slate-400 hover:bg-slate-800/50 hover:text-white rounded-xl font-medium transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>System Settings</span>
+                    </a>
+                </nav>
+
+                <div class="p-4 border-t border-slate-800/50">
+                    <button onclick="AuthService.logout()" class="flex items-center justify-center space-x-3 px-4 py-3 text-rose-400 hover:bg-rose-500/10 border border-transparent hover:border-rose-500/20 rounded-xl font-medium w-full transition-all">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        <span>Terminate Session</span>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <main class="flex-1 ml-64 p-8 lg:p-12 relative z-10">
+            <div class="mb-10">
+                <h1 class="text-4xl font-display font-bold text-white mb-2 tracking-tight">Financial Ledger</h1>
+                <p class="text-slate-400">Manage capital allocation and monitor immutable transaction history.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+                
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-emerald-500/30 rounded-3xl p-8 shadow-[0_0_40px_-10px_rgba(16,185,129,0.15)] relative overflow-hidden flex flex-col justify-between group">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all pointer-events-none"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center space-x-2 text-emerald-400 font-bold uppercase tracking-widest text-xs mb-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                            <span>Liquid Capital</span>
+                        </div>
+                        <div id="availableBalanceAmount" class="text-5xl font-mono font-black text-white mb-8 tracking-tight">$0.00</div>
+                        
+                        <div class="flex space-x-4">
+                            <button data-role="client" onclick="WalletActions.depositFunds()" class="hidden px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-bold rounded-xl shadow-[0_0_20px_-5px_rgba(16,185,129,0.4)] hover:from-emerald-400 hover:to-emerald-500 transition-all hover:-translate-y-0.5">
+                                Inject Capital
+                            </button>
+                            <button onclick="WalletActions.withdrawFunds()" class="px-6 py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-700 transition-all border border-slate-600 hover:border-slate-500 shadow-lg hover:-translate-y-0.5">
+                                Withdraw Funds
+                            </button>
+                        </div>
+                    </div>
+                    <svg class="absolute -bottom-6 -right-6 w-56 h-56 text-emerald-500/10 transform rotate-12 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                </div>
+
+                <div class="bg-slate-900/60 backdrop-blur-xl border border-blue-500/30 rounded-3xl p-8 shadow-[0_0_40px_-10px_rgba(59,130,246,0.15)] relative overflow-hidden flex flex-col justify-center group">
+                    <div class="absolute top-0 right-0 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-all pointer-events-none"></div>
+                    
+                    <div class="relative z-10">
+                        <div class="flex items-center space-x-2 text-blue-400 font-bold uppercase tracking-widest text-xs mb-4">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                            <span>Locked Escrow Vault</span>
+                        </div>
+                        <div id="escrowBalanceAmount" class="text-5xl font-mono font-black text-white mb-3 tracking-tight">$0.00</div>
+                        <div class="text-slate-400 text-sm font-medium flex items-center">
+                            <svg class="w-4 h-4 mr-1.5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                            Cryptographically secured for active milestones.
+                        </div>
+                    </div>
+                    <svg class="absolute -bottom-6 -right-6 w-56 h-56 text-blue-500/10 transform rotate-12 pointer-events-none" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                </div>
+            </div>
+
+            <div class="bg-slate-900/60 backdrop-blur-xl border border-slate-700/50 rounded-3xl overflow-hidden shadow-2xl">
+                <div class="p-8 border-b border-slate-700/50 flex justify-between items-center bg-slate-800/30">
+                    <h2 class="text-xl font-display font-bold text-white">Immutable Ledger</h2>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900/80 border-b border-slate-700/50 text-slate-400 text-xs font-bold uppercase tracking-widest">
+                                <th class="px-8 py-5">Tx Hash</th>
+                                <th class="px-8 py-5">Timestamp</th>
+                                <th class="px-8 py-5">Event Description</th>
+                                <th class="px-8 py-5">Operation</th>
+                                <th class="px-8 py-5 text-right">Value (USD)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ledgerTable" class="divide-y divide-slate-800/50">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="depositModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center">
+        <div class="bg-slate-900 border border-slate-700/50 rounded-3xl shadow-[0_0_50px_-12px_rgba(16,185,129,0.3)] w-full max-w-md p-8 transform transition-all">
+            <div class="flex items-center mb-2">
+                <div class="w-10 h-10 bg-emerald-500/20 rounded-xl flex items-center justify-center mr-4 text-emerald-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                </div>
+                <h2 class="text-2xl font-display font-bold text-white">Inject Capital</h2>
+            </div>
+            <p class="text-slate-400 mb-8 text-sm pl-14">Add funds to your liquid balance to provision smart contracts.</p>
+            
+            <form id="depositForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-300 mb-2">Deposit Volume (USD)</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="text-emerald-500 font-bold">$</span>
+                        </div>
+                        <input type="number" id="depositAmount" min="1" step="0.01" required 
+                               class="w-full pl-8 pr-4 py-4 bg-slate-950/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all text-lg font-mono" 
+                               placeholder="0.00">
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 pt-2">
+                    <button type="button" onclick="UIActions.toggleModal('depositModal')" class="flex-1 py-4 bg-slate-800/50 border border-slate-700 text-slate-300 rounded-xl hover:bg-slate-800 font-bold transition-all">Abort</button>
+                    <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-emerald-500 to-emerald-600 text-white rounded-xl hover:from-emerald-400 hover:to-emerald-500 font-bold shadow-lg transition-all">Authorize</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="withdrawModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center">
+        <div class="bg-slate-900 border border-slate-700/50 rounded-3xl shadow-[0_0_50px_-12px_rgba(244,63,94,0.2)] w-full max-w-md p-8 transform transition-all">
+            <div class="flex items-center mb-2">
+                <div class="w-10 h-10 bg-rose-500/20 rounded-xl flex items-center justify-center mr-4 text-rose-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg>
+                </div>
+                <h2 class="text-2xl font-display font-bold text-white">Withdraw Capital</h2>
+            </div>
+            <p class="text-slate-400 mb-8 text-sm pl-14">Transfer liquid funds out of the SecureWork ecosystem.</p>
+            
+            <form id="withdrawForm" class="space-y-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-300 mb-2">Withdrawal Volume (USD)</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <span class="text-rose-500 font-bold">$</span>
+                        </div>
+                        <input type="number" id="withdrawAmount" min="1" step="0.01" required 
+                               class="w-full pl-8 pr-4 py-4 bg-slate-950/50 border border-slate-700/50 rounded-xl text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-rose-500/50 transition-all text-lg font-mono" 
+                               placeholder="0.00">
+                    </div>
+                </div>
+                
+                <div class="flex space-x-4 pt-2">
+                    <button type="button" onclick="UIActions.toggleModal('withdrawModal')" class="flex-1 py-4 bg-slate-800/50 border border-slate-700 text-slate-300 rounded-xl hover:bg-slate-800 font-bold transition-all">Abort</button>
+                    <button type="submit" class="flex-1 py-4 bg-gradient-to-r from-rose-500 to-rose-600 text-white rounded-xl hover:from-rose-400 hover:to-rose-500 font-bold shadow-lg transition-all">Execute Transfer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+        if (!AuthService.isAuthenticated()) window.location.href = 'login.html';
+    </script>
+</body>
+</html>

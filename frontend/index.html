@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureWork - Secure Your B2B Contracts with Code, Not Just Paper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Space Grotesk', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'float': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'blob': 'blob 7s infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-20px)' },
+            },
+            blob: {
+              '0%': { transform: 'translate(0px, 0px) scale(1)' },
+              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+              '100%': { transform: 'translate(0px, 0px) scale(1)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="font-sans antialiased bg-[#0B0F19] text-slate-300 selection:bg-emerald-500/30">
+
+    <nav class="fixed top-0 w-full z-50 py-4 px-8 border-b border-white/5 backdrop-blur-md bg-[#0B0F19]/80">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 group cursor-pointer">
+                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-all duration-300">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <span class="text-2xl font-display font-bold text-white tracking-tight">SecureWork</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#how-it-works" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">How It Works</a>
+                <a href="#features" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">Features</a>
+                <a href="login.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Sign In</a>
+                <a href="register.html" class="px-5 py-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 font-medium tracking-wide">Get Started Free</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden">
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
+
+        <div class="relative max-w-7xl mx-auto px-8 w-full">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8 z-10">
+                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 backdrop-blur-sm">
+                        <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span class="text-xs font-medium text-slate-300 tracking-wider uppercase">v2.0 Enterprise Escrow Engine</span>
+                    </div>
+
+                    <h1 class="text-5xl lg:text-7xl font-display font-bold text-white leading-[1.1] tracking-tight">
+                        Secure contracts with <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Code</span>, not paper.
+                    </h1>
+
+                    <p class="text-lg lg:text-xl text-slate-400 leading-relaxed max-w-lg">
+                        The fully automated financial layer for freelance marketplaces. Clients lock funds securely. Freelancers work with guaranteed payment. Zero disputes.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                        <a href="register.html" class="px-8 py-4 bg-emerald-500 text-white rounded-xl hover:bg-emerald-400 transition-all font-semibold text-center shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.7)] hover:-translate-y-0.5">
+                            Start Building Now
+                        </a>
+                        <a href="#how-it-works" class="px-8 py-4 bg-slate-800/50 text-white rounded-xl hover:bg-slate-800 transition-all font-semibold border border-slate-700 text-center backdrop-blur-sm hover:border-slate-600">
+                            Explore Platform
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative h-[600px] hidden lg:block perspective-1000 z-10">
+                    <div class="absolute right-0 top-10 w-[400px] bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl p-6 animate-float">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center border border-slate-700">
+                                    <span class="text-emerald-400 font-mono text-sm">#SW</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-medium text-white">Project Setup</div>
+                                    <div class="text-xs text-slate-400">Active Contract</div>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/20 text-xs font-semibold">SECURED</span>
+                        </div>
+                        <div class="space-y-1 mb-6">
+                            <div class="text-sm text-slate-400">Total Escrow Locked</div>
+                            <div class="text-4xl font-display font-bold text-white">$15,000<span class="text-slate-500">.00</span></div>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center text-sm">
+                                <span class="text-slate-400">Milestone 1: Backend Auth</span>
+                                <span class="text-emerald-400">Funded ($5,000)</span>
+                            </div>
+                            <div class="w-full bg-slate-800 rounded-full h-2">
+                                <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: 33%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="absolute right-[250px] top-[300px] w-[320px] bg-emerald-950/80 backdrop-blur-xl border border-emerald-500/30 rounded-2xl shadow-2xl p-5 animate-float-delayed z-20">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
+                                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            </div>
+                            <div>
+                                <div class="font-medium text-white text-sm">Milestone Approved</div>
+                                <div class="text-xs text-emerald-200/70 mt-1">Client released funds. $5,000.00 has been added to your wallet.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="border-y border-slate-800 bg-slate-900/50 py-10">
+        <div class="max-w-7xl mx-auto px-8">
+            <p class="text-center text-sm font-medium text-slate-500 mb-6 uppercase tracking-widest">Powering trust for modern teams</p>
+            <div class="flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+                <div class="text-xl font-display font-bold text-white">AcmeCorp</div>
+                <div class="text-xl font-display font-bold text-white tracking-tighter">Global<span class="text-emerald-500">Net</span></div>
+                <div class="text-xl font-display font-bold text-white">TechFlow</div>
+                <div class="text-xl font-display font-bold text-white italic">Vertex</div>
+                <div class="text-xl font-display font-bold text-white">Nexus<span class="font-light">Labs</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-20">
+                <h2 class="text-3xl lg:text-5xl font-display font-bold text-white mb-6">Trust, Programmed.</h2>
+                <p class="text-lg text-slate-400 max-w-2xl mx-auto">Our smart-contract inspired architecture ensures neither party carries risk. Three immutable steps to secure collaboration.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 relative">
+                <div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-transparent via-slate-700 to-transparent z-0"></div>
+
+                <div class="relative z-10 flex flex-col items-center text-center group">
+                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-500/50 transition-colors duration-300">
+                        <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-emerald-500 transition-colors">01</span>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Lock the Vault</h3>
+                    <p class="text-slate-400 leading-relaxed px-4">Clients deposit milestone funds upfront into a neutral, cryptographically secured escrow wallet before work begins.</p>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center text-center group">
+                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-blue-500/50 transition-colors duration-300">
+                        <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-blue-500 transition-colors">02</span>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Submit Deliverables</h3>
+                    <p class="text-slate-400 leading-relaxed px-4">Freelancers work with peace of mind. All code submissions and deliverables are timestamped and logged immutably.</p>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center text-center group">
+                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-400/50 transition-colors duration-300">
+                        <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-emerald-400 transition-colors">03</span>
+                    </div>
+                    <h3 class="text-xl font-display font-bold text-white mb-4">Auto-Settlement</h3>
+                    <p class="text-slate-400 leading-relaxed px-4">Upon client approval, our API triggers an atomic database transaction. Funds are instantly settled to the freelancer's wallet.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="py-32 bg-slate-900/30 border-y border-slate-800/50">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="mb-16">
+                <h2 class="text-3xl lg:text-5xl font-display font-bold text-white mb-4">Enterprise Infrastructure.</h2>
+                <p class="text-lg text-slate-400">Everything required to run a high-stakes marketplace.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
+                
+                <div class="md:col-span-2 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-end">
+                        <div class="w-12 h-12 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-white mb-2">Atomic Transactions</h3>
+                        <p class="text-slate-400 max-w-md">Our backend utilizes strict <code class="text-emerald-400 bg-emerald-950 px-1 rounded">transaction.atomic()</code> blocks to ensure money never vanishes into the void. State changes are 100% guaranteed.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
+                    <div class="h-full flex flex-col justify-end">
+                        <div class="w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold text-white mb-2">Zero Latency</h3>
+                        <p class="text-slate-400 text-sm">Decoupled REST APIs ensure lightning-fast dashboard updates and seamless data fetching.</p>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
+                    <div class="h-full flex flex-col justify-end">
+                        <div class="w-12 h-12 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-display font-bold text-white mb-2">Dynamic Ledger</h3>
+                        <p class="text-slate-400 text-sm">Every financial movement is tracked, hashed, and visible in real-time on your wallet dashboard.</p>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="absolute right-[-10%] top-[-10%] w-64 h-64 border-[40px] border-slate-800 rounded-full group-hover:border-slate-700 transition-colors duration-500"></div>
+                    <div class="relative z-10 h-full flex flex-col justify-end">
+                        <div class="w-12 h-12 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center mb-6">
+                            <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-white mb-2">Role-Based Architecture</h3>
+                        <p class="text-slate-400 max-w-md">Our backend rigidly isolates 'Client' and 'Freelancer' logic. SimpleJWT payload verification ensures users only see and interact with data they own.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-emerald-900/20"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <div class="relative max-w-4xl mx-auto px-8 text-center z-10">
+            <h2 class="text-4xl lg:text-6xl font-display font-bold text-white mb-6">Initialize your workspace.</h2>
+            <p class="text-xl text-emerald-100/70 mb-10 max-w-2xl mx-auto">Stop relying on trust. Start relying on code. Join the marketplace built for professional software engineering.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="register.html" class="px-10 py-4 bg-white text-emerald-950 rounded-xl hover:bg-slate-100 transition-all font-bold text-lg shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)]">
+                    Create Free Account
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#06090F] border-t border-slate-800/50 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center opacity-80">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <span class="text-xl font-display font-bold text-white tracking-tight">SecureWork</span>
+                </div>
+                <div class="flex space-x-6 text-sm font-medium text-slate-500">
+                    <a href="#" class="hover:text-emerald-400 transition-colors">Documentation</a>
+                    <a href="#" class="hover:text-emerald-400 transition-colors">API Reference</a>
+                    <a href="#" class="hover:text-emerald-400 transition-colors">Security</a>
+                </div>
+            </div>
+            <div class="text-center text-sm text-slate-600">
+                <p>&copy; 2026 SecureWork Infrastructure. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
