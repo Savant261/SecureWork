@@ -3,7 +3,7 @@ class AuthService {
     static REFRESH_KEY = 'securework_refresh';
     static ROLE_KEY = 'securework_role';
     static USERNAME_KEY = 'securework_username';
-    static API_BASE = 'http://127.0.0.1:8000/api';
+    static API_BASE = 'https://securework-api.onrender.com';
 
     // Helper to decode JWT and get the custom role
     static decodeJWT(token) {
@@ -116,4 +116,5 @@ class AuthService {
             role: localStorage.getItem(this.ROLE_KEY) || 'client'
         };
     }
+
 }
