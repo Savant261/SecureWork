@@ -74,7 +74,8 @@ const DashboardApp = {
         if (!ctx) return;
 
         try {
-            const response = await AppUtils.apiCall('/stats/', 'GET');
+            // UPDATED ROUTE: Added /api prefix
+            const response = await AppUtils.apiCall('/api/stats/', 'GET');
             const currentTotal = response ? response.totalValue : 0;
 
             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -130,10 +131,9 @@ const DashboardApp = {
                 maintainAspectRatio: false,
                 plugins: {
                     legend: { display: false },
-                    // NEW, UPGRADED TOOLTIPS HERE
                     tooltip: {
                         backgroundColor: 'rgba(15, 23, 42, 0.95)', 
-                        titleColor: '#34d399', // Emerald color for the month
+                        titleColor: '#34d399',
                         bodyColor: '#f8fafc',
                         borderColor: 'rgba(51, 65, 85, 0.8)', 
                         borderWidth: 1,
@@ -180,7 +180,8 @@ const DashboardApp = {
         if (!tableBody) return;
 
         try {
-            const contracts = await AppUtils.apiCall('/contracts/', 'GET');
+            // UPDATED ROUTE: Added /api prefix
+            const contracts = await AppUtils.apiCall('/api/contracts/', 'GET');
             if (contracts) {
                 this.renderContracts(contracts);
             }
@@ -259,7 +260,8 @@ const DashboardApp = {
 
     async loadStats() {
         try {
-            const stats = await AppUtils.apiCall('/stats/', 'GET');
+            // UPDATED ROUTE: Added /api prefix
+            const stats = await AppUtils.apiCall('/api/stats/', 'GET');
             if (stats) {
                 this.updateStats(stats);
             }
@@ -291,7 +293,8 @@ const WalletApp = {
 
     async loadBalances() {
         try {
-            const walletData = await AppUtils.apiCall('/wallet/', 'GET');
+            // UPDATED ROUTE: Added /api prefix
+            const walletData = await AppUtils.apiCall('/api/wallet/', 'GET');
             if (walletData) {
                 const availableEl = document.getElementById('availableBalanceAmount');
                 const escrowEl = document.getElementById('escrowBalanceAmount');
@@ -309,7 +312,8 @@ const WalletApp = {
         if (!tableBody) return;
 
         try {
-            const transactions = await AppUtils.apiCall('/wallet/transactions/', 'GET');
+            // UPDATED ROUTE: Added /api prefix
+            const transactions = await AppUtils.apiCall('/api/wallet/transactions/', 'GET');
             
             if (transactions && transactions.length > 0) {
                 this.renderTransactions(transactions);
@@ -392,7 +396,8 @@ const ProposalActions = {
             proposed_milestones: milestonesArray 
         };
         try {
-            const result = await AppUtils.apiCall('/applications/', 'POST', payload);
+            // UPDATED ROUTE: Added /api prefix
+            const result = await AppUtils.apiCall('/api/applications/', 'POST', payload);
             ToastService.show("Proposal transmitted to the network successfully.", "success");
             return result;
         } catch (err) {
@@ -403,7 +408,8 @@ const ProposalActions = {
 
     async acceptProposal(applicationId) {
         try {
-            const result = await AppUtils.apiCall(`/applications/${applicationId}/accept/`, 'POST');
+            // UPDATED ROUTE: Added /api prefix
+            const result = await AppUtils.apiCall(`/api/applications/${applicationId}/accept/`, 'POST');
             if (result && result.id) {
                 ToastService.show("Freelancer hired! Smart contract initialized.", "success");
                 setTimeout(() => window.location.reload(), 1500); 
@@ -414,11 +420,13 @@ const ProposalActions = {
     },
 
     async fundMilestone(milestoneId) {
-        return await AppUtils.apiCall(`/milestones/${milestoneId}/fund/`, 'POST');
+        // UPDATED ROUTE: Added /api prefix
+        return await AppUtils.apiCall(`/api/milestones/${milestoneId}/fund/`, 'POST');
     },
 
     async submitWork(milestoneId, submissionUrl) {
-        return await AppUtils.apiCall(`/milestones/${milestoneId}/submit/`, 'POST', { submission_url: submissionUrl });
+        // UPDATED ROUTE: Added /api prefix
+        return await AppUtils.apiCall(`/api/milestones/${milestoneId}/submit/`, 'POST', { submission_url: submissionUrl });
     }
 };
 
@@ -529,14 +537,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const currentPath = window.location.pathname;
     
-    // ContractDetailApp has been removed entirely to fix the canvas collision!
     if (currentPath.includes('dashboard.html')) {
         DashboardApp.init();
     } else if (currentPath.includes('wallet.html')) {
         WalletApp.init();
     }
 
-    // Modal Forms Initialization with CORRECT error Toast flags
     const depositForm = document.getElementById('depositForm');
     const withdrawForm = document.getElementById('withdrawForm');
 
@@ -546,13 +552,13 @@ window.addEventListener('DOMContentLoaded', () => {
             const amount = document.getElementById('depositAmount').value;
             
             try {
-                await AppUtils.apiCall('/wallet/deposit/', 'POST', { amount: parseFloat(amount) });
+                // UPDATED ROUTE: Added /api prefix
+                await AppUtils.apiCall('/api/wallet/deposit/', 'POST', { amount: parseFloat(amount) });
                 UIActions.toggleModal('depositModal');
                 e.target.reset();
                 ToastService.show(`$${parseFloat(amount).toLocaleString()} injected into liquid balance.`, "success");
                 await WalletApp.init(); 
             } catch (err) {
-                // Fixed: Added "error" parameter
                 ToastService.show("Deposit failed. Please try again.", "error");
             }
         });
@@ -564,7 +570,8 @@ window.addEventListener('DOMContentLoaded', () => {
             const amount = document.getElementById('withdrawAmount').value;
             
             try {
-                const result = await AppUtils.apiCall('/wallet/withdraw/', 'POST', { amount: parseFloat(amount) });
+                // UPDATED ROUTE: Added /api prefix
+                const result = await AppUtils.apiCall('/api/wallet/withdraw/', 'POST', { amount: parseFloat(amount) });
                 if (result) {
                     UIActions.toggleModal('withdrawModal');
                     e.target.reset();
@@ -572,7 +579,6 @@ window.addEventListener('DOMContentLoaded', () => {
                     await WalletApp.init(); 
                 }
             } catch (err) {
-                // Fixed: Added "error" parameter
                 ToastService.show("Withdrawal rejected. Check your available balance.", "error");
             }
         });
@@ -581,5 +587,4 @@ window.addEventListener('DOMContentLoaded', () => {
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { DashboardApp, WalletApp };
-
 }
