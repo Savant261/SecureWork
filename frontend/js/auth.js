@@ -19,7 +19,7 @@ class AuthService {
     static async login(email, password) {
         try {
             // Django expects 'username' by default, so we map the email field to it
-            const response = await fetch(`${this.API_BASE}/token/`, {
+            const response = await fetch(`${this.API_BASE}/api/token/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username: email, password: password }),
@@ -118,4 +118,5 @@ class AuthService {
     }
 
 }
+
 
