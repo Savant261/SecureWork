@@ -68,7 +68,7 @@ class AuthService {
             const firstName = nameParts[0] || '';
             const lastName = nameParts.slice(1).join(' ') || '';
 
-            const response = await fetch(`${this.API_BASE}/register/`, {
+            const response = await fetch(`${this.API_BASE}/api/register/`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -118,3 +118,4 @@ class AuthService {
     }
 
 }
+
