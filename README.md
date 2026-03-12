@@ -8,6 +8,8 @@ SecureWork replaces insecure paper contracts with a cryptographic **Escrow Vault
 
 By engineering a decoupled architecture with a focus on atomic transactions and Role-Based Access Control (RBAC), I built a platform that brings enterprise-level security and dynamic analytics to the freelancing workflow.
 
+🔗 **Live Demo:** [https://secure-work.vercel.app/](https://secure-work.vercel.app/)
+
 ---
 
 ## 🔒 The Core Security Mechanism (How it Works)
