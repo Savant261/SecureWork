@@ -102,6 +102,15 @@ DATABASES = {
 AUTH_USER_MODEL = 'core.CustomUser'
 
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]
 #for dev/submission purposes 
 
 SIMPLE_JWT = {
@@ -161,4 +170,5 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 
