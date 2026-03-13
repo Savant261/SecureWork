@@ -129,7 +129,7 @@
             
             try {
                 // Fetch all contracts accessible to the user
-                const contracts = await AppUtils.apiCall('/contracts/', 'GET');
+                const contracts = await AppUtils.apiCall('/api/contracts/', 'GET');
                 
                 // Store only published contracts globally
                 allPublishedContracts = contracts.filter(c => c.status === 'published');
@@ -235,3 +235,4 @@
 </body>
 
 </html>
+
