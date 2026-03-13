@@ -261,7 +261,7 @@
                     const desc = document.getElementById('contractDesc').value;
 
                     try {
-                        const result = await AppUtils.apiCall('/contracts/', 'POST', {
+                        const result = await AppUtils.apiCall('/api/contracts/', 'POST', {
                             title: title,
                             total_budget: budget,
                             description: desc
@@ -283,3 +283,4 @@
 </body>
 
 </html>
+
