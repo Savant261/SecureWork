@@ -34,16 +34,149 @@
         }
       }
     }
-  </script>
-    
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        /* ─── READING PROGRESS BAR ─── */
+        #progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 2px;
+            width: 0%;
+            background: linear-gradient(90deg, #10b981, #06b6d4);
+            z-index: 9999;
+            transition: width 0.1s linear;
+            pointer-events: none;
+        }
+
+        /* ─── SCROLL REVEAL ─── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+
+        /* ─── 3D TILT ─── */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: transform 0.12s ease;
+            will-change: transform;
+        }
+
+        /* ─── HERO PROGRESS FILL ─── */
+        .hero-progress-fill {
+            width: 0%;
+            transition: width 1.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .hero-progress-fill.animated { width: 33%; }
+
+        /* ─── MARQUEE ─── */
+        .marquee-wrapper {
+            overflow: hidden;
+            mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
+        }
+        .marquee-track {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            width: max-content;
+            animation: marquee 28s linear infinite;
+        }
+        .marquee-track:hover { animation-play-state: paused; }
+        @keyframes marquee {
+            0%   { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ─── CURSOR GLOW ─── */
+        #cursor-glow {
+            position: absolute;
+            width: 600px; height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            will-change: left, top;
+        }
+
+        /* ─── ANIMATED CONNECTOR ─── */
+        .connector-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            transition: stroke-dashoffset 1.4s ease;
+        }
+        .connector-path.drawn { stroke-dashoffset: 0; }
+
+        /* ─── FEATURE CARDS ─── */
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 24px 60px -15px rgba(16,185,129,0.12);
+        }
+
+        /* ─── TESTIMONIAL CARDS ─── */
+        .testimonial-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px -12px rgba(16,185,129,0.18);
+        }
+
+        /* ─── FAQ ─── */
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .faq-answer.open { max-height: 220px; }
+        .faq-icon { transition: transform 0.3s ease; }
+        .faq-item.open .faq-icon { transform: rotate(45deg); }
+        .faq-item { transition: border-color 0.3s ease; }
+
+        /* ─── COMPARE ─── */
+        .compare-check { color: #10b981; font-weight: 700; }
+        .compare-cross  { color: #475569; }
+
+        /* ─── PARTICLES ─── */
+        #particles-canvas {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ─── NAV SCROLL ─── */
+        nav.scrolled {
+            background-color: rgba(11,15,25,0.96) !important;
+            border-bottom-color: rgba(255,255,255,0.1) !important;
+        }
+    </style>
 </head>
 <body class="font-sans antialiased bg-[#0B0F19] text-slate-300 selection:bg-emerald-500/30">
 
-    <nav class="fixed top-0 w-full z-50 py-4 px-8 border-b border-white/5 backdrop-blur-md bg-[#0B0F19]/80">
+    <!-- READING PROGRESS BAR -->
+    <div id="progress-bar"></div>
+
+    <!-- NAV -->
+    <nav id="main-nav" class="fixed top-0 w-full z-50 py-4 px-8 border-b border-white/5 backdrop-blur-md bg-transparent transition-all duration-500">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <div class="flex items-center space-x-3 group cursor-pointer">
                 <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-all duration-300">
@@ -56,34 +189,37 @@
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#how-it-works" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">How It Works</a>
                 <a href="#features" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">Features</a>
+                <a href="#faq" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">FAQ</a>
                 <a href="login.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Sign In</a>
                 <a href="register.html" class="px-5 py-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 font-medium tracking-wide">Get Started Free</a>
             </div>
         </div>
     </nav>
 
-    <section class="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden">
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
-        <div class="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000"></div>
+    <!-- HERO -->
+    <section id="hero-section" class="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden">
+        <div id="cursor-glow"></div>
+        <div class="absolute top-0 -left-4 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob" id="blob1"></div>
+        <div class="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000" id="blob2"></div>
+        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000" id="blob3"></div>
 
-        <div class="relative max-w-7xl mx-auto px-8 w-full">
+        <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8 z-10">
-                    <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 backdrop-blur-sm">
+                <div class="space-y-8">
+                    <div class="reveal inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 backdrop-blur-sm">
                         <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
                         <span class="text-xs font-medium text-slate-300 tracking-wider uppercase">v2.0 Enterprise Escrow Engine</span>
                     </div>
 
-                    <h1 class="text-5xl lg:text-7xl font-display font-bold text-white leading-[1.1] tracking-tight">
+                    <h1 class="reveal reveal-delay-1 text-5xl lg:text-7xl font-display font-bold text-white leading-[1.1] tracking-tight">
                         Secure contracts with <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Code</span>, not paper.
                     </h1>
 
-                    <p class="text-lg lg:text-xl text-slate-400 leading-relaxed max-w-lg">
+                    <p class="reveal reveal-delay-2 text-lg lg:text-xl text-slate-400 leading-relaxed max-w-lg">
                         The fully automated financial layer for freelance marketplaces. Clients lock funds securely. Freelancers work with guaranteed payment. Zero disputes.
                     </p>
 
-                    <div class="flex flex-col sm:flex-row gap-4 pt-4">
+                    <div class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-4 pt-4">
                         <a href="register.html" class="px-8 py-4 bg-emerald-500 text-white rounded-xl hover:bg-emerald-400 transition-all font-semibold text-center shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.7)] hover:-translate-y-0.5">
                             Start Building Now
                         </a>
@@ -93,8 +229,9 @@
                     </div>
                 </div>
 
-                <div class="relative h-[600px] hidden lg:block perspective-1000 z-10">
-                    <div class="absolute right-0 top-10 w-[400px] bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl p-6 animate-float">
+                <!-- 3D TILT HERO CARDS -->
+                <div class="relative h-[600px] hidden lg:block z-10" id="tilt-container">
+                    <div id="hero-main-card" class="tilt-card absolute right-0 top-10 w-[400px] bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl p-6 animate-float">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center space-x-3">
                                 <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center border border-slate-700">
@@ -117,12 +254,12 @@
                                 <span class="text-emerald-400">Funded ($5,000)</span>
                             </div>
                             <div class="w-full bg-slate-800 rounded-full h-2">
-                                <div class="bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full" style="width: 33%"></div>
+                                <div class="hero-progress-fill bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full"></div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="absolute right-[250px] top-[300px] w-[320px] bg-emerald-950/80 backdrop-blur-xl border border-emerald-500/30 rounded-2xl shadow-2xl p-5 animate-float-delayed z-20">
+                    <div id="hero-notif-card" class="tilt-card absolute right-[250px] top-[300px] w-[320px] bg-emerald-950/80 backdrop-blur-xl border border-emerald-500/30 rounded-2xl shadow-2xl p-5 animate-float-delayed z-20">
                         <div class="flex items-start space-x-4">
                             <div class="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
                                 <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
@@ -138,47 +275,99 @@
         </div>
     </section>
 
-    <section class="border-y border-slate-800 bg-slate-900/50 py-10">
+    <!-- STATS COUNTER BAR -->
+    <section class="border-y border-slate-800/80 bg-slate-900/40 py-14">
         <div class="max-w-7xl mx-auto px-8">
-            <p class="text-center text-sm font-medium text-slate-500 mb-6 uppercase tracking-widest">Powering trust for modern teams</p>
-            <div class="flex flex-wrap justify-center gap-12 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <div class="text-xl font-display font-bold text-white">AcmeCorp</div>
-                <div class="text-xl font-display font-bold text-white tracking-tighter">Global<span class="text-emerald-500">Net</span></div>
-                <div class="text-xl font-display font-bold text-white">TechFlow</div>
-                <div class="text-xl font-display font-bold text-white italic">Vertex</div>
-                <div class="text-xl font-display font-bold text-white">Nexus<span class="font-light">Labs</span></div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div class="reveal">
+                    <div class="text-3xl lg:text-4xl font-display font-bold text-white mb-1 stat-number" data-target="2300000" data-prefix="$" data-suffix="+" data-short="true">$0</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-widest">Funds Secured</div>
+                </div>
+                <div class="reveal reveal-delay-1">
+                    <div class="text-3xl lg:text-4xl font-display font-bold text-white mb-1 stat-number" data-target="4800" data-suffix="+">0</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-widest">Active Contracts</div>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <div class="text-3xl lg:text-4xl font-display font-bold text-emerald-400 mb-1 stat-number" data-target="0" data-zero-label="Zero">0</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-widest">Disputes Filed</div>
+                </div>
+                <div class="reveal reveal-delay-3">
+                    <div class="text-3xl lg:text-4xl font-display font-bold text-white mb-1 stat-number" data-target="99.9" data-suffix="%" data-decimal="true">0%</div>
+                    <div class="text-xs text-slate-500 uppercase tracking-widest">Uptime SLA</div>
+                </div>
             </div>
         </div>
     </section>
 
+    <!-- MARQUEE LOGO STRIP -->
+    <section class="border-b border-slate-800/50 bg-[#06090F] py-10">
+        <div class="max-w-7xl mx-auto px-8">
+            <p class="text-center text-xs font-medium text-slate-600 mb-8 uppercase tracking-widest">Powering trust for modern teams</p>
+            <div class="marquee-wrapper">
+                <div class="marquee-track">
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">AcmeCorp</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors tracking-tighter cursor-default shrink-0">Global<span class="text-emerald-500">Net</span></div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">TechFlow</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors italic cursor-default shrink-0">Vertex</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Nexus<span class="font-light">Labs</span></div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Prismatic</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">CoreBuild</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Orbit<span class="text-cyan-500">IO</span></div>
+                    <!-- Duplicate for seamless loop -->
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">AcmeCorp</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors tracking-tighter cursor-default shrink-0">Global<span class="text-emerald-500">Net</span></div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">TechFlow</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors italic cursor-default shrink-0">Vertex</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Nexus<span class="font-light">Labs</span></div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Prismatic</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">CoreBuild</div>
+                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Orbit<span class="text-cyan-500">IO</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
     <section id="how-it-works" class="py-32 relative">
         <div class="max-w-7xl mx-auto px-8">
             <div class="text-center mb-20">
-                <h2 class="text-3xl lg:text-5xl font-display font-bold text-white mb-6">Trust, Programmed.</h2>
-                <p class="text-lg text-slate-400 max-w-2xl mx-auto">Our smart-contract inspired architecture ensures neither party carries risk. Three immutable steps to secure collaboration.</p>
+                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-6">Trust, Programmed.</h2>
+                <p class="reveal reveal-delay-1 text-lg text-slate-400 max-w-2xl mx-auto">Our smart-contract inspired architecture ensures neither party carries risk. Three immutable steps to secure collaboration.</p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-8 relative">
-                <div class="hidden md:block absolute top-12 left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-transparent via-slate-700 to-transparent z-0"></div>
+            <div class="grid md:grid-cols-3 gap-8 relative" id="steps-grid">
+                <!-- Animated SVG connector line -->
+                <div class="hidden md:block absolute top-12 left-[15%] right-[15%] z-0 pointer-events-none" style="height:4px;">
+                    <svg width="100%" height="4" viewBox="0 0 700 4" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="connGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#10b981"/>
+                                <stop offset="50%" stop-color="#06b6d4"/>
+                                <stop offset="100%" stop-color="#10b981"/>
+                            </linearGradient>
+                        </defs>
+                        <path class="connector-path" id="step-connector" d="M0 2 L700 2" stroke="url(#connGrad)" stroke-width="1.5" fill="none"/>
+                    </svg>
+                </div>
 
-                <div class="relative z-10 flex flex-col items-center text-center group">
-                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-500/50 transition-colors duration-300">
+                <div class="reveal relative z-10 flex flex-col items-center text-center group">
+                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-500/50 group-hover:shadow-[0_0_30px_-8px_rgba(16,185,129,0.3)] transition-all duration-300">
                         <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-emerald-500 transition-colors">01</span>
                     </div>
                     <h3 class="text-xl font-display font-bold text-white mb-4">Lock the Vault</h3>
                     <p class="text-slate-400 leading-relaxed px-4">Clients deposit milestone funds upfront into a neutral, cryptographically secured escrow wallet before work begins.</p>
                 </div>
 
-                <div class="relative z-10 flex flex-col items-center text-center group">
-                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-blue-500/50 transition-colors duration-300">
+                <div class="reveal reveal-delay-1 relative z-10 flex flex-col items-center text-center group">
+                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-blue-500/50 group-hover:shadow-[0_0_30px_-8px_rgba(59,130,246,0.3)] transition-all duration-300">
                         <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-blue-500 transition-colors">02</span>
                     </div>
                     <h3 class="text-xl font-display font-bold text-white mb-4">Submit Deliverables</h3>
                     <p class="text-slate-400 leading-relaxed px-4">Freelancers work with peace of mind. All code submissions and deliverables are timestamped and logged immutably.</p>
                 </div>
 
-                <div class="relative z-10 flex flex-col items-center text-center group">
-                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-400/50 transition-colors duration-300">
+                <div class="reveal reveal-delay-2 relative z-10 flex flex-col items-center text-center group">
+                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-400/50 group-hover:shadow-[0_0_30px_-8px_rgba(16,185,129,0.3)] transition-all duration-300">
                         <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-emerald-400 transition-colors">03</span>
                     </div>
                     <h3 class="text-xl font-display font-bold text-white mb-4">Auto-Settlement</h3>
@@ -188,27 +377,27 @@
         </div>
     </section>
 
+    <!-- FEATURES -->
     <section id="features" class="py-32 bg-slate-900/30 border-y border-slate-800/50">
         <div class="max-w-7xl mx-auto px-8">
             <div class="mb-16">
-                <h2 class="text-3xl lg:text-5xl font-display font-bold text-white mb-4">Enterprise Infrastructure.</h2>
-                <p class="text-lg text-slate-400">Everything required to run a high-stakes marketplace.</p>
+                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Enterprise Infrastructure.</h2>
+                <p class="reveal reveal-delay-1 text-lg text-slate-400">Everything required to run a high-stakes marketplace.</p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
-                
-                <div class="md:col-span-2 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all"></div>
+                <div class="reveal md:col-span-2 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all duration-500"></div>
                     <div class="relative z-10 h-full flex flex-col justify-end">
                         <div class="w-12 h-12 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center mb-6">
                             <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                         </div>
                         <h3 class="text-2xl font-display font-bold text-white mb-2">Atomic Transactions</h3>
-                        <p class="text-slate-400 max-w-md">Our backend utilizes strict <code class="text-emerald-400 bg-emerald-950 px-1 rounded">transaction.atomic()</code> blocks to ensure money never vanishes into the void. State changes are 100% guaranteed.</p>
+                        <p class="text-slate-400 max-w-md">Our backend utilizes strict <code class="text-emerald-400 bg-emerald-950 px-1 rounded font-mono">transaction.atomic()</code> blocks to ensure money never vanishes into the void. State changes are 100% guaranteed.</p>
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
+                <div class="reveal reveal-delay-1 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
                     <div class="h-full flex flex-col justify-end">
                         <div class="w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center mb-6">
                             <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
@@ -218,7 +407,7 @@
                     </div>
                 </div>
 
-                <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
+                <div class="reveal reveal-delay-2 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
                     <div class="h-full flex flex-col justify-end">
                         <div class="w-12 h-12 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center mb-6">
                             <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
@@ -228,7 +417,7 @@
                     </div>
                 </div>
 
-                <div class="md:col-span-2 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
+                <div class="reveal reveal-delay-3 md:col-span-2 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
                     <div class="absolute right-[-10%] top-[-10%] w-64 h-64 border-[40px] border-slate-800 rounded-full group-hover:border-slate-700 transition-colors duration-500"></div>
                     <div class="relative z-10 h-full flex flex-col justify-end">
                         <div class="w-12 h-12 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center mb-6">
@@ -238,26 +427,202 @@
                         <p class="text-slate-400 max-w-md">Our backend rigidly isolates 'Client' and 'Freelancer' logic. SimpleJWT payload verification ensures users only see and interact with data they own.</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="py-32">
+        <div class="max-w-7xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Teams that ship with confidence.</h2>
+                <p class="reveal reveal-delay-1 text-lg text-slate-400">Real feedback from people building with SecureWork.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="reveal testimonial-card bg-slate-900/60 border border-slate-700/50 rounded-2xl p-7 relative overflow-hidden">
+                    <div class="absolute top-5 right-6 text-5xl font-display text-emerald-500/20 leading-none select-none">"</div>
+                    <p class="text-slate-300 leading-relaxed mb-6 relative z-10">SecureWork completely eliminated the anxiety of paying upfront. I know my funds are locked until work is done — it's the only way I'll hire remotely now.</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">MR</div>
+                        <div>
+                            <div class="text-sm font-semibold text-white">Maya Rodriguez</div>
+                            <div class="text-xs text-slate-500">CTO, AcmeCorp</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-delay-1 testimonial-card bg-slate-900/60 border border-emerald-500/25 rounded-2xl p-7 relative overflow-hidden shadow-[0_0_40px_-15px_rgba(16,185,129,0.25)]">
+                    <div class="absolute top-5 right-6 text-5xl font-display text-emerald-500/20 leading-none select-none">"</div>
+                    <p class="text-slate-300 leading-relaxed mb-6 relative z-10">I've been a freelance dev for 8 years. This is the first platform where I actually trust I'll be paid. The atomic settlement is a game changer.</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">JK</div>
+                        <div>
+                            <div class="text-sm font-semibold text-white">James Keller</div>
+                            <div class="text-xs text-slate-500">Senior Engineer, Freelance</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-delay-2 testimonial-card bg-slate-900/60 border border-slate-700/50 rounded-2xl p-7 relative overflow-hidden">
+                    <div class="absolute top-5 right-6 text-5xl font-display text-emerald-500/20 leading-none select-none">"</div>
+                    <p class="text-slate-300 leading-relaxed mb-6 relative z-10">We manage 40+ contractors at once. SecureWork's role-based dashboard keeps our finance team sane. Zero reconciliation headaches.</p>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">SC</div>
+                        <div>
+                            <div class="text-sm font-semibold text-white">Sara Chen</div>
+                            <div class="text-xs text-slate-500">Head of Ops, Nexus Labs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARISON TABLE -->
+    <section class="py-32 bg-slate-900/30 border-y border-slate-800/50">
+        <div class="max-w-5xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Why not just use PayPal?</h2>
+                <p class="reveal reveal-delay-1 text-lg text-slate-400">See how SecureWork stacks up against traditional payment methods.</p>
+            </div>
+            <div class="reveal overflow-hidden rounded-2xl border border-slate-700/50">
+                <table class="w-full text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-700/50">
+                            <th class="text-left py-4 px-6 text-slate-400 font-medium bg-slate-900/60">Feature</th>
+                            <th class="py-4 px-6 text-center font-display font-bold text-emerald-400 bg-emerald-500/5 border-x border-emerald-500/20">SecureWork</th>
+                            <th class="py-4 px-6 text-center text-slate-400 font-medium bg-slate-900/60">PayPal</th>
+                            <th class="py-4 px-6 text-center text-slate-400 font-medium bg-slate-900/60 hidden sm:table-cell">Bank Transfer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-slate-800/50">
+                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Escrow-backed payments</td>
+                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/50">
+                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Milestone-based release</td>
+                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/50">
+                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Atomic fund settlement</td>
+                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/50">
+                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Zero dispute system</td>
+                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/50">
+                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Role-based access control</td>
+                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">API-first integration</td>
+                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
+                            <td class="py-4 px-6 text-center text-slate-500 bg-slate-900/40">Partial</td>
+                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-32">
+        <div class="max-w-3xl mx-auto px-8">
+            <div class="text-center mb-16">
+                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Common questions.</h2>
+                <p class="reveal reveal-delay-1 text-lg text-slate-400">Everything you need to know before you ship.</p>
+            </div>
+
+            <div class="space-y-3" id="faq-list">
+
+                <div class="reveal faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
+                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
+                        <span class="font-medium text-white pr-4">How is my money protected while in escrow?</span>
+                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Funds are held in a ring-fenced escrow account and never co-mingled with operational funds. Every deposit and release is protected by <code class="text-emerald-400 bg-emerald-950 px-1 rounded font-mono">transaction.atomic()</code> blocks — meaning the money either moves entirely or not at all. No partial failures, no stuck states.</div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-delay-1 faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
+                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
+                        <span class="font-medium text-white pr-4">What happens if a client refuses to approve a milestone?</span>
+                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Milestones include a built-in review window. If a client does not respond within the agreed timeframe, the platform can auto-release funds to the freelancer. All deliverable submissions are timestamped and immutably logged, creating a verifiable audit trail.</div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-delay-2 faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
+                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
+                        <span class="font-medium text-white pr-4">Is SecureWork suitable for large enterprise contracts?</span>
+                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Yes. SecureWork is built for high-stakes engagements. You can define unlimited milestones, set custom approval workflows, and integrate via REST API into your existing procurement or HR systems. Enterprise SLA and dedicated support available.</div>
+                    </div>
+                </div>
+
+                <div class="reveal reveal-delay-3 faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
+                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
+                        <span class="font-medium text-white pr-4">How do I integrate SecureWork into my marketplace?</span>
+                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">SecureWork exposes a clean REST API for all escrow operations: create contract, fund milestone, submit deliverable, release funds. Full documentation is available. Most integrations go live in under a day with zero downtime.</div>
+                    </div>
+                </div>
+
+                <div class="reveal faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
+                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
+                        <span class="font-medium text-white pr-4">What are the fees?</span>
+                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">SecureWork charges a flat 1.5% platform fee on each milestone release — no hidden charges, no monthly subscription to get started. Enterprise plans with volume discounts are available for teams processing over $50K/month.</div>
+                    </div>
+                </div>
 
             </div>
         </div>
     </section>
 
+    <!-- CTA with PARTICLE CANVAS -->
     <section class="py-32 relative overflow-hidden">
-        <div class="absolute inset-0 bg-emerald-900/20"></div>
+        <canvas id="particles-canvas"></canvas>
+        <div class="absolute inset-0 bg-emerald-900/20 pointer-events-none"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none"></div>
-        
+
         <div class="relative max-w-4xl mx-auto px-8 text-center z-10">
-            <h2 class="text-4xl lg:text-6xl font-display font-bold text-white mb-6">Initialize your workspace.</h2>
-            <p class="text-xl text-emerald-100/70 mb-10 max-w-2xl mx-auto">Stop relying on trust. Start relying on code. Join the marketplace built for professional software engineering.</p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="register.html" class="px-10 py-4 bg-white text-emerald-950 rounded-xl hover:bg-slate-100 transition-all font-bold text-lg shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)]">
+            <h2 class="reveal text-4xl lg:text-6xl font-display font-bold text-white mb-6">Initialize your workspace.</h2>
+            <p class="reveal reveal-delay-1 text-xl text-emerald-100/70 mb-10 max-w-2xl mx-auto">Stop relying on trust. Start relying on code. Join the marketplace built for professional software engineering.</p>
+            <div class="reveal reveal-delay-2 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="register.html" class="px-10 py-4 bg-white text-emerald-950 rounded-xl hover:bg-slate-100 hover:-translate-y-0.5 transition-all font-bold text-lg shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_-5px_rgba(255,255,255,0.4)]">
                     Create Free Account
+                </a>
+                <a href="#" class="px-10 py-4 bg-transparent text-white rounded-xl hover:bg-white/5 transition-all font-semibold text-lg border border-white/20 hover:border-white/40 hover:-translate-y-0.5">
+                    Read the Docs →
                 </a>
             </div>
         </div>
     </section>
 
+    <!-- FOOTER -->
     <footer class="bg-[#06090F] border-t border-slate-800/50 pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-8">
             <div class="flex flex-col md:flex-row justify-between items-center mb-12">
@@ -280,6 +645,240 @@
     </footer>
 
     <script src="js/app.js"></script>
-</body>
 
+    <script>
+    /* ══════════════════════════════════════════
+       1. READING PROGRESS BAR
+    ══════════════════════════════════════════ */
+    const progressBar = document.getElementById('progress-bar');
+    function updateProgress() {
+        const scrolled = window.scrollY;
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        progressBar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+    }
+    window.addEventListener('scroll', updateProgress, { passive: true });
+
+    /* ══════════════════════════════════════════
+       2. NAV SCROLL BEHAVIOUR
+    ══════════════════════════════════════════ */
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+
+    /* ══════════════════════════════════════════
+       3. SCROLL REVEAL
+    ══════════════════════════════════════════ */
+    const revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                revealObs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    /* ══════════════════════════════════════════
+       4. ANIMATED STATS COUNTERS
+    ══════════════════════════════════════════ */
+    function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+    function runCounter(el) {
+        const target  = parseFloat(el.dataset.target);
+        const prefix  = el.dataset.prefix  || '';
+        const suffix  = el.dataset.suffix  || '';
+        const isShort = el.dataset.short   === 'true';
+        const isDec   = el.dataset.decimal === 'true';
+        const dur = 1800, start = performance.now();
+
+        if (target === 0 && el.dataset.zeroLabel) {
+            // Animate 9→0 for the "Zero disputes" stat
+            let v = 9;
+            const t = setInterval(() => {
+                el.textContent = v--;
+                if (v < 0) { el.textContent = 'Zero'; clearInterval(t); }
+            }, 60);
+            return;
+        }
+
+        (function tick(now) {
+            const pct = Math.min((now - start) / dur, 1);
+            const val = target * easeOutQuart(pct);
+            let disp;
+            if      (isShort && val >= 1e6) disp = (val/1e6).toFixed(1) + 'M';
+            else if (isShort && val >= 1e3) disp = (val/1e3).toFixed(1) + 'K';
+            else if (isDec)                 disp = val.toFixed(1);
+            else                            disp = Math.round(val).toLocaleString();
+            el.textContent = prefix + disp + suffix;
+            if (pct < 1) requestAnimationFrame(tick);
+        })(start);
+    }
+
+    const statsObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { runCounter(e.target); statsObs.unobserve(e.target); }});
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-number').forEach(el => statsObs.observe(el));
+
+    /* ══════════════════════════════════════════
+       5. HERO PROGRESS BAR ANIMATE ON LOAD
+    ══════════════════════════════════════════ */
+    setTimeout(() => {
+        const fill = document.querySelector('.hero-progress-fill');
+        if (fill) fill.classList.add('animated');
+    }, 900);
+
+    /* ══════════════════════════════════════════
+       6. CURSOR GLOW IN HERO
+    ══════════════════════════════════════════ */
+    const heroSection = document.getElementById('hero-section');
+    const cursorGlow  = document.getElementById('cursor-glow');
+    if (heroSection && cursorGlow) {
+        let glowX = 0, glowY = 0, curX = 0, curY = 0;
+        heroSection.addEventListener('mousemove', (e) => {
+            const r = heroSection.getBoundingClientRect();
+            curX = e.clientX - r.left;
+            curY = e.clientY - r.top + window.scrollY;
+        });
+        (function animateGlow() {
+            glowX += (curX - glowX) * 0.08;
+            glowY += (curY - glowY) * 0.08;
+            cursorGlow.style.left = glowX + 'px';
+            cursorGlow.style.top  = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        })();
+    }
+
+    /* ══════════════════════════════════════════
+       7. 3D TILT HERO CARDS
+    ══════════════════════════════════════════ */
+    const tiltCont  = document.getElementById('tilt-container');
+    const mainCard  = document.getElementById('hero-main-card');
+    const notifCard = document.getElementById('hero-notif-card');
+
+    if (tiltCont && mainCard) {
+        tiltCont.addEventListener('mousemove', (e) => {
+            const r = tiltCont.getBoundingClientRect();
+            const x = (e.clientX - r.left) / r.width  - 0.5;
+            const y = (e.clientY - r.top)  / r.height - 0.5;
+            mainCard.style.transform  = `perspective(1000px) rotateX(${-y*10}deg) rotateY(${x*10}deg) translateZ(6px)`;
+            if (notifCard) notifCard.style.transform = `perspective(1000px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(12px)`;
+        });
+        tiltCont.addEventListener('mouseleave', () => {
+            mainCard.style.transform = '';
+            if (notifCard) notifCard.style.transform = '';
+        });
+    }
+
+    /* ══════════════════════════════════════════
+       8. PARALLAX HERO BLOBS (subtle)
+    ══════════════════════════════════════════ */
+    const blob1 = document.getElementById('blob1');
+    const blob2 = document.getElementById('blob2');
+    const blob3 = document.getElementById('blob3');
+    let lastScrollY = 0;
+    window.addEventListener('scroll', () => {
+        const y = window.scrollY;
+        if (blob1) blob1.style.marginTop = (y * 0.12) + 'px';
+        if (blob2) blob2.style.marginTop = (y * 0.22) + 'px';
+        if (blob3) blob3.style.marginTop = (y * 0.08) + 'px';
+    }, { passive: true });
+
+    /* ══════════════════════════════════════════
+       9. ANIMATED SVG STEP CONNECTOR
+    ══════════════════════════════════════════ */
+    const connObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                const path = document.getElementById('step-connector');
+                if (path) path.classList.add('drawn');
+                connObs.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.3 });
+    const stepsGrid = document.getElementById('steps-grid');
+    if (stepsGrid) connObs.observe(stepsGrid);
+
+    /* ══════════════════════════════════════════
+       10. FAQ ACCORDION
+    ══════════════════════════════════════════ */
+    document.querySelectorAll('.faq-trigger').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item   = btn.closest('.faq-item');
+            const answer = item.querySelector('.faq-answer');
+            const isOpen = item.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.faq-item').forEach(i => {
+                i.classList.remove('open');
+                i.querySelector('.faq-answer').classList.remove('open');
+                i.style.borderColor = '';
+            });
+
+            if (!isOpen) {
+                item.classList.add('open');
+                answer.classList.add('open');
+                item.style.borderColor = 'rgba(16,185,129,0.35)';
+            }
+        });
+    });
+
+    /* ══════════════════════════════════════════
+       11. CANVAS PARTICLE NETWORK (CTA section)
+    ══════════════════════════════════════════ */
+    (function initParticles() {
+        const canvas = document.getElementById('particles-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const COUNT = 55, MAX_DIST = 130;
+        let W, H, particles = [];
+
+        function resize() {
+            W = canvas.width  = canvas.offsetWidth;
+            H = canvas.height = canvas.offsetHeight;
+        }
+        resize();
+        new ResizeObserver(resize).observe(canvas.parentElement);
+
+        for (let i = 0; i < COUNT; i++) {
+            particles.push({
+                x: Math.random() * W, y: Math.random() * H,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4,
+                r: Math.random() * 1.5 + 0.5
+            });
+        }
+
+        (function draw() {
+            ctx.clearRect(0, 0, W, H);
+            particles.forEach(p => {
+                p.x += p.vx; p.y += p.vy;
+                if (p.x < 0 || p.x > W) p.vx *= -1;
+                if (p.y < 0 || p.y > H) p.vy *= -1;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(16,185,129,0.55)';
+                ctx.fill();
+            });
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const d  = Math.sqrt(dx*dx + dy*dy);
+                    if (d < MAX_DIST) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(16,185,129,${(1 - d/MAX_DIST) * 0.22})`;
+                        ctx.lineWidth = 0.7;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(draw);
+        })();
+    })();
+    </script>
+
+</body>
 </html>
