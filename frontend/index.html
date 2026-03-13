@@ -1,693 +1,654 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SecureWork — Secure B2B Contracts with Code</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--em:#10b981;--em2:#34d399;--cy:#06b6d4;--cy2:#22d3ee;--bg:#0B0F19;--bg2:#0f1524;--bg3:#131929;--sl7:#334155;--sl6:#475569;--sl4:#94a3b8;--sl3:#cbd5e1}
-html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--sl3);overflow-x:hidden;cursor:none}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureWork - Secure Your B2B Contracts with Code, Not Just Paper</title>
+    <meta name="description" content="The trusted escrow platform for freelancers and businesses. Lock funds, deliver work, get paid instantly. Zero disputes.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+    tailwind.config = {
+      theme: { extend: {
+        fontFamily: { sans: ['Inter','sans-serif'], display: ['Space Grotesk','sans-serif'] },
+      }}
+    }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+    body{background:#060d13;color:#b8c5d0;font-family:'Inter',sans-serif;overflow-x:hidden;}
+    .glass{background:rgba(10,25,20,0.55);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.06);}
+    .glass-light{background:rgba(16,185,129,0.06);backdrop-filter:blur(16px);border:1px solid rgba(16,185,129,0.12);}
+    .gradient-text{background:linear-gradient(135deg,#34d399,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+    .glow-line{height:1px;background:linear-gradient(90deg,transparent,#10B981,transparent);}
+    .reveal{opacity:1;transform:translateY(0);transition:opacity 0.8s ease,transform 0.8s ease;}
 
-/* CURSOR */
-#cur,#cur-dot{position:fixed;border-radius:50%;pointer-events:none;z-index:9999}
-#cur{width:38px;height:38px;border:1.5px solid rgba(16,185,129,.45);transform:translate(-50%,-50%);transition:transform .2s ease,border-color .3s,background .3s}
-#cur-dot{width:5px;height:5px;background:var(--em);transform:translate(-50%,-50%)}
-.cx #cur{transform:translate(-50%,-50%) scale(1.8);border-color:rgba(16,185,129,.2);background:rgba(16,185,129,.06)}
+    /* Aurora glow behind hero center */
+    .aurora{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);width:700px;height:500px;pointer-events:none;z-index:0;}
+    .aurora::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:100%;background:linear-gradient(180deg,rgba(16,185,129,0.35) 0%,rgba(16,185,129,0.08) 50%,transparent 100%);filter:blur(60px);border-radius:50% 50% 0 0;}
+    .aurora::after{content:'';position:absolute;top:10%;left:50%;transform:translateX(-50%);width:500px;height:80%;background:radial-gradient(ellipse at center,rgba(16,185,129,0.15) 0%,rgba(6,13,19,0) 70%);filter:blur(40px);}
+    .aurora-beam{position:absolute;top:0;left:50%;transform:translateX(-50%);width:2px;height:60%;background:linear-gradient(180deg,rgba(16,185,129,0.6),transparent);filter:blur(1px);opacity:0.7;}
+    .aurora-beam:nth-child(2){left:45%;width:1px;height:50%;opacity:0.4;transform:translateX(-50%) rotate(-8deg);}
+    .aurora-beam:nth-child(3){left:55%;width:1px;height:50%;opacity:0.4;transform:translateX(-50%) rotate(8deg);}
 
-/* PROGRESS */
-#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--em),var(--cy));z-index:9998;pointer-events:none;transition:width .1s linear}
+    /* Phone mockup */
+    .phone-mockup{width:280px;background:linear-gradient(180deg,#0c1a15,#091210);border:1px solid rgba(255,255,255,0.08);border-radius:28px;padding:16px;box-shadow:0 40px 100px -20px rgba(0,0,0,0.8),0 0 80px -20px rgba(16,185,129,0.2);position:relative;z-index:10;}
+    .phone-notch{width:100px;height:4px;background:rgba(255,255,255,0.1);border-radius:4px;margin:0 auto 16px;}
 
-/* NAV */
-#nav{position:fixed;top:0;width:100%;z-index:1000;padding:1.1rem 2rem;transition:all .5s ease}
-#nav.sc{background:rgba(11,15,25,.95);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.05)}
-.ni{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
-.logo{display:flex;align-items:center;gap:.75rem;text-decoration:none}
-.li{width:40px;height:40px;background:linear-gradient(135deg,var(--em2),var(--em));border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(16,185,129,.35);transition:box-shadow .3s}
-.li:hover{box-shadow:0 0 48px rgba(16,185,129,.55)}
-.lt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.4rem;color:#fff;letter-spacing:-.02em}
-.nl{display:flex;align-items:center;gap:2rem}
-.nl a{font-size:.875rem;font-weight:500;color:var(--sl4);text-decoration:none;transition:color .2s}
-.nl a:hover{color:var(--em2)}
-.nc{padding:.6rem 1.2rem;background:rgba(16,185,129,.1);color:var(--em2);border:1px solid rgba(16,185,129,.2);border-radius:10px;font-size:.875rem;font-weight:500;text-decoration:none;transition:all .3s}
-.nc:hover{background:var(--em);color:#fff;border-color:var(--em);box-shadow:0 0 30px rgba(16,185,129,.4)}
+    /* Floating cards */
+    .float-card{position:absolute;z-index:12;transition:transform 0.6s cubic-bezier(0.23,1,0.32,1);}
+    @keyframes float-slow{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes float-slow-alt{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes pulse-glow{0%,100%{box-shadow:0 0 20px rgba(16,185,129,0.1)}50%{box-shadow:0 0 40px rgba(16,185,129,0.25)}}
+    .animate-float-slow{animation:float-slow 5s ease-in-out infinite;}
+    .animate-float-slow-alt{animation:float-slow-alt 6s ease-in-out 1.5s infinite;}
+    .animate-pulse-glow{animation:pulse-glow 3s ease-in-out infinite;}
 
-/* REVEAL */
-.r{opacity:0;transform:translateY(40px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
-.r.vis{opacity:1;transform:none}
-.rl{transform:translateX(-50px)}
-.rr{transform:translateX(50px)}
-.rs{transform:scale(.88)}
-.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}.rd5{transition-delay:.5s}
+    /* Feature cards */
+    .feature-card{transition:all 0.5s cubic-bezier(0.23,1,0.32,1);}
+    .feature-card:hover{transform:translateY(-6px);border-color:rgba(16,185,129,0.25);box-shadow:0 20px 60px -15px rgba(16,185,129,0.12);}
 
-/* HERO */
-#hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 2rem 80px;overflow:hidden}
-#hbg{position:absolute;inset:0;z-index:0;pointer-events:none}
-#orbc{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:600px;height:600px;z-index:2;pointer-events:none;transition:transform .1s linear}
-.hcon{position:relative;z-index:5;max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
-.gl{background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:60px 60px;position:absolute;inset:0;mask-image:radial-gradient(ellipse at center,#000 20%,transparent 75%);pointer-events:none}
-.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .875rem;background:rgba(15,21,36,.85);border:1px solid rgba(16,185,129,.22);border-radius:999px;font-size:.72rem;font-weight:500;color:var(--sl3);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(10px);margin-bottom:1.5rem}
-.bdot{width:7px;height:7px;border-radius:50%;background:var(--em);animation:pd 2s infinite}
-@keyframes pd{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.6)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
-h1.ht{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.8rem,4.5vw,4.5rem);font-weight:700;color:#fff;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem}
-.gt{background:linear-gradient(135deg,var(--em2),var(--cy2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hs{font-size:1.1rem;color:var(--sl4);line-height:1.7;max-width:480px;margin-bottom:2.5rem}
-.hb{display:flex;gap:1rem;flex-wrap:wrap}
-.bp{padding:1rem 2rem;background:var(--em);color:#fff;border-radius:14px;font-weight:600;text-decoration:none;font-size:1rem;transition:all .3s;box-shadow:0 0 40px rgba(16,185,129,.3);display:inline-flex;align-items:center;gap:.5rem}
-.bp:hover{background:var(--em2);box-shadow:0 0 70px rgba(16,185,129,.55);transform:translateY(-2px)}
-.bs{padding:1rem 2rem;background:rgba(255,255,255,.04);color:#fff;border-radius:14px;font-weight:600;text-decoration:none;font-size:1rem;border:1px solid rgba(255,255,255,.1);transition:all .3s;display:inline-flex;align-items:center;gap:.5rem}
-.bs:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22)}
+    /* Stat counter */
+    .counter{font-variant-numeric:tabular-nums;}
 
-/* HERO CARD */
-.dcw{position:relative}
-.dc{background:rgba(13,18,30,.88);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:1.75rem;box-shadow:0 50px 100px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.03);animation:cf 7s ease-in-out infinite;transform-style:preserve-3d}
-@keyframes cf{0%,100%{transform:translateY(0) rotate3d(1,0,0,2deg)}50%{transform:translateY(-16px) rotate3d(1,0,0,-1deg)}}
-.ctag{padding:.25rem .6rem;background:rgba(16,185,129,.15);color:var(--em2);border:1px solid rgba(16,185,129,.2);border-radius:6px;font-size:.7rem;font-weight:700;letter-spacing:.06em}
-.ca{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:#fff}
-.ca span{color:var(--sl6)}
-.pb{height:6px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin-top:.5rem}
-.pf{height:100%;background:linear-gradient(90deg,var(--em),var(--cy));border-radius:999px;width:0;transition:width 1.6s cubic-bezier(.25,1,.5,1)}
-.pf.go{width:33%}
-.nc2{position:absolute;bottom:-54px;left:-80px;background:rgba(2,18,12,.92);backdrop-filter:blur(20px);border:1px solid rgba(16,185,129,.25);border-radius:16px;padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:.875rem;width:290px;animation:cf2 7s ease-in-out 1.5s infinite;box-shadow:0 24px 64px rgba(0,0,0,.45)}
-@keyframes cf2{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-.ni2{width:36px;height:36px;background:rgba(16,185,129,.14);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.nt{font-size:.8rem;font-weight:600;color:#fff;margin-bottom:.2rem}
-.ns{font-size:.7rem;color:rgba(52,211,153,.75);line-height:1.4}
+    /* Marquee */
+    .marquee{display:flex;gap:3rem;animation:marquee 30s linear infinite;}
+    @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* STATS */
-#stats{border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04);background:rgba(13,18,30,.55);padding:4rem 2rem;position:relative;overflow:hidden}
-#stats::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(16,185,129,.03),transparent);animation:sw 5s ease-in-out infinite}
-@keyframes sw{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
-.sg{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
-.sv{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:700;color:#fff;margin-bottom:.375rem;letter-spacing:-.02em}
-.sv.em{color:var(--em2)}
-.sl{font-size:.72rem;color:var(--sl6);text-transform:uppercase;letter-spacing:.1em}
+    /* Parallax layer */
+    .parallax-layer{will-change:transform;transition:transform 0.1s linear;}
 
-/* MARQUEE */
-#mq{background:#06090F;border-bottom:1px solid rgba(255,255,255,.04);padding:2.5rem 0;overflow:hidden}
-.mql{text-align:center;font-size:.68rem;color:var(--sl7);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1.5rem}
-.mqw{overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent)}
-.mqt{display:flex;gap:4rem;width:max-content;animation:tk 32s linear infinite}
-.mqt:hover{animation-play-state:paused}
-@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.mqi{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.22);transition:color .3s;white-space:nowrap;cursor:default}
-.mqi:hover{color:rgba(255,255,255,.65)}
+    /* Grid bg */
+    .grid-bg{background-image:linear-gradient(rgba(16,185,129,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(16,185,129,0.03) 1px,transparent 1px);background-size:60px 60px;}
 
-/* HOW IT WORKS */
-#how{padding:9rem 2rem;position:relative}
-.chip{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .875rem;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-radius:999px;font-size:.7rem;color:var(--em2);letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:1.25rem}
-.st{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,3.5vw,3.25rem);font-weight:700;color:#fff;letter-spacing:-.025em;line-height:1.1;margin-bottom:1rem}
-.ss{font-size:1rem;color:var(--sl4);max-width:540px;line-height:1.7}
-.stg{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;position:relative;margin-top:5rem}
-.scon{position:absolute;top:48px;left:16.5%;right:16.5%;height:2px;z-index:0;pointer-events:none;overflow:hidden}
-.scl{width:100%;height:100%;background:linear-gradient(90deg,var(--em),var(--cy),var(--em));opacity:0;transition:opacity 1.2s ease}
-.scl.go{opacity:.4}
-.scl::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(16,185,129,.9),transparent);animation:sl2 2.5s ease-in-out infinite}
-@keyframes sl2{0%{left:-100%}100%{left:100%}}
-.scc{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 1rem}
-.snb{width:96px;height:96px;background:var(--bg2);border:1px solid var(--sl7);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;transition:all .45s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.3)}
-.scc:hover .snb{border-color:rgba(16,185,129,.5);box-shadow:0 0 50px rgba(16,185,129,.2),0 20px 50px rgba(0,0,0,.4);transform:translateY(-8px) scale(1.06) rotate3d(1,1,0,6deg)}
-.sn{font-family:'Space Grotesk',sans-serif;font-size:2.25rem;font-weight:700;color:var(--sl7);transition:color .3s}
-.scc:hover .sn{color:var(--em)}
-.stit{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:600;color:#fff;margin-bottom:.75rem}
-.sdesc{font-size:.875rem;color:var(--sl4);line-height:1.65}
+    /* Horizontal line glow */
+    .h-glow{height:1px;background:linear-gradient(90deg,transparent 0%,rgba(16,185,129,0.3) 20%,rgba(16,185,129,0.5) 50%,rgba(16,185,129,0.3) 80%,transparent 100%);position:absolute;left:0;right:0;top:50%;}
 
-/* FEATURES */
-#features{padding:4rem 2rem 9rem;background:rgba(13,18,30,.45);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
-.bg{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1.25rem;margin-top:4rem}
-.bn{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:2rem;position:relative;overflow:hidden;transition:all .35s cubic-bezier(.34,1.56,.64,1);cursor:default}
-.bn:hover{border-color:rgba(16,185,129,.25);box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(16,185,129,.1)}
-.bn.w{grid-column:span 2}
-.bngl{position:absolute;top:-40%;right:-10%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.1),transparent 70%);pointer-events:none;transition:all .4s}
-.bn:hover .bngl{opacity:2;transform:scale(1.2)}
-.bni{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;position:relative;z-index:1}
-.bnt{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:600;color:#fff;margin-bottom:.75rem;position:relative;z-index:1}
-.bnd{font-size:.875rem;color:var(--sl4);line-height:1.65;position:relative;z-index:1}
-.bnd code{color:var(--em2);background:rgba(16,185,129,.08);padding:.1rem .4rem;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem}
-.bnr{position:absolute;right:-12%;top:-12%;width:200px;height:200px;border-radius:50%;border:40px solid rgba(255,255,255,.02);transition:border-color .4s}
-.bn:hover .bnr{border-color:rgba(255,255,255,.04)}
-
-/* TESTIMONIALS */
-#testimonials{padding:9rem 2rem}
-.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem}
-.tc{background:rgba(13,18,30,.7);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:1.75rem;transition:all .4s;position:relative;overflow:hidden;cursor:default}
-.tc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(16,185,129,.05),transparent);opacity:0;transition:opacity .4s}
-.tc:hover::before{opacity:1}
-.tc:hover{border-color:rgba(16,185,129,.22);transform:translateY(-5px);box-shadow:0 24px 70px rgba(0,0,0,.35)}
-.tq{font-size:.95rem;color:var(--sl3);line-height:1.72;margin-bottom:1.5rem;position:relative;padding-top:.5rem}
-.tq::before{content:'\201C';position:absolute;top:-12px;left:-4px;font-size:3.5rem;color:rgba(16,185,129,.14);font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1}
-.ta{display:flex;align-items:center;gap:.75rem}
-.tav{width:40px;height:40px;border-radius:50%;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
-.tn{font-size:.875rem;font-weight:600;color:#fff}
-.tr{font-size:.75rem;color:var(--sl6)}
-
-/* COMPARE */
-#compare{padding:4rem 2rem 9rem;background:rgba(13,18,30,.45);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
-.cmt{width:100%;border-collapse:separate;border-spacing:0;margin-top:3rem;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
-.cmt th{padding:1.1rem 1.5rem;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}
-.cmt th:first-child{text-align:left;color:var(--sl6);background:rgba(13,18,30,.9)}
-.cmt th.sw{color:var(--em2);background:rgba(16,185,129,.07);border-left:1px solid rgba(16,185,129,.2);border-right:1px solid rgba(16,185,129,.2);text-align:center}
-.cmt th.ot{color:var(--sl6);background:rgba(13,18,30,.9);text-align:center}
-.cmt td{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,.04);font-size:.875rem}
-.cmt td:first-child{color:var(--sl3);background:rgba(13,18,30,.6)}
-.cmt td.sw{background:rgba(16,185,129,.05);border-left:1px solid rgba(16,185,129,.12);border-right:1px solid rgba(16,185,129,.12);text-align:center;color:var(--em2);font-weight:700}
-.cmt td.ot{background:rgba(13,18,30,.4);text-align:center;color:var(--sl6)}
-
-/* FAQ */
-#faq{padding:9rem 2rem}
-.fl{max-width:720px;margin:3rem auto 0;display:flex;flex-direction:column;gap:.75rem}
-.fi{background:rgba(13,18,30,.7);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;transition:border-color .3s,box-shadow .3s;cursor:pointer}
-.fi.op{border-color:rgba(16,185,129,.32);box-shadow:0 0 40px rgba(16,185,129,.09)}
-.ft{width:100%;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;background:none;border:none;cursor:pointer;gap:1rem}
-.fq{font-weight:500;color:#fff;font-size:.95rem;text-align:left}
-.fic{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:var(--sl4);font-size:1.1rem;flex-shrink:0;transition:all .3s;line-height:1}
-.fi.op .fic{transform:rotate(45deg);border-color:var(--em);color:var(--em)}
-.fa{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
-.fa.op{max-height:200px}
-.fai{padding:0 1.5rem 1.25rem;font-size:.875rem;color:var(--sl4);line-height:1.72}
-.fai code{color:var(--em2);background:rgba(16,185,129,.08);padding:.1rem .4rem;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem}
-
-/* CTA — THE WOW */
-#cta{position:relative;overflow:hidden;padding:10rem 2rem;display:flex;align-items:center;justify-content:center;min-height:640px}
-#ctac{position:absolute;inset:0;z-index:0}
-.ctr{position:absolute;bottom:-120px;left:50%;transform:translateX(-50%);width:900px;height:550px;background:radial-gradient(ellipse at center bottom,rgba(16,185,129,.28) 0%,rgba(6,182,212,.1) 40%,transparent 70%);pointer-events:none;z-index:1}
-.ctf{position:absolute;bottom:0;left:0;right:0;height:320px;background:linear-gradient(to top,rgba(16,185,129,.1),transparent);z-index:1}
-.ctgt{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1.5px;background:linear-gradient(90deg,transparent,var(--em),var(--cy),var(--em),transparent);z-index:2}
-.cti{position:relative;z-index:5;text-align:center;max-width:700px}
-.ctit{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.5rem,5vw,4.2rem);font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.04;margin-bottom:1.5rem}
-.ctis{font-size:1.1rem;color:rgba(255,255,255,.52);margin-bottom:2.5rem;line-height:1.7}
-.ctst{display:flex;justify-content:center;gap:3.5rem;margin-bottom:2.5rem}
-.ctsi{text-align:center}
-.ctsn{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;color:var(--em2);display:block}
-.ctsl{font-size:.72rem;color:var(--sl6);text-transform:uppercase;letter-spacing:.08em;margin-top:.25rem}
-.ctb{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
-.bm{padding:1.15rem 2.6rem;background:#fff;color:#052e16;border-radius:14px;font-weight:700;font-size:1.05rem;text-decoration:none;transition:all .3s;box-shadow:0 0 60px rgba(255,255,255,.14)}
-.bm:hover{background:#f0fdf4;box-shadow:0 0 90px rgba(255,255,255,.28);transform:translateY(-3px)}
-.bg2{padding:1.15rem 2.6rem;background:transparent;color:rgba(255,255,255,.65);border-radius:14px;font-weight:600;font-size:1.05rem;text-decoration:none;border:1px solid rgba(255,255,255,.14);transition:all .3s}
-.bg2:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.32);color:#fff}
-
-/* FOOTER */
-#footer{background:#06090F;border-top:1px solid rgba(255,255,255,.05);padding:3rem 2rem 1.5rem}
-.fi2{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1.5rem}
-.fl2{display:flex;gap:1.5rem}
-.fl2 a{font-size:.875rem;color:var(--sl6);text-decoration:none;transition:color .2s}
-.fl2 a:hover{color:var(--em2)}
-.fc{text-align:center;font-size:.8rem;color:rgba(255,255,255,.18)}
-
-@media(max-width:1024px){
-  .hcon,.stg,.tg,.bg{grid-template-columns:1fr}
-  .bn.w{grid-column:span 1}
-  #orbc{display:none}
-  .scon{display:none}
-  .sg{grid-template-columns:repeat(2,1fr)}
-  .nc2{position:relative;bottom:auto;left:auto;width:100%;margin-top:1rem}
-}
-</style>
+    @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+    .shimmer{position:relative;overflow:hidden;}
+    .shimmer::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(16,185,129,0.08),transparent);animation:shimmer 3s infinite;}
+    </style>
 </head>
-<body>
-
-<div id="cur"></div>
-<div id="cur-dot"></div>
-<div id="prog"></div>
+<body class="antialiased selection:bg-emerald-500/30">
 
 <!-- NAV -->
-<nav id="nav">
-  <div class="ni">
-    <a href="#" class="logo">
-      <div class="li">
-        <svg width="22" height="22" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-      </div>
-      <span class="lt">SecureWork</span>
-    </a>
-    <div class="nl">
-      <a href="#how">How It Works</a>
-      <a href="#features">Features</a>
-      <a href="#faq">FAQ</a>
-      <a href="login.html">Sign In</a>
-      <a href="register.html" class="nc">Get Started Free</a>
+<nav id="main-nav" class="fixed top-0 w-full z-50 transition-all duration-500">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8 py-4">
+        <div class="glass rounded-2xl px-6 py-3 flex items-center justify-between">
+            <a href="#" class="flex items-center space-x-2.5 group">
+                <div class="w-9 h-9 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-all">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <span class="text-xl font-display font-bold text-white tracking-tight">Secure<span class="gradient-text">Work</span></span>
+            </a>
+            <div class="hidden md:flex items-center">
+                <div class="glass rounded-full px-1 py-1 flex items-center space-x-1 mr-6">
+                    <a href="#" class="px-4 py-1.5 rounded-full text-xs font-medium text-white bg-white/10">Home</a>
+                    <a href="#about" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-400 hover:text-white transition-colors">About</a>
+                    <a href="#features" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-400 hover:text-white transition-colors">Features</a>
+                    <a href="#how-it-works" class="px-4 py-1.5 rounded-full text-xs font-medium text-slate-400 hover:text-white transition-colors">How It Works</a>
+                </div>
+                <a href="login.html" class="text-sm font-medium text-slate-400 hover:text-white transition-colors mr-5">Sign In</a>
+                <a href="register.html" class="px-5 py-2 bg-emerald-500 text-white rounded-xl text-sm font-semibold hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:-translate-y-0.5">Start now</a>
+            </div>
+            <button class="md:hidden text-white" onclick="document.getElementById('mob-menu').classList.toggle('hidden')">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+        </div>
+        <div id="mob-menu" class="hidden md:hidden mt-3 glass rounded-xl p-4 space-y-2">
+            <a href="#about" class="block text-sm text-slate-300 hover:text-emerald-400 py-2">About</a>
+            <a href="#features" class="block text-sm text-slate-300 hover:text-emerald-400 py-2">Features</a>
+            <a href="#how-it-works" class="block text-sm text-slate-300 hover:text-emerald-400 py-2">How It Works</a>
+            <a href="login.html" class="block text-sm text-slate-300 py-2">Sign In</a>
+            <a href="register.html" class="block text-center px-5 py-2.5 bg-emerald-500 text-white rounded-lg font-semibold text-sm">Start now</a>
+        </div>
     </div>
-  </div>
 </nav>
 
+<!-- ============================================ -->
 <!-- HERO -->
-<section id="hero">
-  <div class="gl"></div>
-  <canvas id="hbg"></canvas>
-  <canvas id="orbc"></canvas>
-  <div class="hcon">
-    <div>
-      <div class="badge r"><span class="bdot"></span>v2.0 Enterprise Escrow Engine</div>
-      <h1 class="ht r rd1">Secure contracts<br>with <span class="gt">Code</span>,<br>not paper.</h1>
-      <p class="hs r rd2">The fully automated financial layer for freelance marketplaces. Clients lock funds securely. Freelancers work with guaranteed payment. Zero disputes.</p>
-      <div class="hb r rd3">
-        <a href="register.html" class="bp">
-          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          Start Building Now
-        </a>
-        <a href="#how" class="bs">Explore Platform →</a>
-      </div>
+<!-- ============================================ -->
+<section class="relative min-h-screen flex items-center justify-center pt-28 pb-20 overflow-hidden grid-bg">
+    <!-- Aurora effect -->
+    <div class="aurora">
+        <div class="aurora-beam"></div>
+        <div class="aurora-beam"></div>
+        <div class="aurora-beam"></div>
     </div>
-    <div class="dcw r rr rd2" id="dcw">
-      <div class="dc" id="dcard">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
-          <div style="display:flex;align-items:center;gap:.75rem">
-            <div style="width:38px;height:38px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center">
-              <span style="color:var(--em2);font-family:'JetBrains Mono',monospace;font-size:.75rem">#SW</span>
-            </div>
-            <div>
-              <div style="font-size:.875rem;font-weight:600;color:#fff">Project Setup</div>
-              <div style="font-size:.7rem;color:var(--sl4)">Active Contract</div>
-            </div>
-          </div>
-          <span class="ctag">SECURED</span>
+    <!-- Horizontal glow line -->
+    <div class="h-glow" style="top:55%;opacity:0.6;"></div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 w-full">
+        <!-- Top tagline -->
+        <div class="text-center mb-6 reveal">
+            <p class="text-sm text-slate-400 tracking-wide">Your Gateway to Smarter <span class="text-emerald-400 font-medium">Freelance Contracts</span></p>
         </div>
-        <div style="font-size:.8rem;color:var(--sl4);margin-bottom:.25rem">Total Escrow Locked</div>
-        <div class="ca">$15,000<span>.00</span></div>
-        <div style="font-size:.78rem;color:var(--sl4);display:flex;justify-content:space-between;margin:1rem 0 .4rem">
-          <span>Milestone 1: Backend Auth</span><span style="color:var(--em2)">Funded ($5,000)</span>
+
+        <!-- Central hero layout: left text — phone mockup — right text -->
+        <div class="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-0">
+
+            <!-- Left hero text -->
+            <div class="lg:w-1/3 text-center lg:text-left reveal lg:pr-8">
+                <h1 class="text-4xl lg:text-5xl xl:text-6xl font-display font-bold text-white leading-[1.1] mb-4">Secure <span class="gradient-text">Escrow</span> for Every Contract</h1>
+                <p class="text-sm lg:text-base text-slate-400 leading-relaxed mb-6 max-w-sm mx-auto lg:mx-0">Discover a trusted platform for freelancers and businesses. Lock payments, deliver work, and get paid — all protected by our escrow vault.</p>
+                <div class="flex items-center gap-4 justify-center lg:justify-start">
+                    <a href="register.html" class="group inline-flex items-center gap-2 px-6 py-3 bg-emerald-500 text-white rounded-xl text-sm font-semibold hover:bg-emerald-400 transition-all shadow-[0_0_30px_-5px_rgba(16,185,129,0.5)] hover:shadow-[0_0_50px_-5px_rgba(16,185,129,0.7)] hover:-translate-y-0.5">
+                        Start free now
+                        <span class="w-7 h-7 bg-white/20 rounded-lg flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Center: Phone mockup + floating cards -->
+            <div class="lg:w-1/3 flex justify-center relative" style="min-height:500px;">
+                <!-- Floating cards around phone -->
+                <div class="float-card animate-float-slow" style="top:0;left:-60px;">
+                    <div class="glass rounded-xl px-4 py-3 flex items-center gap-3 shadow-xl">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-[11px] text-slate-500">Earnings</div>
+                            <div class="text-sm font-semibold text-white">$23,562</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="float-card animate-float-slow-alt hidden lg:block" style="top:30px;right:-80px;">
+                    <div class="glass rounded-xl px-4 py-3 shadow-xl">
+                        <div class="text-[11px] text-slate-500 mb-1">Weekly Revenue</div>
+                        <div class="flex items-end gap-1 h-8">
+                            <div class="w-1.5 bg-emerald-500/30 rounded-full" style="height:40%"></div>
+                            <div class="w-1.5 bg-emerald-500/40 rounded-full" style="height:60%"></div>
+                            <div class="w-1.5 bg-emerald-500/50 rounded-full" style="height:35%"></div>
+                            <div class="w-1.5 bg-emerald-500/60 rounded-full" style="height:80%"></div>
+                            <div class="w-1.5 bg-emerald-500/70 rounded-full" style="height:55%"></div>
+                            <div class="w-1.5 bg-emerald-400 rounded-full" style="height:90%"></div>
+                            <div class="w-1.5 bg-emerald-400 rounded-full" style="height:100%"></div>
+                        </div>
+                        <div class="text-xs font-semibold text-emerald-400 mt-1">+23%</div>
+                    </div>
+                </div>
+
+                <div class="float-card animate-float-slow hidden lg:block" style="bottom:60px;left:-90px;">
+                    <div class="glass rounded-xl px-4 py-3 flex items-center gap-2 shadow-xl">
+                        <div class="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
+                            <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+                        </div>
+                        <span class="text-xs text-white font-medium">Milestone Paid</span>
+                        <span class="text-xs text-emerald-400 font-semibold">$3,500</span>
+                    </div>
+                </div>
+
+                <div class="float-card animate-float-slow-alt hidden lg:block" style="bottom:40px;right:-70px;">
+                    <div class="glass rounded-xl px-4 py-3 shadow-xl">
+                        <div class="text-[11px] text-slate-500">Escrow Protected</div>
+                        <div class="text-sm font-bold text-white">$8,450<span class="text-slate-600">.00</span></div>
+                    </div>
+                </div>
+
+                <!-- The phone -->
+                <div class="phone-mockup animate-pulse-glow" id="hero-phone">
+                    <div class="phone-notch"></div>
+                    <div class="text-center mb-4">
+                        <div class="text-3xl font-display font-bold text-white">$15,537<span class="text-slate-600">.00</span></div>
+                        <div class="inline-flex items-center gap-1 mt-1 px-2.5 py-0.5 rounded-md bg-white/5 border border-white/10">
+                            <svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                            <span class="text-[11px] text-emerald-400 font-medium">Portfolio Balance</span>
+                        </div>
+                    </div>
+                    <div class="bg-white/[0.03] rounded-xl p-3 mb-3 border border-white/5">
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-2">
+                                <span class="text-[10px] text-slate-500">Active</span>
+                                <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                                <span class="text-[10px] text-emerald-400">3 contracts</span>
+                            </div>
+                        </div>
+                        <div class="flex items-baseline justify-between">
+                            <div>
+                                <div class="text-lg font-semibold text-white">$5,237.34</div>
+                                <div class="text-xs text-slate-500">Available to withdraw</div>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-sm font-bold text-emerald-400">+23%</span>
+                                <div class="text-[10px] text-slate-500">this month</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 mb-3">
+                        <button class="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-emerald-500/30 transition-colors">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                            <span class="text-[10px] text-slate-400">Receive</span>
+                        </button>
+                        <button class="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-emerald-500/30 transition-colors">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                            <span class="text-[10px] text-slate-400">Fund</span>
+                        </button>
+                        <button class="flex flex-col items-center gap-1 py-2.5 rounded-xl bg-white/[0.03] border border-white/5 hover:border-emerald-500/30 transition-colors">
+                            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                            <span class="text-[10px] text-slate-400">Transfer</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-center gap-3">
+                        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></div>
+                        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg></div>
+                        <div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center"><svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right hero text -->
+            <div class="lg:w-1/3 text-center lg:text-right reveal lg:pl-8">
+                <h2 class="text-4xl lg:text-5xl xl:text-6xl font-display font-bold text-white leading-[1.1] mb-4">Fast & Secure <span class="gradient-text">Payments</span></h2>
+                <p class="text-sm lg:text-base text-slate-400 leading-relaxed mb-6 max-w-sm mx-auto lg:ml-auto lg:mr-0">Fund contracts with confidence. Our escrow vault holds payments safely and releases them instantly when milestones are approved. Zero disputes.</p>
+                <a href="#how-it-works" class="inline-flex items-center gap-2 text-sm text-slate-300 hover:text-emerald-400 transition-colors font-medium group">
+                    <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    Secure Escrow Platform
+                    <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </a>
+            </div>
         </div>
-        <div class="pb"><div class="pf" id="hpf"></div></div>
-      </div>
-      <div class="nc2">
-        <div class="ni2"><svg width="15" height="15" fill="none" stroke="var(--em2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div>
-        <div><div class="nt">Milestone Approved</div><div class="ns">Client released funds. $5,000.00 added to your wallet.</div></div>
-      </div>
     </div>
-  </div>
 </section>
 
-<!-- STATS -->
-<section id="stats">
-  <div class="sg">
-    <div class="r"><div class="sv" data-count="2300000" data-pre="$" data-suf="+" data-short="1">$0</div><div class="sl">Funds Secured</div></div>
-    <div class="r rd1"><div class="sv" data-count="4800" data-suf="+">0</div><div class="sl">Active Contracts</div></div>
-    <div class="r rd2"><div class="sv em">Zero</div><div class="sl">Disputes Filed</div></div>
-    <div class="r rd3"><div class="sv" data-count="99.9" data-dec="1" data-suf="%">0%</div><div class="sl">Uptime SLA</div></div>
-  </div>
+<!-- STATS MARQUEE -->
+<section class="py-6 border-y border-white/5 overflow-hidden relative">
+    <div class="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-[#060d13] to-transparent z-10"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-[#060d13] to-transparent z-10"></div>
+    <div class="marquee">
+        <div class="flex gap-16 items-center shrink-0">
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 2,400+ Active Contracts</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> $12M+ Payments Secured</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 99.9% Uptime SLA</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Zero Disputes</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 150+ Countries Supported</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Instant Withdrawals</span>
+        </div>
+        <div class="flex gap-16 items-center shrink-0">
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 2,400+ Active Contracts</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> $12M+ Payments Secured</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 99.9% Uptime SLA</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Zero Disputes</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 150+ Countries Supported</span>
+            <span class="flex items-center gap-2 text-slate-500 text-sm whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Instant Withdrawals</span>
+        </div>
+    </div>
 </section>
 
-<!-- MARQUEE -->
-<section id="mq">
-  <p class="mql">Powering trust for modern teams</p>
-  <div class="mqw">
-    <div class="mqt">
-      <span class="mqi">AcmeCorp</span>
-      <span class="mqi">Global<span style="color:var(--em)">Net</span></span>
-      <span class="mqi">TechFlow</span>
-      <span class="mqi" style="font-style:italic">Vertex</span>
-      <span class="mqi">Nexus<span style="font-weight:300">Labs</span></span>
-      <span class="mqi">Prismatic</span>
-      <span class="mqi">CoreBuild</span>
-      <span class="mqi">Orbit<span style="color:var(--cy)">IO</span></span>
-      <span class="mqi">AcmeCorp</span>
-      <span class="mqi">Global<span style="color:var(--em)">Net</span></span>
-      <span class="mqi">TechFlow</span>
-      <span class="mqi" style="font-style:italic">Vertex</span>
-      <span class="mqi">Nexus<span style="font-weight:300">Labs</span></span>
-      <span class="mqi">Prismatic</span>
-      <span class="mqi">CoreBuild</span>
-      <span class="mqi">Orbit<span style="color:var(--cy)">IO</span></span>
+<!-- ABOUT / WHY SECUREWORK -->
+<section id="about" class="py-24 lg:py-32 relative">
+    <div class="absolute top-0 left-0 w-full"><div class="glow-line"></div></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+            <div class="reveal">
+                <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">Why SecureWork</span>
+                <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mt-4 mb-6 leading-tight">The trust layer between <span class="gradient-text">clients</span> and <span class="gradient-text">talent</span>.</h2>
+                <p class="text-base text-slate-400 leading-relaxed mb-6">Traditional freelance platforms leave both sides exposed. Clients worry about paying for incomplete work. Freelancers worry about never getting paid. SecureWork eliminates this risk entirely with our escrow-first approach.</p>
+                <p class="text-base text-slate-400 leading-relaxed mb-8">Every dollar is held in a neutral escrow vault until both parties agree the work is done. No chargebacks. No ghosting. No disputes. Just honest work and guaranteed payment.</p>
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-center p-4 glass rounded-xl">
+                        <div class="text-2xl font-display font-bold text-white counter" data-target="2400">0</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Contracts</div>
+                    </div>
+                    <div class="text-center p-4 glass rounded-xl">
+                        <div class="text-2xl font-display font-bold text-white">$<span class="counter" data-target="12">0</span>M+</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Secured</div>
+                    </div>
+                    <div class="text-center p-4 glass rounded-xl">
+                        <div class="text-2xl font-display font-bold text-emerald-400 counter" data-target="0">0</div>
+                        <div class="text-[11px] text-slate-500 mt-1">Disputes</div>
+                    </div>
+                </div>
+            </div>
+            <div class="reveal grid grid-cols-2 gap-4">
+                <div class="glass-light rounded-2xl p-6 flex flex-col items-center text-center shimmer">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white mb-1">Escrow Protection</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Funds locked until work is approved</p>
+                </div>
+                <div class="glass-light rounded-2xl p-6 flex flex-col items-center text-center mt-8 shimmer">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white mb-1">Instant Payouts</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Get paid the moment work is approved</p>
+                </div>
+                <div class="glass-light rounded-2xl p-6 flex flex-col items-center text-center shimmer">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white mb-1">Dispute Resolution</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Fair mediation if issues arise</p>
+                </div>
+                <div class="glass-light rounded-2xl p-6 flex flex-col items-center text-center mt-8 shimmer">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    </div>
+                    <h4 class="text-sm font-semibold text-white mb-1">Full Transparency</h4>
+                    <p class="text-xs text-slate-400 leading-relaxed">Complete audit trail for every payment</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section id="how">
-  <div style="max-width:1280px;margin:0 auto">
-    <div style="text-align:center">
-      <div class="chip r">
-        <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>
-        How It Works
-      </div>
-      <h2 class="st r rd1" style="margin:0 auto">Trust,<br><span class="gt">Programmed.</span></h2>
-      <p class="ss r rd2" style="margin:1rem auto 0">Our smart-contract inspired architecture ensures neither party carries risk. Three immutable steps to secure collaboration.</p>
+<section id="how-it-works" class="py-24 lg:py-32 relative">
+    <div class="absolute top-0 left-0 w-full"><div class="glow-line"></div></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-20 reveal">
+            <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">Simple & Secure</span>
+            <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mt-4 mb-6">How SecureWork <span class="gradient-text">Protects</span> You</h2>
+            <p class="text-base text-slate-400 max-w-2xl mx-auto">Three simple steps to guaranteed payments and trusted collaboration. No middlemen. No risk.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8 relative">
+            <div class="hidden md:block absolute top-[70px] left-[18%] right-[18%] h-[2px]" style="background:linear-gradient(90deg,transparent,rgba(16,185,129,0.25),rgba(16,185,129,0.25),transparent);"></div>
+            <div class="reveal text-center group">
+                <div class="w-[130px] h-[130px] mx-auto mb-8 rounded-3xl glass flex items-center justify-center shadow-xl group-hover:border-emerald-500/30 transition-all duration-500 relative">
+                    <svg class="w-12 h-12 text-emerald-400 opacity-80 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    <div class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-emerald-500/30">1</div>
+                </div>
+                <h3 class="text-xl font-display font-bold text-white mb-3">Fund the Escrow</h3>
+                <p class="text-sm text-slate-400 leading-relaxed max-w-[260px] mx-auto">Clients deposit milestone funds into a neutral escrow vault. Freelancers can see the funds are locked before starting any work.</p>
+            </div>
+            <div class="reveal text-center group">
+                <div class="w-[130px] h-[130px] mx-auto mb-8 rounded-3xl glass flex items-center justify-center shadow-xl group-hover:border-emerald-500/30 transition-all duration-500 relative">
+                    <svg class="w-12 h-12 text-emerald-400 opacity-80 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    <div class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-emerald-500/30">2</div>
+                </div>
+                <h3 class="text-xl font-display font-bold text-white mb-3">Deliver & Review</h3>
+                <p class="text-sm text-slate-400 leading-relaxed max-w-[260px] mx-auto">Freelancers submit their deliverables with confidence. Clients review the work against the agreed milestones and contract terms.</p>
+            </div>
+            <div class="reveal text-center group">
+                <div class="w-[130px] h-[130px] mx-auto mb-8 rounded-3xl glass flex items-center justify-center shadow-xl group-hover:border-emerald-500/30 transition-all duration-500 relative">
+                    <svg class="w-12 h-12 text-emerald-400 opacity-80 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    <div class="absolute -top-2 -right-2 w-7 h-7 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold shadow-lg shadow-emerald-500/30">3</div>
+                </div>
+                <h3 class="text-xl font-display font-bold text-white mb-3">Instant Payment</h3>
+                <p class="text-sm text-slate-400 leading-relaxed max-w-[260px] mx-auto">Once the client approves, funds are released instantly to the freelancer's wallet. No delays, no holds, no surprises.</p>
+            </div>
+        </div>
     </div>
-    <div class="stg" id="stg">
-      <div class="scon"><div class="scl" id="scl"></div></div>
-      <div class="scc r rd1">
-        <div class="snb"><span class="sn">01</span></div>
-        <h3 class="stit">Lock the Vault</h3>
-        <p class="sdesc">Clients deposit milestone funds upfront into a neutral, cryptographically secured escrow wallet before work begins.</p>
-      </div>
-      <div class="scc r rd2">
-        <div class="snb"><span class="sn">02</span></div>
-        <h3 class="stit">Submit Deliverables</h3>
-        <p class="sdesc">Freelancers work with peace of mind. All code submissions and deliverables are timestamped and logged immutably.</p>
-      </div>
-      <div class="scc r rd3">
-        <div class="snb"><span class="sn">03</span></div>
-        <h3 class="stit">Auto-Settlement</h3>
-        <p class="sdesc">Upon client approval, our API triggers an atomic database transaction. Funds are instantly settled to the freelancer's wallet.</p>
-      </div>
+</section>
+
+<!-- FOR CLIENTS & FREELANCERS -->
+<section class="py-24 lg:py-32 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full"><div class="glow-line"></div></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-emerald-500/[0.03] rounded-full blur-[120px]"></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+            <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">Built for Both Sides</span>
+            <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mt-4 mb-4">Whether you <span class="gradient-text">hire</span> or get <span class="gradient-text">hired</span>.</h2>
+            <p class="text-base text-slate-400 max-w-xl mx-auto">SecureWork is designed to protect both clients and freelancers equally.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Clients -->
+            <div class="feature-card glass rounded-3xl p-8 lg:p-10 reveal relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-emerald-500/[0.04] rounded-full blur-[60px]"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-500/15 border border-emerald-500/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-white">For Clients</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Hire the best talent with complete financial protection. Your money stays safe until you're satisfied with the work.</p>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Post projects with clear milestones and budgets</span></div>
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Funds locked in escrow — only released when you approve</span></div>
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Complete audit trail of all payments and activity</span></div>
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-emerald-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Dispute resolution if deliverables don't match the contract</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Freelancers -->
+            <div class="feature-card glass rounded-3xl p-8 lg:p-10 reveal relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-48 h-48 bg-cyan-500/[0.04] rounded-full blur-[60px]"></div>
+                <div class="relative z-10">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/15 border border-cyan-500/20 flex items-center justify-center">
+                            <svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        </div>
+                        <h3 class="text-2xl font-display font-bold text-white">For Freelancers</h3>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Work with guaranteed payment every time. See funds locked in escrow before you write a single line or design a single pixel.</p>
+                    <div class="space-y-3">
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-cyan-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Verify funds are locked before starting any work</span></div>
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-cyan-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Get paid instantly when milestones are approved</span></div>
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-cyan-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Build your reputation with reviews and portfolio</span></div>
+                        <div class="flex items-start gap-3"><div class="w-5 h-5 rounded-full bg-cyan-500/15 flex items-center justify-center shrink-0 mt-0.5"><svg class="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg></div><span class="text-sm text-slate-300">Withdraw earnings to your bank account anytime</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
 <!-- FEATURES -->
-<section id="features">
-  <div style="max-width:1280px;margin:0 auto">
-    <div class="chip r"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Features</div>
-    <h2 class="st r rd1">Enterprise<br>Infrastructure.</h2>
-    <p class="ss r rd2">Everything required to run a high-stakes marketplace.</p>
-    <div class="bg">
-      <div class="bn w r rd1">
-        <div class="bngl"></div>
-        <div class="bni" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.2)">
-          <svg width="22" height="22" fill="none" stroke="var(--em2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+<section id="features" class="py-24 lg:py-32 relative">
+    <div class="absolute top-0 left-0 w-full"><div class="glow-line"></div></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+            <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">Platform Features</span>
+            <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mt-4 mb-4">Everything you need to work <span class="gradient-text">with confidence</span>.</h2>
+            <p class="text-base text-slate-400 max-w-xl mx-auto">From contract creation to final payment — every step is secure, transparent, and fast.</p>
         </div>
-        <h3 class="bnt">Atomic Transactions</h3>
-        <p class="bnd">Our backend utilizes strict <code>transaction.atomic()</code> blocks to ensure money never vanishes into the void. State changes are 100% guaranteed — always all-or-nothing.</p>
-      </div>
-      <div class="bn r rd2">
-        <div class="bni" style="background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.2)">
-          <svg width="22" height="22" fill="none" stroke="var(--cy2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div class="md:col-span-2 feature-card rounded-3xl p-8 lg:p-10 glass relative overflow-hidden reveal min-h-[240px] flex flex-col justify-end">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/[0.05] rounded-full blur-[80px]"></div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 bg-emerald-500/15 border border-emerald-500/20 rounded-xl flex items-center justify-center mb-5"><svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg></div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-2">Guaranteed Payments</h3>
+                    <p class="text-slate-400 max-w-md text-sm">Every payment is 100% protected by our escrow vault. Funds are held securely and only released when the client approves the delivered work. No more chasing invoices or worrying about chargebacks.</p>
+                </div>
+            </div>
+            <div class="feature-card rounded-3xl p-8 glass reveal min-h-[240px] flex flex-col justify-end">
+                <div class="w-12 h-12 bg-cyan-500/15 border border-cyan-500/20 rounded-xl flex items-center justify-center mb-5"><svg class="w-6 h-6 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg></div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">Real-Time Dashboard</h3>
+                <p class="text-slate-400 text-sm">Track all your projects, milestones, payments, and wallet balance in one beautiful dashboard. Updated instantly.</p>
+            </div>
+            <div class="feature-card rounded-3xl p-8 glass reveal min-h-[240px] flex flex-col justify-end">
+                <div class="w-12 h-12 bg-purple-500/15 border border-purple-500/20 rounded-xl flex items-center justify-center mb-5"><svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg></div>
+                <h3 class="text-xl font-display font-bold text-white mb-2">Complete Transparency</h3>
+                <p class="text-slate-400 text-sm">Full payment history, receipts, and audit trail for every transaction. Know exactly where every dollar goes.</p>
+            </div>
+            <div class="md:col-span-2 feature-card rounded-3xl p-8 lg:p-10 glass relative overflow-hidden reveal min-h-[240px] flex flex-col justify-end">
+                <div class="absolute right-[-5%] top-[-10%] w-48 h-48 border-[25px] border-white/[0.015] rounded-full"></div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 bg-amber-500/15 border border-amber-500/20 rounded-xl flex items-center justify-center mb-5"><svg class="w-6 h-6 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg></div>
+                    <h3 class="text-2xl font-display font-bold text-white mb-2">Separate Workspaces</h3>
+                    <p class="text-slate-400 max-w-md text-sm">Dedicated dashboards for clients and freelancers. Each role gets tailored tools, views, and controls designed specifically for how they use the platform.</p>
+                </div>
+            </div>
         </div>
-        <h3 class="bnt">Zero Latency</h3>
-        <p class="bnd">Decoupled REST APIs ensure lightning-fast dashboard updates and seamless real-time data fetching across every endpoint.</p>
-      </div>
-      <div class="bn r rd2">
-        <div class="bni" style="background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.2)">
-          <svg width="22" height="22" fill="none" stroke="#a78bfa" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-        </div>
-        <h3 class="bnt">Dynamic Ledger</h3>
-        <p class="bnd">Every financial movement is tracked, hashed, and visible in real-time on your wallet dashboard.</p>
-      </div>
-      <div class="bn w r rd3">
-        <div class="bnr"></div>
-        <div class="bni" style="background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.2)">
-          <svg width="22" height="22" fill="none" stroke="#fb7185" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-        </div>
-        <h3 class="bnt">Role-Based Architecture</h3>
-        <p class="bnd">Our backend rigidly isolates 'Client' and 'Freelancer' logic. SimpleJWT payload verification ensures users only see and interact with data they own — zero data leakage.</p>
-      </div>
     </div>
-  </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section id="testimonials">
-  <div style="max-width:1280px;margin:0 auto">
-    <div style="text-align:center">
-      <div class="chip r"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Testimonials</div>
-      <h2 class="st r rd1">Teams that ship<br>with confidence.</h2>
+<section id="testimonials" class="py-24 lg:py-32 relative overflow-hidden">
+    <div class="absolute top-0 left-0 w-full"><div class="glow-line"></div></div>
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+            <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">Testimonials</span>
+            <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mt-4 mb-4">Trusted by <span class="gradient-text">thousands</span>.</h2>
+            <p class="text-base text-slate-400">Businesses and freelancers who work with confidence.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="feature-card glass rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-1 mb-4"><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg></div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-6">"SecureWork completely changed how we hire freelancers. We fund the escrow, set milestones, and only release payment when we're happy. <span class="text-white font-medium">No more payment anxiety on either side.</span>"</p>
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-400 flex items-center justify-center text-white font-bold text-sm">JM</div><div><div class="text-sm font-medium text-white">Jessica Martinez</div><div class="text-xs text-slate-500">Marketing Agency Owner</div></div></div>
+            </div>
+            <div class="feature-card glass rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-1 mb-4"><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg></div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-6">"As a freelance designer, I used to lose sleep over unpaid invoices. With SecureWork, I can see funds locked in escrow before I start. <span class="text-white font-medium">I've been paid on time, every single time.</span>"</p>
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold text-sm">RL</div><div><div class="text-sm font-medium text-white">Rachel Liu</div><div class="text-xs text-slate-500">Freelance UI/UX Designer</div></div></div>
+            </div>
+            <div class="feature-card glass rounded-2xl p-7 reveal">
+                <div class="flex items-center gap-1 mb-4"><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg><svg class="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg></div>
+                <p class="text-slate-300 text-sm leading-relaxed mb-6">"We moved our entire contractor payment flow to SecureWork. The milestone-based escrow gave our finance team peace of mind. <span class="text-white font-medium">Zero disputes in 8 months.</span>"</p>
+                <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-orange-400 flex items-center justify-center text-white font-bold text-sm">DK</div><div><div class="text-sm font-medium text-white">David Kim</div><div class="text-xs text-slate-500">Startup Founder, NexusLabs</div></div></div>
+            </div>
+        </div>
     </div>
-    <div class="tg">
-      <div class="tc r rd1">
-        <p class="tq">SecureWork completely eliminated the anxiety of paying upfront. I know my funds are locked until work is done — it's the only way I'll hire remotely now.</p>
-        <div class="ta"><div class="tav" style="background:linear-gradient(135deg,var(--em),var(--cy))">MR</div><div><div class="tn">Maya Rodriguez</div><div class="tr">CTO, AcmeCorp</div></div></div>
-      </div>
-      <div class="tc r rd2" style="border-color:rgba(16,185,129,.2);box-shadow:0 0 40px rgba(16,185,129,.08)">
-        <p class="tq">I've been a freelance dev for 8 years. This is the first platform where I actually trust I'll be paid. The atomic settlement is a game changer.</p>
-        <div class="ta"><div class="tav" style="background:linear-gradient(135deg,#3b82f6,#6366f1)">JK</div><div><div class="tn">James Keller</div><div class="tr">Senior Engineer, Freelance</div></div></div>
-      </div>
-      <div class="tc r rd3">
-        <p class="tq">We manage 40+ contractors at once. SecureWork's role-based dashboard keeps our finance team sane. Zero reconciliation headaches whatsoever.</p>
-        <div class="ta"><div class="tav" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)">SC</div><div><div class="tn">Sara Chen</div><div class="tr">Head of Ops, Nexus Labs</div></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- COMPARE -->
-<section id="compare">
-  <div style="max-width:900px;margin:0 auto">
-    <div style="text-align:center">
-      <div class="chip r"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Compare</div>
-      <h2 class="st r rd1">Why not just use PayPal?</h2>
-    </div>
-    <div class="r rd2">
-      <table class="cmt">
-        <thead><tr>
-          <th>Feature</th><th class="sw">SecureWork</th><th class="ot">PayPal</th><th class="ot">Bank Transfer</th>
-        </tr></thead>
-        <tbody>
-          <tr><td>Escrow-backed payments</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
-          <tr><td>Milestone-based release</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
-          <tr><td>Atomic fund settlement</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
-          <tr><td>Zero dispute system</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
-          <tr><td>Role-based access</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
-          <tr><td>API-first integration</td><td class="sw">✓</td><td class="ot" style="color:var(--sl4)">Partial</td><td class="ot">✗</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
 </section>
 
 <!-- FAQ -->
-<section id="faq">
-  <div style="max-width:1280px;margin:0 auto;text-align:center">
-    <div class="chip r" style="display:inline-flex"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>FAQ</div>
-    <h2 class="st r rd1">Common questions.</h2>
-    <p class="ss r rd2" style="margin:1rem auto 0">Everything you need to know before you ship.</p>
-  </div>
-  <div class="fl">
-    <div class="fi r rd1"><button class="ft"><span class="fq">How is my money protected while in escrow?</span><span class="fic">+</span></button><div class="fa"><div class="fai">Funds are held in a ring-fenced escrow account and never co-mingled with operational funds. Every deposit and release is protected by <code>transaction.atomic()</code> blocks — meaning the money either moves entirely or not at all. No partial failures.</div></div></div>
-    <div class="fi r rd2"><button class="ft"><span class="fq">What if a client refuses to approve a milestone?</span><span class="fic">+</span></button><div class="fa"><div class="fai">Milestones include a built-in review window. If a client does not respond within the agreed timeframe, the platform auto-releases funds to the freelancer. All deliverable submissions are timestamped and immutably logged.</div></div></div>
-    <div class="fi r rd3"><button class="ft"><span class="fq">Is SecureWork suitable for large enterprise contracts?</span><span class="fic">+</span></button><div class="fa"><div class="fai">Yes. You can define unlimited milestones, set custom approval workflows, and integrate via REST API into your existing procurement systems. Enterprise SLA and dedicated support available.</div></div></div>
-    <div class="fi r rd4"><button class="ft"><span class="fq">What are the fees?</span><span class="fic">+</span></button><div class="fa"><div class="fai">SecureWork charges a flat 1.5% platform fee on each milestone release — no hidden charges, no monthly subscription required to get started. Enterprise volume discounts available for teams processing over $50K/month.</div></div></div>
-  </div>
+<section class="py-24 lg:py-32 relative">
+    <div class="absolute top-0 left-0 w-full"><div class="glow-line"></div></div>
+    <div class="max-w-3xl mx-auto px-6 lg:px-8">
+        <div class="text-center mb-16 reveal">
+            <span class="text-xs font-bold text-emerald-400 tracking-[0.2em] uppercase">FAQ</span>
+            <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mt-4">Common Questions</h2>
+        </div>
+        <div class="space-y-3 reveal">
+            <div class="glass rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left"><span class="font-medium text-white pr-4 text-sm">How does escrow protect both the client and freelancer?</span><svg class="w-5 h-5 text-emerald-400 shrink-0 faq-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Clients deposit funds into escrow before work begins — guaranteeing payment exists. Freelancers can verify the funds are locked before starting. Upon milestone approval, payment is released instantly. If there's a disagreement, funds stay safely in escrow until resolved through our dispute process.</p></div></div>
+            <div class="glass rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left"><span class="font-medium text-white pr-4 text-sm">What happens if a client doesn't approve a milestone?</span><svg class="w-5 h-5 text-emerald-400 shrink-0 faq-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Funds remain safely locked in escrow. Our dispute resolution team reviews the contract terms, submitted deliverables, and communication history to make a fair determination. No money is ever lost or inaccessible.</p></div></div>
+            <div class="glass rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left"><span class="font-medium text-white pr-4 text-sm">How much does SecureWork cost?</span><svg class="w-5 h-5 text-emerald-400 shrink-0 faq-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">SecureWork is free to sign up. We charge a small platform fee only when a milestone payment is successfully completed — so you only pay when the system works for you. There are no monthly subscriptions or hidden fees.</p></div></div>
+            <div class="glass rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left"><span class="font-medium text-white pr-4 text-sm">What types of projects work best on SecureWork?</span><svg class="w-5 h-5 text-emerald-400 shrink-0 faq-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Any project that can be broken into clear milestones — web design, branding, copywriting, software development, marketing campaigns, video production, consulting, and more. If you can define the work and the deliverables, SecureWork can protect the payment.</p></div></div>
+            <div class="glass rounded-xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full flex items-center justify-between p-5 text-left"><span class="font-medium text-white pr-4 text-sm">How fast do freelancers get paid after approval?</span><svg class="w-5 h-5 text-emerald-400 shrink-0 faq-icon transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg></button><div class="faq-answer hidden px-5 pb-5"><p class="text-slate-400 text-sm leading-relaxed">Instantly. The moment a client approves a milestone, funds are released to the freelancer's SecureWork wallet. From there, freelancers can withdraw to their bank account at any time with processing typically completing within 1–2 business days.</p></div></div>
+        </div>
+    </div>
 </section>
 
-<!-- CTA — THE WOW SECTION -->
-<section id="cta">
-  <canvas id="ctac"></canvas>
-  <div class="ctr"></div>
-  <div class="ctf"></div>
-  <div class="ctgt"></div>
-  <div class="cti">
-    <div class="chip r" style="display:inline-flex;margin-bottom:1.5rem"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Trusted by 12,000+ developers</div>
-    <h2 class="ctit r rd1">Initialize your<br><span class="gt">workspace.</span></h2>
-    <p class="ctis r rd2">Stop relying on trust. Start relying on code. Join the marketplace built for professional software engineering.</p>
-    <div class="ctst r rd3">
-      <div class="ctsi"><span class="ctsn">$2.3M+</span><div class="ctsl">Funds Secured</div></div>
-      <div class="ctsi"><span class="ctsn">Zero</span><div class="ctsl">Disputes</div></div>
-      <div class="ctsi"><span class="ctsn">99.9%</span><div class="ctsl">Uptime</div></div>
+<!-- CTA -->
+<section class="py-32 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/20 via-emerald-900/10 to-[#060d13]"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/[0.04] rounded-full blur-[150px] pointer-events-none"></div>
+    <div class="relative max-w-4xl mx-auto px-6 lg:px-8 text-center z-10 reveal">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass mb-8">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs font-medium text-emerald-400 tracking-wider uppercase">Ready to start</span>
+        </div>
+        <h2 class="text-4xl lg:text-6xl font-display font-bold text-white mb-6">Start your next project<br>with <span class="gradient-text">confidence</span>.</h2>
+        <p class="text-lg text-slate-400 mb-10 max-w-2xl mx-auto">Join thousands of businesses and freelancers who trust SecureWork to protect every payment. Create your free account in under 60 seconds.</p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="register.html" class="group px-10 py-4 bg-emerald-500 text-white rounded-xl hover:bg-emerald-400 transition-all font-bold text-lg shadow-[0_0_50px_-10px_rgba(16,185,129,0.4)] hover:shadow-[0_0_70px_-10px_rgba(16,185,129,0.6)] hover:-translate-y-1 flex items-center justify-center gap-2">
+                Create Free Account
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg>
+            </a>
+            <a href="#how-it-works" class="px-10 py-4 glass text-white rounded-xl hover:bg-white/5 transition-all font-semibold text-lg">Learn More</a>
+        </div>
     </div>
-    <div class="ctb r rd4">
-      <a href="register.html" class="bm">Create Free Account</a>
-      <a href="#" class="bg2">Read the Docs →</a>
-    </div>
-  </div>
 </section>
 
 <!-- FOOTER -->
-<footer id="footer">
-  <div class="fi2">
-    <a href="#" class="logo">
-      <div class="li" style="width:32px;height:32px;border-radius:8px"><svg width="16" height="16" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
-      <span class="lt" style="font-size:1.15rem">SecureWork</span>
-    </a>
-    <div class="fl2"><a href="#">Documentation</a><a href="#">API Reference</a><a href="#">Security</a></div>
-  </div>
-  <p class="fc">&copy; 2026 SecureWork Infrastructure. All rights reserved.</p>
+<footer class="bg-[#040910] border-t border-white/5 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-10 mb-12">
+            <div class="md:col-span-2">
+                <div class="flex items-center space-x-2 mb-4">
+                    <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+                    <span class="text-xl font-display font-bold text-white tracking-tight">SecureWork</span>
+                </div>
+                <p class="text-sm text-slate-500 max-w-sm leading-relaxed">The trusted escrow platform for freelancers and businesses. Hire talent, deliver work, and get paid — all protected.</p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white mb-4">Product</h4>
+                <div class="space-y-2.5">
+                    <a href="#features" class="block text-sm text-slate-500 hover:text-emerald-400 transition-colors">Features</a>
+                    <a href="#how-it-works" class="block text-sm text-slate-500 hover:text-emerald-400 transition-colors">How It Works</a>
+                    <a href="#" class="block text-sm text-slate-500 hover:text-emerald-400 transition-colors">Pricing</a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-white mb-4">Company</h4>
+                <div class="space-y-2.5">
+                    <a href="#about" class="block text-sm text-slate-500 hover:text-emerald-400 transition-colors">About</a>
+                    <a href="#" class="block text-sm text-slate-500 hover:text-emerald-400 transition-colors">Security</a>
+                    <a href="#" class="block text-sm text-slate-500 hover:text-emerald-400 transition-colors">Contact</a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/5 pt-8 text-center">
+            <p class="text-sm text-slate-600">&copy; 2026 SecureWork. All rights reserved.</p>
+        </div>
+    </div>
 </footer>
 
+<!-- SCRIPTS -->
 <script>
-/* ═══ CUSTOM CURSOR ═══ */
-const cur=document.getElementById('cur'),cdot=document.getElementById('cur-dot');
-let mx=0,my=0,cx=0,cy=0;
-document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
-(function ac(){cx+=(mx-cx)*.16;cy+=(my-cy)*.16;cur.style.left=cx+'px';cur.style.top=cy+'px';cdot.style.left=mx+'px';cdot.style.top=my+'px';requestAnimationFrame(ac)})();
-document.querySelectorAll('a,button,.bn,.tc,.fi,.scc').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('cx'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('cx'));
+// FAQ Toggle
+function toggleFaq(btn){const a=btn.nextElementSibling;const i=btn.querySelector('.faq-icon');const o=!a.classList.contains('hidden');document.querySelectorAll('.faq-answer').forEach(x=>x.classList.add('hidden'));document.querySelectorAll('.faq-icon').forEach(x=>x.style.transform='');if(!o){a.classList.remove('hidden');i.style.transform='rotate(180deg)';}}
+
+// GSAP Scroll Animations + Parallax
+// Check if GSAP loaded
+if(typeof gsap!=='undefined'&&typeof ScrollTrigger!=='undefined'){
+gsap.registerPlugin(ScrollTrigger);
+// Set initial hidden state via JS so content is visible if GSAP fails
+gsap.utils.toArray('.reveal').forEach(el=>{gsap.set(el,{opacity:0,y:50});});
+gsap.utils.toArray('.reveal').forEach(el=>{
+    gsap.to(el,{opacity:1,y:0,duration:1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%',toggleActions:'play none none none'}});
 });
 
-/* ═══ PROGRESS BAR ═══ */
-const prog=document.getElementById('prog');
-window.addEventListener('scroll',()=>{prog.style.width=(window.scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%'},{passive:true});
+// Parallax on sections
+gsap.utils.toArray('section').forEach(sec=>{
+    const bg=sec.querySelector('.absolute');
+    if(bg){gsap.to(bg,{y:-40,ease:'none',scrollTrigger:{trigger:sec,start:'top bottom',end:'bottom top',scrub:1}});}
+});
 
-/* ═══ NAV SCROLL ═══ */
-window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('sc',window.scrollY>60)},{passive:true});
-
-/* ═══ SCROLL REVEAL ═══ */
-const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
-document.querySelectorAll('.r').forEach(el=>obs.observe(el));
-
-/* ═══ HERO PROGRESS FILL ═══ */
-setTimeout(()=>{const f=document.getElementById('hpf');if(f)f.classList.add('go')},950);
-
-/* ═══ STATS COUNTERS ═══ */
-function easeOut(t){return 1-Math.pow(1-t,4)}
-function animC(el){
-  const target=parseFloat(el.dataset.count),pre=el.dataset.pre||'',suf=el.dataset.suf||'',isShort=el.dataset.short,dec=parseInt(el.dataset.dec||0);
-  const dur=2000,start=performance.now();
-  (function tick(now){
-    const pct=Math.min((now-start)/dur,1),v=target*easeOut(pct);
-    let d;
-    if(isShort&&v>=1e6)d=(v/1e6).toFixed(1)+'M';
-    else if(isShort&&v>=1e3)d=(v/1e3).toFixed(1)+'K';
-    else if(dec)d=v.toFixed(dec);
-    else d=Math.round(v).toLocaleString();
-    el.textContent=pre+d+suf;
-    if(pct<1)requestAnimationFrame(tick);
-  })(start);
+// Hero phone 3D parallax on mouse move
+const phone=document.getElementById('hero-phone');
+if(phone){
+    document.addEventListener('mousemove',e=>{
+        const cx=window.innerWidth/2,cy=window.innerHeight/2;
+        const dx=(e.clientX-cx)/cx,dy=(e.clientY-cy)/cy;
+        phone.style.transform=`perspective(800px) rotateY(${dx*8}deg) rotateX(${-dy*5}deg)`;
+    });
+    document.addEventListener('mouseleave',()=>{phone.style.transform='';});
 }
-const sObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting&&e.target.dataset.count){animC(e.target);sObs.unobserve(e.target)}})},{threshold:.5});
-document.querySelectorAll('[data-count]').forEach(el=>sObs.observe(el));
 
-/* ═══ FAQ ═══ */
-document.querySelectorAll('.ft').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const item=btn.closest('.fi'),ans=item.querySelector('.fa'),isOp=item.classList.contains('op');
-    document.querySelectorAll('.fi').forEach(i=>{i.classList.remove('op');i.querySelector('.fa').classList.remove('op')});
-    if(!isOp){item.classList.add('op');ans.classList.add('op')}
-  });
+// Float cards parallax
+document.querySelectorAll('.float-card').forEach(card=>{
+    document.addEventListener('mousemove',e=>{
+        const speed=parseFloat(card.getAttribute('data-speed'))||0.02;
+        const cx=window.innerWidth/2,cy=window.innerHeight/2;
+        const dx=(e.clientX-cx)*speed,dy=(e.clientY-cy)*speed;
+        card.style.transform+=` translate(${dx}px,${dy}px)`;
+    });
 });
 
-/* ═══ 3D CARD TILT ═══ */
-const dcard=document.getElementById('dcard'),dcw=document.getElementById('dcw');
-if(dcard&&dcw){
-  dcw.addEventListener('mousemove',e=>{const r=dcw.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;dcard.style.transform=`perspective(800px) rotateX(${-y*14}deg) rotateY(${x*14}deg) translateZ(10px)`});
-  dcw.addEventListener('mouseleave',()=>{dcard.style.transform=''});
+// Counter Animation
+function animateCounters(){
+    document.querySelectorAll('.counter').forEach(el=>{
+        const target=parseFloat(el.dataset.target);
+        const isDecimal=target%1!==0;
+        const duration=2000;const start=performance.now();
+        function update(now){
+            const p=Math.min((now-start)/duration,1);
+            const ease=1-Math.pow(1-p,3);
+            el.textContent=isDecimal?(target*ease).toFixed(1):Math.floor(target*ease).toLocaleString();
+            if(p<1)requestAnimationFrame(update);
+        }
+        requestAnimationFrame(update);
+    });
 }
-document.querySelectorAll('.bn').forEach(c=>{
-  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(600px) rotateX(${-y*8}deg) rotateY(${x*8}deg) translateY(-6px) scale(1.015)`});
-  c.addEventListener('mouseleave',()=>{c.style.transform=''});
+const statsObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){animateCounters();statsObs.disconnect();}});},{threshold:0.3});
+const statsEl=document.querySelector('.counter');
+if(statsEl)statsObs.observe(statsEl.closest('section'));
+} else {
+    // GSAP not loaded — ensure content is visible
+    document.querySelectorAll('.reveal').forEach(el=>{el.style.opacity='1';el.style.transform='none';});
+    animateCounters();
+}
+
+// Nav scroll effect
+window.addEventListener('scroll',()=>{
+    const nav=document.getElementById('main-nav');
+    if(window.scrollY>50){nav.style.background='rgba(6,13,19,0.8)';nav.style.backdropFilter='blur(20px)';}
+    else{nav.style.background='transparent';nav.style.backdropFilter='none';}
 });
-
-/* ═══ HERO BG PARTICLES ═══ */
-(function(){
-  const cv=document.getElementById('hbg'),ctx=cv.getContext('2d');
-  let W,H;
-  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
-  resize();new ResizeObserver(resize).observe(cv.parentElement);
-  const pts=Array.from({length:55},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.00025,vy:(Math.random()-.5)*.00025,r:Math.random()*1.4+.4,op:Math.random()*.35+.08}));
-  (function draw(){
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{
-      p.x=(p.x+p.vx+1)%1;p.y=(p.y+p.vy+1)%1;
-      ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(16,185,129,${p.op})`;ctx.fill();
-    });
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-      const dx=(pts[i].x-pts[j].x)*W,dy=(pts[i].y-pts[j].y)*H,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<110){ctx.beginPath();ctx.moveTo(pts[i].x*W,pts[i].y*H);ctx.lineTo(pts[j].x*W,pts[j].y*H);ctx.strokeStyle=`rgba(16,185,129,${(1-d/110)*.07})`;ctx.lineWidth=.5;ctx.stroke()}
-    }
-    requestAnimationFrame(draw);
-  })();
-})();
-
-/* ═══ 3D ENERGY ORB ═══ */
-(function(){
-  const cv=document.getElementById('orbc');
-  if(!cv)return;
-  const ctx=cv.getContext('2d');
-  const W=cv.width=600,H=cv.height=600,CX=W/2,CY=H/2;
-  let t=0;
-
-  const rings=[
-    {rx:185,ry:48,tilt:.28,speed:.007,phase:0,    c1:'rgba(16,185,129,',c2:'rgba(52,211,153,',w:1.6},
-    {rx:205,ry:58,tilt:-.38,speed:-.0055,phase:1.2,c1:'rgba(6,182,212,', c2:'rgba(34,211,238,',w:1.3},
-    {rx:165,ry:42,tilt:.6,  speed:.012, phase:2.5,c1:'rgba(52,211,153,',c2:'rgba(16,185,129,',w:1.0},
-    {rx:225,ry:65,tilt:-.22,speed:-.0065,phase:.8,c1:'rgba(34,211,238,',c2:'rgba(6,182,212,', w:.8},
-    {rx:145,ry:36,tilt:.75, speed:.014, phase:3.4,c1:'rgba(16,185,129,',c2:'rgba(52,211,153,',w:.65},
-    {rx:248,ry:72,tilt:-.48,speed:-.005,phase:1.9,c1:'rgba(6,182,212,', c2:'rgba(34,211,238,',w:.55},
-  ];
-
-  (function draw(ts){
-    t=ts*.001;
-    ctx.clearRect(0,0,W,H);
-    const pulse=Math.sin(t*1.5)*.14+.86,pulse2=Math.sin(t*.8+1)*.09+.91;
-
-    // Outer aura
-    const a3=ctx.createRadialGradient(CX,CY,0,CX,CY,225*pulse2);
-    a3.addColorStop(0,'rgba(16,185,129,0)');a3.addColorStop(.5,'rgba(16,185,129,.04)');a3.addColorStop(.8,'rgba(6,182,212,.05)');a3.addColorStop(1,'transparent');
-    ctx.beginPath();ctx.arc(CX,CY,225,0,Math.PI*2);ctx.fillStyle=a3;ctx.fill();
-
-    // Mid aura
-    const a2=ctx.createRadialGradient(CX,CY,0,CX,CY,165*pulse);
-    a2.addColorStop(0,'rgba(52,211,153,.05)');a2.addColorStop(.4,'rgba(16,185,129,.14)');a2.addColorStop(.7,'rgba(6,182,212,.09)');a2.addColorStop(1,'transparent');
-    ctx.beginPath();ctx.arc(CX,CY,165,0,Math.PI*2);ctx.fillStyle=a2;ctx.fill();
-
-    // Core
-    const core=ctx.createRadialGradient(CX-30,CY-30,10,CX,CY,115*pulse);
-    core.addColorStop(0,'rgba(255,255,255,.2)');core.addColorStop(.15,'rgba(52,211,153,.5)');core.addColorStop(.4,'rgba(16,185,129,.38)');core.addColorStop(.65,'rgba(6,182,212,.28)');core.addColorStop(.85,'rgba(4,28,18,.65)');core.addColorStop(1,'rgba(4,18,12,.92)');
-    ctx.beginPath();ctx.arc(CX,CY,115,0,Math.PI*2);ctx.fillStyle=core;ctx.fill();
-
-    // Specular
-    const sp=ctx.createRadialGradient(CX-36,CY-40,2,CX-28,CY-28,48);
-    sp.addColorStop(0,'rgba(255,255,255,.38)');sp.addColorStop(.5,'rgba(200,255,230,.12)');sp.addColorStop(1,'transparent');
-    ctx.beginPath();ctx.arc(CX,CY,115,0,Math.PI*2);ctx.fillStyle=sp;ctx.fill();
-
-    // Rings
-    rings.forEach(ring=>{
-      const angle=t*ring.speed*Math.PI*200+ring.phase;
-      ctx.save();ctx.translate(CX,CY);
-      ctx.scale(1,Math.cos(ring.tilt+Math.sin(t*.3)*.08));
-      const alpha=(Math.sin(angle*.5)*.28+.72)*.72;
-      ctx.beginPath();ctx.ellipse(0,0,ring.rx,ring.ry,angle,0,Math.PI*2);
-      ctx.strokeStyle=ring.c1+alpha+')';ctx.lineWidth=ring.w;
-      ctx.shadowBlur=10;ctx.shadowColor=ring.c1+'.5)';ctx.stroke();ctx.shadowBlur=0;
-      // Energy node
-      const nx=Math.cos(angle*3)*ring.rx,ny=Math.sin(angle*3)*ring.ry;
-      ctx.beginPath();ctx.arc(nx,ny,3,0,Math.PI*2);
-      ctx.fillStyle=ring.c2+'.95)';ctx.shadowBlur=14;ctx.shadowColor=ring.c2+'1)';ctx.fill();ctx.shadowBlur=0;
-      ctx.restore();
-    });
-
-    // Inner wisps
-    for(let i=0;i<5;i++){
-      const wa=t*.38+i*(Math.PI*2/5),wr=88+Math.sin(t*2.2+i)*14;
-      ctx.save();ctx.translate(CX,CY);ctx.beginPath();ctx.arc(0,0,wr,wa,wa+.55);
-      const wa2=Math.sin(t*1.9+i*1.2)*.28+.42;
-      ctx.strokeStyle=i%2===0?`rgba(16,185,129,${wa2})`:`rgba(6,182,212,${wa2})`;ctx.lineWidth=2;ctx.stroke();ctx.restore();
-    }
-
-    // Outer field dots
-    for(let i=0;i<14;i++){
-      const fa=(t*.13+i/14)*Math.PI*2,fr=172+Math.sin(t*1.1+i)*22;
-      const fx=CX+Math.cos(fa)*fr,fy=CY+Math.sin(fa)*fr*.58;
-      const fA=(Math.sin(t*2.2+i)*.38+.62)*.55;
-      ctx.beginPath();ctx.arc(fx,fy,1.8,0,Math.PI*2);ctx.fillStyle=`rgba(52,211,153,${fA})`;ctx.fill();
-    }
-
-    // Halo ring
-    const hr=Math.sin(t*.6)*.04+.96;
-    ctx.beginPath();ctx.arc(CX,CY,175*hr,0,Math.PI*2);
-    ctx.strokeStyle='rgba(16,185,129,.06)';ctx.lineWidth=1;ctx.stroke();
-
-    requestAnimationFrame(draw);
-  })(0);
-})();
-
-/* ═══ CTA NEBULA CANVAS ═══ */
-(function(){
-  const cv=document.getElementById('ctac'),ctx=cv.getContext('2d');
-  let W,H;
-  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
-  resize();new ResizeObserver(resize).observe(cv.parentElement);
-  const pts=Array.from({length:90},()=>({x:Math.random()*2-.5,y:Math.random()*2-.5,vx:(Math.random()-.5)*.00018,vy:(Math.random()-.5)*.00018,r:Math.random()*2+.5,op:Math.random()*.45+.12}));
-  (function draw(){
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{
-      p.x=((p.x+p.vx)+1.5)%2-.5;p.y=((p.y+p.vy)+1.5)%2-.5;
-      const px=p.x*W,py=p.y*H;
-      ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(16,185,129,${p.op})`;ctx.fill();
-    });
-    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
-      const px=pts[i].x*W,py=pts[i].y*H,qx=pts[j].x*W,qy=pts[j].y*H;
-      const dx=px-qx,dy=py-qy,d=Math.sqrt(dx*dx+dy*dy);
-      if(d<120){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle=`rgba(16,185,129,${(1-d/120)*.2})`;ctx.lineWidth=.6;ctx.stroke()}
-    }
-    requestAnimationFrame(draw);
-  })();
-})();
-
-/* ═══ STEP CONNECTOR ANIMATE ═══ */
-new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){const sc=document.getElementById('scl');if(sc)sc.classList.add('go')}});
-},{threshold:.35}).observe(document.getElementById('stg')||document.body);
-
-/* ═══ ORB PARALLAX ═══ */
-const orbc=document.getElementById('orbc');
-window.addEventListener('scroll',()=>{if(orbc)orbc.style.transform=`translateY(calc(-50% + ${window.scrollY*.1}px))`},{passive:true});
 </script>
 </body>
 </html>
