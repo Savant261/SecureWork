@@ -1,884 +1,693 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureWork - Secure Your B2B Contracts with Code, Not Just Paper</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            display: ['Space Grotesk', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          animation: {
-            'float': 'float 6s ease-in-out infinite',
-            'float-delayed': 'float 6s ease-in-out 3s infinite',
-            'blob': 'blob 7s infinite',
-          },
-          keyframes: {
-            float: {
-              '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' },
-            },
-            blob: {
-              '0%': { transform: 'translate(0px, 0px) scale(1)' },
-              '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
-              '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
-              '100%': { transform: 'translate(0px, 0px) scale(1)' },
-            }
-          }
-        }
-      }
-    }
-    </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SecureWork — Secure B2B Contracts with Code</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],display:['Space Grotesk','sans-serif'],mono:['JetBrains Mono','monospace']}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--em:#10b981;--em2:#34d399;--cy:#06b6d4;--cy2:#22d3ee;--bg:#0B0F19;--bg2:#0f1524;--bg3:#131929;--sl7:#334155;--sl6:#475569;--sl4:#94a3b8;--sl3:#cbd5e1}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--sl3);overflow-x:hidden;cursor:none}
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+/* CURSOR */
+#cur,#cur-dot{position:fixed;border-radius:50%;pointer-events:none;z-index:9999}
+#cur{width:38px;height:38px;border:1.5px solid rgba(16,185,129,.45);transform:translate(-50%,-50%);transition:transform .2s ease,border-color .3s,background .3s}
+#cur-dot{width:5px;height:5px;background:var(--em);transform:translate(-50%,-50%)}
+.cx #cur{transform:translate(-50%,-50%) scale(1.8);border-color:rgba(16,185,129,.2);background:rgba(16,185,129,.06)}
 
-    <style>
-        /* ─── READING PROGRESS BAR ─── */
-        #progress-bar {
-            position: fixed;
-            top: 0; left: 0;
-            height: 2px;
-            width: 0%;
-            background: linear-gradient(90deg, #10b981, #06b6d4);
-            z-index: 9999;
-            transition: width 0.1s linear;
-            pointer-events: none;
-        }
+/* PROGRESS */
+#prog{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--em),var(--cy));z-index:9998;pointer-events:none;transition:width .1s linear}
 
-        /* ─── SCROLL REVEAL ─── */
-        .reveal {
-            opacity: 0;
-            transform: translateY(32px);
-            transition: opacity 0.65s ease, transform 0.65s ease;
-        }
-        .reveal.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .reveal-delay-1 { transition-delay: 0.1s; }
-        .reveal-delay-2 { transition-delay: 0.2s; }
-        .reveal-delay-3 { transition-delay: 0.3s; }
-        .reveal-delay-4 { transition-delay: 0.4s; }
+/* NAV */
+#nav{position:fixed;top:0;width:100%;z-index:1000;padding:1.1rem 2rem;transition:all .5s ease}
+#nav.sc{background:rgba(11,15,25,.95);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.05)}
+.ni{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:.75rem;text-decoration:none}
+.li{width:40px;height:40px;background:linear-gradient(135deg,var(--em2),var(--em));border-radius:12px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px rgba(16,185,129,.35);transition:box-shadow .3s}
+.li:hover{box-shadow:0 0 48px rgba(16,185,129,.55)}
+.lt{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.4rem;color:#fff;letter-spacing:-.02em}
+.nl{display:flex;align-items:center;gap:2rem}
+.nl a{font-size:.875rem;font-weight:500;color:var(--sl4);text-decoration:none;transition:color .2s}
+.nl a:hover{color:var(--em2)}
+.nc{padding:.6rem 1.2rem;background:rgba(16,185,129,.1);color:var(--em2);border:1px solid rgba(16,185,129,.2);border-radius:10px;font-size:.875rem;font-weight:500;text-decoration:none;transition:all .3s}
+.nc:hover{background:var(--em);color:#fff;border-color:var(--em);box-shadow:0 0 30px rgba(16,185,129,.4)}
 
-        /* ─── 3D TILT ─── */
-        .tilt-card {
-            transform-style: preserve-3d;
-            transition: transform 0.12s ease;
-            will-change: transform;
-        }
+/* REVEAL */
+.r{opacity:0;transform:translateY(40px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.r.vis{opacity:1;transform:none}
+.rl{transform:translateX(-50px)}
+.rr{transform:translateX(50px)}
+.rs{transform:scale(.88)}
+.rd1{transition-delay:.1s}.rd2{transition-delay:.2s}.rd3{transition-delay:.3s}.rd4{transition-delay:.4s}.rd5{transition-delay:.5s}
 
-        /* ─── HERO PROGRESS FILL ─── */
-        .hero-progress-fill {
-            width: 0%;
-            transition: width 1.4s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .hero-progress-fill.animated { width: 33%; }
+/* HERO */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;padding:120px 2rem 80px;overflow:hidden}
+#hbg{position:absolute;inset:0;z-index:0;pointer-events:none}
+#orbc{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:600px;height:600px;z-index:2;pointer-events:none;transition:transform .1s linear}
+.hcon{position:relative;z-index:5;max-width:1280px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.gl{background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:60px 60px;position:absolute;inset:0;mask-image:radial-gradient(ellipse at center,#000 20%,transparent 75%);pointer-events:none}
+.badge{display:inline-flex;align-items:center;gap:.5rem;padding:.35rem .875rem;background:rgba(15,21,36,.85);border:1px solid rgba(16,185,129,.22);border-radius:999px;font-size:.72rem;font-weight:500;color:var(--sl3);letter-spacing:.08em;text-transform:uppercase;backdrop-filter:blur(10px);margin-bottom:1.5rem}
+.bdot{width:7px;height:7px;border-radius:50%;background:var(--em);animation:pd 2s infinite}
+@keyframes pd{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.6)}50%{box-shadow:0 0 0 6px rgba(16,185,129,0)}}
+h1.ht{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.8rem,4.5vw,4.5rem);font-weight:700;color:#fff;line-height:1.05;letter-spacing:-.03em;margin-bottom:1.5rem}
+.gt{background:linear-gradient(135deg,var(--em2),var(--cy2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hs{font-size:1.1rem;color:var(--sl4);line-height:1.7;max-width:480px;margin-bottom:2.5rem}
+.hb{display:flex;gap:1rem;flex-wrap:wrap}
+.bp{padding:1rem 2rem;background:var(--em);color:#fff;border-radius:14px;font-weight:600;text-decoration:none;font-size:1rem;transition:all .3s;box-shadow:0 0 40px rgba(16,185,129,.3);display:inline-flex;align-items:center;gap:.5rem}
+.bp:hover{background:var(--em2);box-shadow:0 0 70px rgba(16,185,129,.55);transform:translateY(-2px)}
+.bs{padding:1rem 2rem;background:rgba(255,255,255,.04);color:#fff;border-radius:14px;font-weight:600;text-decoration:none;font-size:1rem;border:1px solid rgba(255,255,255,.1);transition:all .3s;display:inline-flex;align-items:center;gap:.5rem}
+.bs:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22)}
 
-        /* ─── MARQUEE ─── */
-        .marquee-wrapper {
-            overflow: hidden;
-            mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%, black 88%, transparent 100%);
-        }
-        .marquee-track {
-            display: flex;
-            align-items: center;
-            gap: 4rem;
-            width: max-content;
-            animation: marquee 28s linear infinite;
-        }
-        .marquee-track:hover { animation-play-state: paused; }
-        @keyframes marquee {
-            0%   { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
+/* HERO CARD */
+.dcw{position:relative}
+.dc{background:rgba(13,18,30,.88);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:1.75rem;box-shadow:0 50px 100px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.03);animation:cf 7s ease-in-out infinite;transform-style:preserve-3d}
+@keyframes cf{0%,100%{transform:translateY(0) rotate3d(1,0,0,2deg)}50%{transform:translateY(-16px) rotate3d(1,0,0,-1deg)}}
+.ctag{padding:.25rem .6rem;background:rgba(16,185,129,.15);color:var(--em2);border:1px solid rgba(16,185,129,.2);border-radius:6px;font-size:.7rem;font-weight:700;letter-spacing:.06em}
+.ca{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:700;color:#fff}
+.ca span{color:var(--sl6)}
+.pb{height:6px;background:rgba(255,255,255,.06);border-radius:999px;overflow:hidden;margin-top:.5rem}
+.pf{height:100%;background:linear-gradient(90deg,var(--em),var(--cy));border-radius:999px;width:0;transition:width 1.6s cubic-bezier(.25,1,.5,1)}
+.pf.go{width:33%}
+.nc2{position:absolute;bottom:-54px;left:-80px;background:rgba(2,18,12,.92);backdrop-filter:blur(20px);border:1px solid rgba(16,185,129,.25);border-radius:16px;padding:1rem 1.25rem;display:flex;align-items:flex-start;gap:.875rem;width:290px;animation:cf2 7s ease-in-out 1.5s infinite;box-shadow:0 24px 64px rgba(0,0,0,.45)}
+@keyframes cf2{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.ni2{width:36px;height:36px;background:rgba(16,185,129,.14);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nt{font-size:.8rem;font-weight:600;color:#fff;margin-bottom:.2rem}
+.ns{font-size:.7rem;color:rgba(52,211,153,.75);line-height:1.4}
 
-        /* ─── CURSOR GLOW ─── */
-        #cursor-glow {
-            position: absolute;
-            width: 600px; height: 600px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(16,185,129,0.07) 0%, transparent 70%);
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            will-change: left, top;
-        }
+/* STATS */
+#stats{border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04);background:rgba(13,18,30,.55);padding:4rem 2rem;position:relative;overflow:hidden}
+#stats::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(16,185,129,.03),transparent);animation:sw 5s ease-in-out infinite}
+@keyframes sw{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}
+.sg{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;text-align:center}
+.sv{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:700;color:#fff;margin-bottom:.375rem;letter-spacing:-.02em}
+.sv.em{color:var(--em2)}
+.sl{font-size:.72rem;color:var(--sl6);text-transform:uppercase;letter-spacing:.1em}
 
-        /* ─── ANIMATED CONNECTOR ─── */
-        .connector-path {
-            stroke-dasharray: 1000;
-            stroke-dashoffset: 1000;
-            transition: stroke-dashoffset 1.4s ease;
-        }
-        .connector-path.drawn { stroke-dashoffset: 0; }
+/* MARQUEE */
+#mq{background:#06090F;border-bottom:1px solid rgba(255,255,255,.04);padding:2.5rem 0;overflow:hidden}
+.mql{text-align:center;font-size:.68rem;color:var(--sl7);text-transform:uppercase;letter-spacing:.15em;margin-bottom:1.5rem}
+.mqw{overflow:hidden;mask-image:linear-gradient(to right,transparent,#000 12%,#000 88%,transparent)}
+.mqt{display:flex;gap:4rem;width:max-content;animation:tk 32s linear infinite}
+.mqt:hover{animation-play-state:paused}
+@keyframes tk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.mqi{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;color:rgba(255,255,255,.22);transition:color .3s;white-space:nowrap;cursor:default}
+.mqi:hover{color:rgba(255,255,255,.65)}
 
-        /* ─── FEATURE CARDS ─── */
-        .feature-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 24px 60px -15px rgba(16,185,129,0.12);
-        }
+/* HOW IT WORKS */
+#how{padding:9rem 2rem;position:relative}
+.chip{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem .875rem;background:rgba(16,185,129,.07);border:1px solid rgba(16,185,129,.2);border-radius:999px;font-size:.7rem;color:var(--em2);letter-spacing:.1em;text-transform:uppercase;font-weight:600;margin-bottom:1.25rem}
+.st{font-family:'Space Grotesk',sans-serif;font-size:clamp(2rem,3.5vw,3.25rem);font-weight:700;color:#fff;letter-spacing:-.025em;line-height:1.1;margin-bottom:1rem}
+.ss{font-size:1rem;color:var(--sl4);max-width:540px;line-height:1.7}
+.stg{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;position:relative;margin-top:5rem}
+.scon{position:absolute;top:48px;left:16.5%;right:16.5%;height:2px;z-index:0;pointer-events:none;overflow:hidden}
+.scl{width:100%;height:100%;background:linear-gradient(90deg,var(--em),var(--cy),var(--em));opacity:0;transition:opacity 1.2s ease}
+.scl.go{opacity:.4}
+.scl::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(16,185,129,.9),transparent);animation:sl2 2.5s ease-in-out infinite}
+@keyframes sl2{0%{left:-100%}100%{left:100%}}
+.scc{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 1rem}
+.snb{width:96px;height:96px;background:var(--bg2);border:1px solid var(--sl7);border-radius:20px;display:flex;align-items:center;justify-content:center;margin-bottom:2rem;transition:all .45s cubic-bezier(.34,1.56,.64,1);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.scc:hover .snb{border-color:rgba(16,185,129,.5);box-shadow:0 0 50px rgba(16,185,129,.2),0 20px 50px rgba(0,0,0,.4);transform:translateY(-8px) scale(1.06) rotate3d(1,1,0,6deg)}
+.sn{font-family:'Space Grotesk',sans-serif;font-size:2.25rem;font-weight:700;color:var(--sl7);transition:color .3s}
+.scc:hover .sn{color:var(--em)}
+.stit{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;font-weight:600;color:#fff;margin-bottom:.75rem}
+.sdesc{font-size:.875rem;color:var(--sl4);line-height:1.65}
 
-        /* ─── TESTIMONIAL CARDS ─── */
-        .testimonial-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .testimonial-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 50px -12px rgba(16,185,129,0.18);
-        }
+/* FEATURES */
+#features{padding:4rem 2rem 9rem;background:rgba(13,18,30,.45);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
+.bg{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1.25rem;margin-top:4rem}
+.bn{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid rgba(255,255,255,.06);border-radius:24px;padding:2rem;position:relative;overflow:hidden;transition:all .35s cubic-bezier(.34,1.56,.64,1);cursor:default}
+.bn:hover{border-color:rgba(16,185,129,.25);box-shadow:0 30px 80px rgba(0,0,0,.45),0 0 0 1px rgba(16,185,129,.1)}
+.bn.w{grid-column:span 2}
+.bngl{position:absolute;top:-40%;right:-10%;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(16,185,129,.1),transparent 70%);pointer-events:none;transition:all .4s}
+.bn:hover .bngl{opacity:2;transform:scale(1.2)}
+.bni{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;position:relative;z-index:1}
+.bnt{font-family:'Space Grotesk',sans-serif;font-size:1.25rem;font-weight:600;color:#fff;margin-bottom:.75rem;position:relative;z-index:1}
+.bnd{font-size:.875rem;color:var(--sl4);line-height:1.65;position:relative;z-index:1}
+.bnd code{color:var(--em2);background:rgba(16,185,129,.08);padding:.1rem .4rem;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem}
+.bnr{position:absolute;right:-12%;top:-12%;width:200px;height:200px;border-radius:50%;border:40px solid rgba(255,255,255,.02);transition:border-color .4s}
+.bn:hover .bnr{border-color:rgba(255,255,255,.04)}
 
-        /* ─── FAQ ─── */
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
-        }
-        .faq-answer.open { max-height: 220px; }
-        .faq-icon { transition: transform 0.3s ease; }
-        .faq-item.open .faq-icon { transform: rotate(45deg); }
-        .faq-item { transition: border-color 0.3s ease; }
+/* TESTIMONIALS */
+#testimonials{padding:9rem 2rem}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:4rem}
+.tc{background:rgba(13,18,30,.7);border:1px solid rgba(255,255,255,.06);border-radius:20px;padding:1.75rem;transition:all .4s;position:relative;overflow:hidden;cursor:default}
+.tc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(16,185,129,.05),transparent);opacity:0;transition:opacity .4s}
+.tc:hover::before{opacity:1}
+.tc:hover{border-color:rgba(16,185,129,.22);transform:translateY(-5px);box-shadow:0 24px 70px rgba(0,0,0,.35)}
+.tq{font-size:.95rem;color:var(--sl3);line-height:1.72;margin-bottom:1.5rem;position:relative;padding-top:.5rem}
+.tq::before{content:'\201C';position:absolute;top:-12px;left:-4px;font-size:3.5rem;color:rgba(16,185,129,.14);font-family:'Space Grotesk',sans-serif;font-weight:700;line-height:1}
+.ta{display:flex;align-items:center;gap:.75rem}
+.tav{width:40px;height:40px;border-radius:50%;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.tn{font-size:.875rem;font-weight:600;color:#fff}
+.tr{font-size:.75rem;color:var(--sl6)}
 
-        /* ─── COMPARE ─── */
-        .compare-check { color: #10b981; font-weight: 700; }
-        .compare-cross  { color: #475569; }
+/* COMPARE */
+#compare{padding:4rem 2rem 9rem;background:rgba(13,18,30,.45);border-top:1px solid rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.04)}
+.cmt{width:100%;border-collapse:separate;border-spacing:0;margin-top:3rem;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
+.cmt th{padding:1.1rem 1.5rem;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:.78rem;text-transform:uppercase;letter-spacing:.08em}
+.cmt th:first-child{text-align:left;color:var(--sl6);background:rgba(13,18,30,.9)}
+.cmt th.sw{color:var(--em2);background:rgba(16,185,129,.07);border-left:1px solid rgba(16,185,129,.2);border-right:1px solid rgba(16,185,129,.2);text-align:center}
+.cmt th.ot{color:var(--sl6);background:rgba(13,18,30,.9);text-align:center}
+.cmt td{padding:1rem 1.5rem;border-top:1px solid rgba(255,255,255,.04);font-size:.875rem}
+.cmt td:first-child{color:var(--sl3);background:rgba(13,18,30,.6)}
+.cmt td.sw{background:rgba(16,185,129,.05);border-left:1px solid rgba(16,185,129,.12);border-right:1px solid rgba(16,185,129,.12);text-align:center;color:var(--em2);font-weight:700}
+.cmt td.ot{background:rgba(13,18,30,.4);text-align:center;color:var(--sl6)}
 
-        /* ─── PARTICLES ─── */
-        #particles-canvas {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
+/* FAQ */
+#faq{padding:9rem 2rem}
+.fl{max-width:720px;margin:3rem auto 0;display:flex;flex-direction:column;gap:.75rem}
+.fi{background:rgba(13,18,30,.7);border:1px solid rgba(255,255,255,.06);border-radius:16px;overflow:hidden;transition:border-color .3s,box-shadow .3s;cursor:pointer}
+.fi.op{border-color:rgba(16,185,129,.32);box-shadow:0 0 40px rgba(16,185,129,.09)}
+.ft{width:100%;padding:1.25rem 1.5rem;display:flex;align-items:center;justify-content:space-between;background:none;border:none;cursor:pointer;gap:1rem}
+.fq{font-weight:500;color:#fff;font-size:.95rem;text-align:left}
+.fic{width:28px;height:28px;border-radius:50%;border:1.5px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;color:var(--sl4);font-size:1.1rem;flex-shrink:0;transition:all .3s;line-height:1}
+.fi.op .fic{transform:rotate(45deg);border-color:var(--em);color:var(--em)}
+.fa{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1)}
+.fa.op{max-height:200px}
+.fai{padding:0 1.5rem 1.25rem;font-size:.875rem;color:var(--sl4);line-height:1.72}
+.fai code{color:var(--em2);background:rgba(16,185,129,.08);padding:.1rem .4rem;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:.8rem}
 
-        /* ─── NAV SCROLL ─── */
-        nav.scrolled {
-            background-color: rgba(11,15,25,0.96) !important;
-            border-bottom-color: rgba(255,255,255,0.1) !important;
-        }
-    </style>
+/* CTA — THE WOW */
+#cta{position:relative;overflow:hidden;padding:10rem 2rem;display:flex;align-items:center;justify-content:center;min-height:640px}
+#ctac{position:absolute;inset:0;z-index:0}
+.ctr{position:absolute;bottom:-120px;left:50%;transform:translateX(-50%);width:900px;height:550px;background:radial-gradient(ellipse at center bottom,rgba(16,185,129,.28) 0%,rgba(6,182,212,.1) 40%,transparent 70%);pointer-events:none;z-index:1}
+.ctf{position:absolute;bottom:0;left:0;right:0;height:320px;background:linear-gradient(to top,rgba(16,185,129,.1),transparent);z-index:1}
+.ctgt{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60%;height:1.5px;background:linear-gradient(90deg,transparent,var(--em),var(--cy),var(--em),transparent);z-index:2}
+.cti{position:relative;z-index:5;text-align:center;max-width:700px}
+.ctit{font-family:'Space Grotesk',sans-serif;font-size:clamp(2.5rem,5vw,4.2rem);font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.04;margin-bottom:1.5rem}
+.ctis{font-size:1.1rem;color:rgba(255,255,255,.52);margin-bottom:2.5rem;line-height:1.7}
+.ctst{display:flex;justify-content:center;gap:3.5rem;margin-bottom:2.5rem}
+.ctsi{text-align:center}
+.ctsn{font-family:'Space Grotesk',sans-serif;font-size:1.8rem;font-weight:700;color:var(--em2);display:block}
+.ctsl{font-size:.72rem;color:var(--sl6);text-transform:uppercase;letter-spacing:.08em;margin-top:.25rem}
+.ctb{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+.bm{padding:1.15rem 2.6rem;background:#fff;color:#052e16;border-radius:14px;font-weight:700;font-size:1.05rem;text-decoration:none;transition:all .3s;box-shadow:0 0 60px rgba(255,255,255,.14)}
+.bm:hover{background:#f0fdf4;box-shadow:0 0 90px rgba(255,255,255,.28);transform:translateY(-3px)}
+.bg2{padding:1.15rem 2.6rem;background:transparent;color:rgba(255,255,255,.65);border-radius:14px;font-weight:600;font-size:1.05rem;text-decoration:none;border:1px solid rgba(255,255,255,.14);transition:all .3s}
+.bg2:hover{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.32);color:#fff}
+
+/* FOOTER */
+#footer{background:#06090F;border-top:1px solid rgba(255,255,255,.05);padding:3rem 2rem 1.5rem}
+.fi2{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1.5rem}
+.fl2{display:flex;gap:1.5rem}
+.fl2 a{font-size:.875rem;color:var(--sl6);text-decoration:none;transition:color .2s}
+.fl2 a:hover{color:var(--em2)}
+.fc{text-align:center;font-size:.8rem;color:rgba(255,255,255,.18)}
+
+@media(max-width:1024px){
+  .hcon,.stg,.tg,.bg{grid-template-columns:1fr}
+  .bn.w{grid-column:span 1}
+  #orbc{display:none}
+  .scon{display:none}
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .nc2{position:relative;bottom:auto;left:auto;width:100%;margin-top:1rem}
+}
+</style>
 </head>
-<body class="font-sans antialiased bg-[#0B0F19] text-slate-300 selection:bg-emerald-500/30">
+<body>
 
-    <!-- READING PROGRESS BAR -->
-    <div id="progress-bar"></div>
+<div id="cur"></div>
+<div id="cur-dot"></div>
+<div id="prog"></div>
 
-    <!-- NAV -->
-    <nav id="main-nav" class="fixed top-0 w-full z-50 py-4 px-8 border-b border-white/5 backdrop-blur-md bg-transparent transition-all duration-500">
-        <div class="max-w-7xl mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-3 group cursor-pointer">
-                <div class="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-all duration-300">
-                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                    </svg>
-                </div>
-                <span class="text-2xl font-display font-bold text-white tracking-tight">SecureWork</span>
+<!-- NAV -->
+<nav id="nav">
+  <div class="ni">
+    <a href="#" class="logo">
+      <div class="li">
+        <svg width="22" height="22" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      </div>
+      <span class="lt">SecureWork</span>
+    </a>
+    <div class="nl">
+      <a href="#how">How It Works</a>
+      <a href="#features">Features</a>
+      <a href="#faq">FAQ</a>
+      <a href="login.html">Sign In</a>
+      <a href="register.html" class="nc">Get Started Free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="gl"></div>
+  <canvas id="hbg"></canvas>
+  <canvas id="orbc"></canvas>
+  <div class="hcon">
+    <div>
+      <div class="badge r"><span class="bdot"></span>v2.0 Enterprise Escrow Engine</div>
+      <h1 class="ht r rd1">Secure contracts<br>with <span class="gt">Code</span>,<br>not paper.</h1>
+      <p class="hs r rd2">The fully automated financial layer for freelance marketplaces. Clients lock funds securely. Freelancers work with guaranteed payment. Zero disputes.</p>
+      <div class="hb r rd3">
+        <a href="register.html" class="bp">
+          <svg width="15" height="15" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          Start Building Now
+        </a>
+        <a href="#how" class="bs">Explore Platform →</a>
+      </div>
+    </div>
+    <div class="dcw r rr rd2" id="dcw">
+      <div class="dc" id="dcard">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem">
+          <div style="display:flex;align-items:center;gap:.75rem">
+            <div style="width:38px;height:38px;background:rgba(255,255,255,.05);border-radius:10px;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center">
+              <span style="color:var(--em2);font-family:'JetBrains Mono',monospace;font-size:.75rem">#SW</span>
             </div>
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="#how-it-works" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">How It Works</a>
-                <a href="#features" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">Features</a>
-                <a href="#faq" class="text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors">FAQ</a>
-                <a href="login.html" class="text-sm font-medium text-slate-300 hover:text-white transition-colors">Sign In</a>
-                <a href="register.html" class="px-5 py-2.5 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-lg hover:bg-emerald-500 hover:text-white transition-all duration-300 font-medium tracking-wide">Get Started Free</a>
+            <div>
+              <div style="font-size:.875rem;font-weight:600;color:#fff">Project Setup</div>
+              <div style="font-size:.7rem;color:var(--sl4)">Active Contract</div>
             </div>
+          </div>
+          <span class="ctag">SECURED</span>
         </div>
-    </nav>
-
-    <!-- HERO -->
-    <section id="hero-section" class="relative min-h-screen flex items-center pt-24 pb-20 overflow-hidden">
-        <div id="cursor-glow"></div>
-        <div class="absolute top-0 -left-4 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob" id="blob1"></div>
-        <div class="absolute top-0 -right-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000" id="blob2"></div>
-        <div class="absolute -bottom-8 left-20 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-4000" id="blob3"></div>
-
-        <div class="relative max-w-7xl mx-auto px-8 w-full z-10">
-            <div class="grid lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-8">
-                    <div class="reveal inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-slate-800/50 border border-slate-700 backdrop-blur-sm">
-                        <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        <span class="text-xs font-medium text-slate-300 tracking-wider uppercase">v2.0 Enterprise Escrow Engine</span>
-                    </div>
-
-                    <h1 class="reveal reveal-delay-1 text-5xl lg:text-7xl font-display font-bold text-white leading-[1.1] tracking-tight">
-                        Secure contracts with <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400">Code</span>, not paper.
-                    </h1>
-
-                    <p class="reveal reveal-delay-2 text-lg lg:text-xl text-slate-400 leading-relaxed max-w-lg">
-                        The fully automated financial layer for freelance marketplaces. Clients lock funds securely. Freelancers work with guaranteed payment. Zero disputes.
-                    </p>
-
-                    <div class="reveal reveal-delay-3 flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="register.html" class="px-8 py-4 bg-emerald-500 text-white rounded-xl hover:bg-emerald-400 transition-all font-semibold text-center shadow-[0_0_40px_-10px_rgba(16,185,129,0.5)] hover:shadow-[0_0_60px_-15px_rgba(16,185,129,0.7)] hover:-translate-y-0.5">
-                            Start Building Now
-                        </a>
-                        <a href="#how-it-works" class="px-8 py-4 bg-slate-800/50 text-white rounded-xl hover:bg-slate-800 transition-all font-semibold border border-slate-700 text-center backdrop-blur-sm hover:border-slate-600">
-                            Explore Platform
-                        </a>
-                    </div>
-                </div>
-
-                <!-- 3D TILT HERO CARDS -->
-                <div class="relative h-[600px] hidden lg:block z-10" id="tilt-container">
-                    <div id="hero-main-card" class="tilt-card absolute right-0 top-10 w-[400px] bg-slate-900/80 backdrop-blur-xl border border-slate-700/50 rounded-2xl shadow-2xl p-6 animate-float">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center border border-slate-700">
-                                    <span class="text-emerald-400 font-mono text-sm">#SW</span>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-medium text-white">Project Setup</div>
-                                    <div class="text-xs text-slate-400">Active Contract</div>
-                                </div>
-                            </div>
-                            <span class="px-2.5 py-1 bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/20 text-xs font-semibold">SECURED</span>
-                        </div>
-                        <div class="space-y-1 mb-6">
-                            <div class="text-sm text-slate-400">Total Escrow Locked</div>
-                            <div class="text-4xl font-display font-bold text-white">$15,000<span class="text-slate-500">.00</span></div>
-                        </div>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-slate-400">Milestone 1: Backend Auth</span>
-                                <span class="text-emerald-400">Funded ($5,000)</span>
-                            </div>
-                            <div class="w-full bg-slate-800 rounded-full h-2">
-                                <div class="hero-progress-fill bg-gradient-to-r from-emerald-500 to-cyan-500 h-2 rounded-full"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="hero-notif-card" class="tilt-card absolute right-[250px] top-[300px] w-[320px] bg-emerald-950/80 backdrop-blur-xl border border-emerald-500/30 rounded-2xl shadow-2xl p-5 animate-float-delayed z-20">
-                        <div class="flex items-start space-x-4">
-                            <div class="w-10 h-10 bg-emerald-500/20 rounded-full flex items-center justify-center shrink-0">
-                                <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                            </div>
-                            <div>
-                                <div class="font-medium text-white text-sm">Milestone Approved</div>
-                                <div class="text-xs text-emerald-200/70 mt-1">Client released funds. $5,000.00 has been added to your wallet.</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div style="font-size:.8rem;color:var(--sl4);margin-bottom:.25rem">Total Escrow Locked</div>
+        <div class="ca">$15,000<span>.00</span></div>
+        <div style="font-size:.78rem;color:var(--sl4);display:flex;justify-content:space-between;margin:1rem 0 .4rem">
+          <span>Milestone 1: Backend Auth</span><span style="color:var(--em2)">Funded ($5,000)</span>
         </div>
-    </section>
+        <div class="pb"><div class="pf" id="hpf"></div></div>
+      </div>
+      <div class="nc2">
+        <div class="ni2"><svg width="15" height="15" fill="none" stroke="var(--em2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></div>
+        <div><div class="nt">Milestone Approved</div><div class="ns">Client released funds. $5,000.00 added to your wallet.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- STATS COUNTER BAR -->
-    <section class="border-y border-slate-800/80 bg-slate-900/40 py-14">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div class="reveal">
-                    <div class="text-3xl lg:text-4xl font-display font-bold text-white mb-1 stat-number" data-target="2300000" data-prefix="$" data-suffix="+" data-short="true">$0</div>
-                    <div class="text-xs text-slate-500 uppercase tracking-widest">Funds Secured</div>
-                </div>
-                <div class="reveal reveal-delay-1">
-                    <div class="text-3xl lg:text-4xl font-display font-bold text-white mb-1 stat-number" data-target="4800" data-suffix="+">0</div>
-                    <div class="text-xs text-slate-500 uppercase tracking-widest">Active Contracts</div>
-                </div>
-                <div class="reveal reveal-delay-2">
-                    <div class="text-3xl lg:text-4xl font-display font-bold text-emerald-400 mb-1 stat-number" data-target="0" data-zero-label="Zero">0</div>
-                    <div class="text-xs text-slate-500 uppercase tracking-widest">Disputes Filed</div>
-                </div>
-                <div class="reveal reveal-delay-3">
-                    <div class="text-3xl lg:text-4xl font-display font-bold text-white mb-1 stat-number" data-target="99.9" data-suffix="%" data-decimal="true">0%</div>
-                    <div class="text-xs text-slate-500 uppercase tracking-widest">Uptime SLA</div>
-                </div>
-            </div>
+<!-- STATS -->
+<section id="stats">
+  <div class="sg">
+    <div class="r"><div class="sv" data-count="2300000" data-pre="$" data-suf="+" data-short="1">$0</div><div class="sl">Funds Secured</div></div>
+    <div class="r rd1"><div class="sv" data-count="4800" data-suf="+">0</div><div class="sl">Active Contracts</div></div>
+    <div class="r rd2"><div class="sv em">Zero</div><div class="sl">Disputes Filed</div></div>
+    <div class="r rd3"><div class="sv" data-count="99.9" data-dec="1" data-suf="%">0%</div><div class="sl">Uptime SLA</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<section id="mq">
+  <p class="mql">Powering trust for modern teams</p>
+  <div class="mqw">
+    <div class="mqt">
+      <span class="mqi">AcmeCorp</span>
+      <span class="mqi">Global<span style="color:var(--em)">Net</span></span>
+      <span class="mqi">TechFlow</span>
+      <span class="mqi" style="font-style:italic">Vertex</span>
+      <span class="mqi">Nexus<span style="font-weight:300">Labs</span></span>
+      <span class="mqi">Prismatic</span>
+      <span class="mqi">CoreBuild</span>
+      <span class="mqi">Orbit<span style="color:var(--cy)">IO</span></span>
+      <span class="mqi">AcmeCorp</span>
+      <span class="mqi">Global<span style="color:var(--em)">Net</span></span>
+      <span class="mqi">TechFlow</span>
+      <span class="mqi" style="font-style:italic">Vertex</span>
+      <span class="mqi">Nexus<span style="font-weight:300">Labs</span></span>
+      <span class="mqi">Prismatic</span>
+      <span class="mqi">CoreBuild</span>
+      <span class="mqi">Orbit<span style="color:var(--cy)">IO</span></span>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div style="max-width:1280px;margin:0 auto">
+    <div style="text-align:center">
+      <div class="chip r">
+        <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>
+        How It Works
+      </div>
+      <h2 class="st r rd1" style="margin:0 auto">Trust,<br><span class="gt">Programmed.</span></h2>
+      <p class="ss r rd2" style="margin:1rem auto 0">Our smart-contract inspired architecture ensures neither party carries risk. Three immutable steps to secure collaboration.</p>
+    </div>
+    <div class="stg" id="stg">
+      <div class="scon"><div class="scl" id="scl"></div></div>
+      <div class="scc r rd1">
+        <div class="snb"><span class="sn">01</span></div>
+        <h3 class="stit">Lock the Vault</h3>
+        <p class="sdesc">Clients deposit milestone funds upfront into a neutral, cryptographically secured escrow wallet before work begins.</p>
+      </div>
+      <div class="scc r rd2">
+        <div class="snb"><span class="sn">02</span></div>
+        <h3 class="stit">Submit Deliverables</h3>
+        <p class="sdesc">Freelancers work with peace of mind. All code submissions and deliverables are timestamped and logged immutably.</p>
+      </div>
+      <div class="scc r rd3">
+        <div class="snb"><span class="sn">03</span></div>
+        <h3 class="stit">Auto-Settlement</h3>
+        <p class="sdesc">Upon client approval, our API triggers an atomic database transaction. Funds are instantly settled to the freelancer's wallet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div style="max-width:1280px;margin:0 auto">
+    <div class="chip r"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Features</div>
+    <h2 class="st r rd1">Enterprise<br>Infrastructure.</h2>
+    <p class="ss r rd2">Everything required to run a high-stakes marketplace.</p>
+    <div class="bg">
+      <div class="bn w r rd1">
+        <div class="bngl"></div>
+        <div class="bni" style="background:rgba(16,185,129,.12);border:1px solid rgba(16,185,129,.2)">
+          <svg width="22" height="22" fill="none" stroke="var(--em2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
         </div>
-    </section>
-
-    <!-- MARQUEE LOGO STRIP -->
-    <section class="border-b border-slate-800/50 bg-[#06090F] py-10">
-        <div class="max-w-7xl mx-auto px-8">
-            <p class="text-center text-xs font-medium text-slate-600 mb-8 uppercase tracking-widest">Powering trust for modern teams</p>
-            <div class="marquee-wrapper">
-                <div class="marquee-track">
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">AcmeCorp</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors tracking-tighter cursor-default shrink-0">Global<span class="text-emerald-500">Net</span></div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">TechFlow</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors italic cursor-default shrink-0">Vertex</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Nexus<span class="font-light">Labs</span></div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Prismatic</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">CoreBuild</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Orbit<span class="text-cyan-500">IO</span></div>
-                    <!-- Duplicate for seamless loop -->
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">AcmeCorp</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors tracking-tighter cursor-default shrink-0">Global<span class="text-emerald-500">Net</span></div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">TechFlow</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors italic cursor-default shrink-0">Vertex</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Nexus<span class="font-light">Labs</span></div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Prismatic</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">CoreBuild</div>
-                    <div class="text-xl font-display font-bold text-slate-400 hover:text-white transition-colors cursor-default shrink-0">Orbit<span class="text-cyan-500">IO</span></div>
-                </div>
-            </div>
+        <h3 class="bnt">Atomic Transactions</h3>
+        <p class="bnd">Our backend utilizes strict <code>transaction.atomic()</code> blocks to ensure money never vanishes into the void. State changes are 100% guaranteed — always all-or-nothing.</p>
+      </div>
+      <div class="bn r rd2">
+        <div class="bni" style="background:rgba(6,182,212,.12);border:1px solid rgba(6,182,212,.2)">
+          <svg width="22" height="22" fill="none" stroke="var(--cy2)" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
         </div>
-    </section>
-
-    <!-- HOW IT WORKS -->
-    <section id="how-it-works" class="py-32 relative">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="text-center mb-20">
-                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-6">Trust, Programmed.</h2>
-                <p class="reveal reveal-delay-1 text-lg text-slate-400 max-w-2xl mx-auto">Our smart-contract inspired architecture ensures neither party carries risk. Three immutable steps to secure collaboration.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8 relative" id="steps-grid">
-                <!-- Animated SVG connector line -->
-                <div class="hidden md:block absolute top-12 left-[15%] right-[15%] z-0 pointer-events-none" style="height:4px;">
-                    <svg width="100%" height="4" viewBox="0 0 700 4" preserveAspectRatio="none">
-                        <defs>
-                            <linearGradient id="connGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#10b981"/>
-                                <stop offset="50%" stop-color="#06b6d4"/>
-                                <stop offset="100%" stop-color="#10b981"/>
-                            </linearGradient>
-                        </defs>
-                        <path class="connector-path" id="step-connector" d="M0 2 L700 2" stroke="url(#connGrad)" stroke-width="1.5" fill="none"/>
-                    </svg>
-                </div>
-
-                <div class="reveal relative z-10 flex flex-col items-center text-center group">
-                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-500/50 group-hover:shadow-[0_0_30px_-8px_rgba(16,185,129,0.3)] transition-all duration-300">
-                        <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-emerald-500 transition-colors">01</span>
-                    </div>
-                    <h3 class="text-xl font-display font-bold text-white mb-4">Lock the Vault</h3>
-                    <p class="text-slate-400 leading-relaxed px-4">Clients deposit milestone funds upfront into a neutral, cryptographically secured escrow wallet before work begins.</p>
-                </div>
-
-                <div class="reveal reveal-delay-1 relative z-10 flex flex-col items-center text-center group">
-                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-blue-500/50 group-hover:shadow-[0_0_30px_-8px_rgba(59,130,246,0.3)] transition-all duration-300">
-                        <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-blue-500 transition-colors">02</span>
-                    </div>
-                    <h3 class="text-xl font-display font-bold text-white mb-4">Submit Deliverables</h3>
-                    <p class="text-slate-400 leading-relaxed px-4">Freelancers work with peace of mind. All code submissions and deliverables are timestamped and logged immutably.</p>
-                </div>
-
-                <div class="reveal reveal-delay-2 relative z-10 flex flex-col items-center text-center group">
-                    <div class="w-24 h-24 bg-slate-900 border border-slate-700 rounded-2xl flex items-center justify-center mb-8 shadow-xl group-hover:border-emerald-400/50 group-hover:shadow-[0_0_30px_-8px_rgba(16,185,129,0.3)] transition-all duration-300">
-                        <span class="text-4xl font-display font-bold text-slate-700 group-hover:text-emerald-400 transition-colors">03</span>
-                    </div>
-                    <h3 class="text-xl font-display font-bold text-white mb-4">Auto-Settlement</h3>
-                    <p class="text-slate-400 leading-relaxed px-4">Upon client approval, our API triggers an atomic database transaction. Funds are instantly settled to the freelancer's wallet.</p>
-                </div>
-            </div>
+        <h3 class="bnt">Zero Latency</h3>
+        <p class="bnd">Decoupled REST APIs ensure lightning-fast dashboard updates and seamless real-time data fetching across every endpoint.</p>
+      </div>
+      <div class="bn r rd2">
+        <div class="bni" style="background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.2)">
+          <svg width="22" height="22" fill="none" stroke="#a78bfa" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
         </div>
-    </section>
-
-    <!-- FEATURES -->
-    <section id="features" class="py-32 bg-slate-900/30 border-y border-slate-800/50">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="mb-16">
-                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Enterprise Infrastructure.</h2>
-                <p class="reveal reveal-delay-1 text-lg text-slate-400">Everything required to run a high-stakes marketplace.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[250px]">
-                <div class="reveal md:col-span-2 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
-                    <div class="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl group-hover:bg-emerald-500/20 transition-all duration-500"></div>
-                    <div class="relative z-10 h-full flex flex-col justify-end">
-                        <div class="w-12 h-12 bg-emerald-500/20 border border-emerald-500/30 rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-                        </div>
-                        <h3 class="text-2xl font-display font-bold text-white mb-2">Atomic Transactions</h3>
-                        <p class="text-slate-400 max-w-md">Our backend utilizes strict <code class="text-emerald-400 bg-emerald-950 px-1 rounded font-mono">transaction.atomic()</code> blocks to ensure money never vanishes into the void. State changes are 100% guaranteed.</p>
-                    </div>
-                </div>
-
-                <div class="reveal reveal-delay-1 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
-                    <div class="h-full flex flex-col justify-end">
-                        <div class="w-12 h-12 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                        </div>
-                        <h3 class="text-xl font-display font-bold text-white mb-2">Zero Latency</h3>
-                        <p class="text-slate-400 text-sm">Decoupled REST APIs ensure lightning-fast dashboard updates and seamless data fetching.</p>
-                    </div>
-                </div>
-
-                <div class="reveal reveal-delay-2 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative group">
-                    <div class="h-full flex flex-col justify-end">
-                        <div class="w-12 h-12 bg-purple-500/20 border border-purple-500/30 rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                        </div>
-                        <h3 class="text-xl font-display font-bold text-white mb-2">Dynamic Ledger</h3>
-                        <p class="text-slate-400 text-sm">Every financial movement is tracked, hashed, and visible in real-time on your wallet dashboard.</p>
-                    </div>
-                </div>
-
-                <div class="reveal reveal-delay-3 md:col-span-2 feature-card bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/50 rounded-3xl p-8 relative overflow-hidden group">
-                    <div class="absolute right-[-10%] top-[-10%] w-64 h-64 border-[40px] border-slate-800 rounded-full group-hover:border-slate-700 transition-colors duration-500"></div>
-                    <div class="relative z-10 h-full flex flex-col justify-end">
-                        <div class="w-12 h-12 bg-rose-500/20 border border-rose-500/30 rounded-xl flex items-center justify-center mb-6">
-                            <svg class="w-6 h-6 text-rose-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                        </div>
-                        <h3 class="text-2xl font-display font-bold text-white mb-2">Role-Based Architecture</h3>
-                        <p class="text-slate-400 max-w-md">Our backend rigidly isolates 'Client' and 'Freelancer' logic. SimpleJWT payload verification ensures users only see and interact with data they own.</p>
-                    </div>
-                </div>
-            </div>
+        <h3 class="bnt">Dynamic Ledger</h3>
+        <p class="bnd">Every financial movement is tracked, hashed, and visible in real-time on your wallet dashboard.</p>
+      </div>
+      <div class="bn w r rd3">
+        <div class="bnr"></div>
+        <div class="bni" style="background:rgba(244,63,94,.12);border:1px solid rgba(244,63,94,.2)">
+          <svg width="22" height="22" fill="none" stroke="#fb7185" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         </div>
-    </section>
+        <h3 class="bnt">Role-Based Architecture</h3>
+        <p class="bnd">Our backend rigidly isolates 'Client' and 'Freelancer' logic. SimpleJWT payload verification ensures users only see and interact with data they own — zero data leakage.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- TESTIMONIALS -->
-    <section class="py-32">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="text-center mb-16">
-                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Teams that ship with confidence.</h2>
-                <p class="reveal reveal-delay-1 text-lg text-slate-400">Real feedback from people building with SecureWork.</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="reveal testimonial-card bg-slate-900/60 border border-slate-700/50 rounded-2xl p-7 relative overflow-hidden">
-                    <div class="absolute top-5 right-6 text-5xl font-display text-emerald-500/20 leading-none select-none">"</div>
-                    <p class="text-slate-300 leading-relaxed mb-6 relative z-10">SecureWork completely eliminated the anxiety of paying upfront. I know my funds are locked until work is done — it's the only way I'll hire remotely now.</p>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-500 to-cyan-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">MR</div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">Maya Rodriguez</div>
-                            <div class="text-xs text-slate-500">CTO, AcmeCorp</div>
-                        </div>
-                    </div>
-                </div>
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div style="max-width:1280px;margin:0 auto">
+    <div style="text-align:center">
+      <div class="chip r"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Testimonials</div>
+      <h2 class="st r rd1">Teams that ship<br>with confidence.</h2>
+    </div>
+    <div class="tg">
+      <div class="tc r rd1">
+        <p class="tq">SecureWork completely eliminated the anxiety of paying upfront. I know my funds are locked until work is done — it's the only way I'll hire remotely now.</p>
+        <div class="ta"><div class="tav" style="background:linear-gradient(135deg,var(--em),var(--cy))">MR</div><div><div class="tn">Maya Rodriguez</div><div class="tr">CTO, AcmeCorp</div></div></div>
+      </div>
+      <div class="tc r rd2" style="border-color:rgba(16,185,129,.2);box-shadow:0 0 40px rgba(16,185,129,.08)">
+        <p class="tq">I've been a freelance dev for 8 years. This is the first platform where I actually trust I'll be paid. The atomic settlement is a game changer.</p>
+        <div class="ta"><div class="tav" style="background:linear-gradient(135deg,#3b82f6,#6366f1)">JK</div><div><div class="tn">James Keller</div><div class="tr">Senior Engineer, Freelance</div></div></div>
+      </div>
+      <div class="tc r rd3">
+        <p class="tq">We manage 40+ contractors at once. SecureWork's role-based dashboard keeps our finance team sane. Zero reconciliation headaches whatsoever.</p>
+        <div class="ta"><div class="tav" style="background:linear-gradient(135deg,#8b5cf6,#ec4899)">SC</div><div><div class="tn">Sara Chen</div><div class="tr">Head of Ops, Nexus Labs</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
 
-                <div class="reveal reveal-delay-1 testimonial-card bg-slate-900/60 border border-emerald-500/25 rounded-2xl p-7 relative overflow-hidden shadow-[0_0_40px_-15px_rgba(16,185,129,0.25)]">
-                    <div class="absolute top-5 right-6 text-5xl font-display text-emerald-500/20 leading-none select-none">"</div>
-                    <p class="text-slate-300 leading-relaxed mb-6 relative z-10">I've been a freelance dev for 8 years. This is the first platform where I actually trust I'll be paid. The atomic settlement is a game changer.</p>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">JK</div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">James Keller</div>
-                            <div class="text-xs text-slate-500">Senior Engineer, Freelance</div>
-                        </div>
-                    </div>
-                </div>
+<!-- COMPARE -->
+<section id="compare">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="text-align:center">
+      <div class="chip r"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Compare</div>
+      <h2 class="st r rd1">Why not just use PayPal?</h2>
+    </div>
+    <div class="r rd2">
+      <table class="cmt">
+        <thead><tr>
+          <th>Feature</th><th class="sw">SecureWork</th><th class="ot">PayPal</th><th class="ot">Bank Transfer</th>
+        </tr></thead>
+        <tbody>
+          <tr><td>Escrow-backed payments</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
+          <tr><td>Milestone-based release</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
+          <tr><td>Atomic fund settlement</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
+          <tr><td>Zero dispute system</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
+          <tr><td>Role-based access</td><td class="sw">✓</td><td class="ot">✗</td><td class="ot">✗</td></tr>
+          <tr><td>API-first integration</td><td class="sw">✓</td><td class="ot" style="color:var(--sl4)">Partial</td><td class="ot">✗</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
 
-                <div class="reveal reveal-delay-2 testimonial-card bg-slate-900/60 border border-slate-700/50 rounded-2xl p-7 relative overflow-hidden">
-                    <div class="absolute top-5 right-6 text-5xl font-display text-emerald-500/20 leading-none select-none">"</div>
-                    <p class="text-slate-300 leading-relaxed mb-6 relative z-10">We manage 40+ contractors at once. SecureWork's role-based dashboard keeps our finance team sane. Zero reconciliation headaches.</p>
-                    <div class="flex items-center space-x-3">
-                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">SC</div>
-                        <div>
-                            <div class="text-sm font-semibold text-white">Sara Chen</div>
-                            <div class="text-xs text-slate-500">Head of Ops, Nexus Labs</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- FAQ -->
+<section id="faq">
+  <div style="max-width:1280px;margin:0 auto;text-align:center">
+    <div class="chip r" style="display:inline-flex"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>FAQ</div>
+    <h2 class="st r rd1">Common questions.</h2>
+    <p class="ss r rd2" style="margin:1rem auto 0">Everything you need to know before you ship.</p>
+  </div>
+  <div class="fl">
+    <div class="fi r rd1"><button class="ft"><span class="fq">How is my money protected while in escrow?</span><span class="fic">+</span></button><div class="fa"><div class="fai">Funds are held in a ring-fenced escrow account and never co-mingled with operational funds. Every deposit and release is protected by <code>transaction.atomic()</code> blocks — meaning the money either moves entirely or not at all. No partial failures.</div></div></div>
+    <div class="fi r rd2"><button class="ft"><span class="fq">What if a client refuses to approve a milestone?</span><span class="fic">+</span></button><div class="fa"><div class="fai">Milestones include a built-in review window. If a client does not respond within the agreed timeframe, the platform auto-releases funds to the freelancer. All deliverable submissions are timestamped and immutably logged.</div></div></div>
+    <div class="fi r rd3"><button class="ft"><span class="fq">Is SecureWork suitable for large enterprise contracts?</span><span class="fic">+</span></button><div class="fa"><div class="fai">Yes. You can define unlimited milestones, set custom approval workflows, and integrate via REST API into your existing procurement systems. Enterprise SLA and dedicated support available.</div></div></div>
+    <div class="fi r rd4"><button class="ft"><span class="fq">What are the fees?</span><span class="fic">+</span></button><div class="fa"><div class="fai">SecureWork charges a flat 1.5% platform fee on each milestone release — no hidden charges, no monthly subscription required to get started. Enterprise volume discounts available for teams processing over $50K/month.</div></div></div>
+  </div>
+</section>
 
-    <!-- COMPARISON TABLE -->
-    <section class="py-32 bg-slate-900/30 border-y border-slate-800/50">
-        <div class="max-w-5xl mx-auto px-8">
-            <div class="text-center mb-16">
-                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Why not just use PayPal?</h2>
-                <p class="reveal reveal-delay-1 text-lg text-slate-400">See how SecureWork stacks up against traditional payment methods.</p>
-            </div>
-            <div class="reveal overflow-hidden rounded-2xl border border-slate-700/50">
-                <table class="w-full text-sm">
-                    <thead>
-                        <tr class="border-b border-slate-700/50">
-                            <th class="text-left py-4 px-6 text-slate-400 font-medium bg-slate-900/60">Feature</th>
-                            <th class="py-4 px-6 text-center font-display font-bold text-emerald-400 bg-emerald-500/5 border-x border-emerald-500/20">SecureWork</th>
-                            <th class="py-4 px-6 text-center text-slate-400 font-medium bg-slate-900/60">PayPal</th>
-                            <th class="py-4 px-6 text-center text-slate-400 font-medium bg-slate-900/60 hidden sm:table-cell">Bank Transfer</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="border-b border-slate-800/50">
-                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Escrow-backed payments</td>
-                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
-                        </tr>
-                        <tr class="border-b border-slate-800/50">
-                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Milestone-based release</td>
-                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
-                        </tr>
-                        <tr class="border-b border-slate-800/50">
-                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Atomic fund settlement</td>
-                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
-                        </tr>
-                        <tr class="border-b border-slate-800/50">
-                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Zero dispute system</td>
-                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
-                        </tr>
-                        <tr class="border-b border-slate-800/50">
-                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">Role-based access control</td>
-                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40">✗</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
-                        </tr>
-                        <tr>
-                            <td class="py-4 px-6 text-slate-300 bg-slate-900/40">API-first integration</td>
-                            <td class="py-4 px-6 text-center compare-check bg-emerald-500/5 border-x border-emerald-500/20">✓</td>
-                            <td class="py-4 px-6 text-center text-slate-500 bg-slate-900/40">Partial</td>
-                            <td class="py-4 px-6 text-center compare-cross bg-slate-900/40 hidden sm:table-cell">✗</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
+<!-- CTA — THE WOW SECTION -->
+<section id="cta">
+  <canvas id="ctac"></canvas>
+  <div class="ctr"></div>
+  <div class="ctf"></div>
+  <div class="ctgt"></div>
+  <div class="cti">
+    <div class="chip r" style="display:inline-flex;margin-bottom:1.5rem"><svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="5" fill="var(--em)"/></svg>Trusted by 12,000+ developers</div>
+    <h2 class="ctit r rd1">Initialize your<br><span class="gt">workspace.</span></h2>
+    <p class="ctis r rd2">Stop relying on trust. Start relying on code. Join the marketplace built for professional software engineering.</p>
+    <div class="ctst r rd3">
+      <div class="ctsi"><span class="ctsn">$2.3M+</span><div class="ctsl">Funds Secured</div></div>
+      <div class="ctsi"><span class="ctsn">Zero</span><div class="ctsl">Disputes</div></div>
+      <div class="ctsi"><span class="ctsn">99.9%</span><div class="ctsl">Uptime</div></div>
+    </div>
+    <div class="ctb r rd4">
+      <a href="register.html" class="bm">Create Free Account</a>
+      <a href="#" class="bg2">Read the Docs →</a>
+    </div>
+  </div>
+</section>
 
-    <!-- FAQ -->
-    <section id="faq" class="py-32">
-        <div class="max-w-3xl mx-auto px-8">
-            <div class="text-center mb-16">
-                <h2 class="reveal text-3xl lg:text-5xl font-display font-bold text-white mb-4">Common questions.</h2>
-                <p class="reveal reveal-delay-1 text-lg text-slate-400">Everything you need to know before you ship.</p>
-            </div>
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="fi2">
+    <a href="#" class="logo">
+      <div class="li" style="width:32px;height:32px;border-radius:8px"><svg width="16" height="16" fill="none" stroke="#fff" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg></div>
+      <span class="lt" style="font-size:1.15rem">SecureWork</span>
+    </a>
+    <div class="fl2"><a href="#">Documentation</a><a href="#">API Reference</a><a href="#">Security</a></div>
+  </div>
+  <p class="fc">&copy; 2026 SecureWork Infrastructure. All rights reserved.</p>
+</footer>
 
-            <div class="space-y-3" id="faq-list">
+<script>
+/* ═══ CUSTOM CURSOR ═══ */
+const cur=document.getElementById('cur'),cdot=document.getElementById('cur-dot');
+let mx=0,my=0,cx=0,cy=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY});
+(function ac(){cx+=(mx-cx)*.16;cy+=(my-cy)*.16;cur.style.left=cx+'px';cur.style.top=cy+'px';cdot.style.left=mx+'px';cdot.style.top=my+'px';requestAnimationFrame(ac)})();
+document.querySelectorAll('a,button,.bn,.tc,.fi,.scc').forEach(el=>{
+  el.addEventListener('mouseenter',()=>document.body.classList.add('cx'));
+  el.addEventListener('mouseleave',()=>document.body.classList.remove('cx'));
+});
 
-                <div class="reveal faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
-                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
-                        <span class="font-medium text-white pr-4">How is my money protected while in escrow?</span>
-                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Funds are held in a ring-fenced escrow account and never co-mingled with operational funds. Every deposit and release is protected by <code class="text-emerald-400 bg-emerald-950 px-1 rounded font-mono">transaction.atomic()</code> blocks — meaning the money either moves entirely or not at all. No partial failures, no stuck states.</div>
-                    </div>
-                </div>
+/* ═══ PROGRESS BAR ═══ */
+const prog=document.getElementById('prog');
+window.addEventListener('scroll',()=>{prog.style.width=(window.scrollY/(document.documentElement.scrollHeight-innerHeight)*100)+'%'},{passive:true});
 
-                <div class="reveal reveal-delay-1 faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
-                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
-                        <span class="font-medium text-white pr-4">What happens if a client refuses to approve a milestone?</span>
-                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Milestones include a built-in review window. If a client does not respond within the agreed timeframe, the platform can auto-release funds to the freelancer. All deliverable submissions are timestamped and immutably logged, creating a verifiable audit trail.</div>
-                    </div>
-                </div>
+/* ═══ NAV SCROLL ═══ */
+window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('sc',window.scrollY>60)},{passive:true});
 
-                <div class="reveal reveal-delay-2 faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
-                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
-                        <span class="font-medium text-white pr-4">Is SecureWork suitable for large enterprise contracts?</span>
-                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">Yes. SecureWork is built for high-stakes engagements. You can define unlimited milestones, set custom approval workflows, and integrate via REST API into your existing procurement or HR systems. Enterprise SLA and dedicated support available.</div>
-                    </div>
-                </div>
+/* ═══ SCROLL REVEAL ═══ */
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.r').forEach(el=>obs.observe(el));
 
-                <div class="reveal reveal-delay-3 faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
-                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
-                        <span class="font-medium text-white pr-4">How do I integrate SecureWork into my marketplace?</span>
-                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">SecureWork exposes a clean REST API for all escrow operations: create contract, fund milestone, submit deliverable, release funds. Full documentation is available. Most integrations go live in under a day with zero downtime.</div>
-                    </div>
-                </div>
+/* ═══ HERO PROGRESS FILL ═══ */
+setTimeout(()=>{const f=document.getElementById('hpf');if(f)f.classList.add('go')},950);
 
-                <div class="reveal faq-item bg-slate-900/60 border border-slate-700/50 rounded-xl overflow-hidden cursor-pointer">
-                    <button class="faq-trigger w-full text-left px-6 py-5 flex items-center justify-between">
-                        <span class="font-medium text-white pr-4">What are the fees?</span>
-                        <span class="faq-icon text-slate-400 text-2xl leading-none flex-shrink-0 font-light">+</span>
-                    </button>
-                    <div class="faq-answer">
-                        <div class="px-6 pb-5 text-slate-400 text-sm leading-relaxed">SecureWork charges a flat 1.5% platform fee on each milestone release — no hidden charges, no monthly subscription to get started. Enterprise plans with volume discounts are available for teams processing over $50K/month.</div>
-                    </div>
-                </div>
+/* ═══ STATS COUNTERS ═══ */
+function easeOut(t){return 1-Math.pow(1-t,4)}
+function animC(el){
+  const target=parseFloat(el.dataset.count),pre=el.dataset.pre||'',suf=el.dataset.suf||'',isShort=el.dataset.short,dec=parseInt(el.dataset.dec||0);
+  const dur=2000,start=performance.now();
+  (function tick(now){
+    const pct=Math.min((now-start)/dur,1),v=target*easeOut(pct);
+    let d;
+    if(isShort&&v>=1e6)d=(v/1e6).toFixed(1)+'M';
+    else if(isShort&&v>=1e3)d=(v/1e3).toFixed(1)+'K';
+    else if(dec)d=v.toFixed(dec);
+    else d=Math.round(v).toLocaleString();
+    el.textContent=pre+d+suf;
+    if(pct<1)requestAnimationFrame(tick);
+  })(start);
+}
+const sObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting&&e.target.dataset.count){animC(e.target);sObs.unobserve(e.target)}})},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>sObs.observe(el));
 
-            </div>
-        </div>
-    </section>
+/* ═══ FAQ ═══ */
+document.querySelectorAll('.ft').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const item=btn.closest('.fi'),ans=item.querySelector('.fa'),isOp=item.classList.contains('op');
+    document.querySelectorAll('.fi').forEach(i=>{i.classList.remove('op');i.querySelector('.fa').classList.remove('op')});
+    if(!isOp){item.classList.add('op');ans.classList.add('op')}
+  });
+});
 
-    <!-- CTA with PARTICLE CANVAS -->
-    <section class="py-32 relative overflow-hidden">
-        <canvas id="particles-canvas"></canvas>
-        <div class="absolute inset-0 bg-emerald-900/20 pointer-events-none"></div>
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+/* ═══ 3D CARD TILT ═══ */
+const dcard=document.getElementById('dcard'),dcw=document.getElementById('dcw');
+if(dcard&&dcw){
+  dcw.addEventListener('mousemove',e=>{const r=dcw.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;dcard.style.transform=`perspective(800px) rotateX(${-y*14}deg) rotateY(${x*14}deg) translateZ(10px)`});
+  dcw.addEventListener('mouseleave',()=>{dcard.style.transform=''});
+}
+document.querySelectorAll('.bn').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;c.style.transform=`perspective(600px) rotateX(${-y*8}deg) rotateY(${x*8}deg) translateY(-6px) scale(1.015)`});
+  c.addEventListener('mouseleave',()=>{c.style.transform=''});
+});
 
-        <div class="relative max-w-4xl mx-auto px-8 text-center z-10">
-            <h2 class="reveal text-4xl lg:text-6xl font-display font-bold text-white mb-6">Initialize your workspace.</h2>
-            <p class="reveal reveal-delay-1 text-xl text-emerald-100/70 mb-10 max-w-2xl mx-auto">Stop relying on trust. Start relying on code. Join the marketplace built for professional software engineering.</p>
-            <div class="reveal reveal-delay-2 flex flex-col sm:flex-row justify-center gap-4">
-                <a href="register.html" class="px-10 py-4 bg-white text-emerald-950 rounded-xl hover:bg-slate-100 hover:-translate-y-0.5 transition-all font-bold text-lg shadow-[0_0_30px_-5px_rgba(255,255,255,0.3)] hover:shadow-[0_0_50px_-5px_rgba(255,255,255,0.4)]">
-                    Create Free Account
-                </a>
-                <a href="#" class="px-10 py-4 bg-transparent text-white rounded-xl hover:bg-white/5 transition-all font-semibold text-lg border border-white/20 hover:border-white/40 hover:-translate-y-0.5">
-                    Read the Docs →
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#06090F] border-t border-slate-800/50 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center mb-12">
-                <div class="flex items-center space-x-2 mb-4 md:mb-0">
-                    <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center opacity-80">
-                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                    </div>
-                    <span class="text-xl font-display font-bold text-white tracking-tight">SecureWork</span>
-                </div>
-                <div class="flex space-x-6 text-sm font-medium text-slate-500">
-                    <a href="#" class="hover:text-emerald-400 transition-colors">Documentation</a>
-                    <a href="#" class="hover:text-emerald-400 transition-colors">API Reference</a>
-                    <a href="#" class="hover:text-emerald-400 transition-colors">Security</a>
-                </div>
-            </div>
-            <div class="text-center text-sm text-slate-600">
-                <p>&copy; 2026 SecureWork Infrastructure. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="js/app.js"></script>
-
-    <script>
-    /* ══════════════════════════════════════════
-       1. READING PROGRESS BAR
-    ══════════════════════════════════════════ */
-    const progressBar = document.getElementById('progress-bar');
-    function updateProgress() {
-        const scrolled = window.scrollY;
-        const total = document.documentElement.scrollHeight - window.innerHeight;
-        progressBar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+/* ═══ HERO BG PARTICLES ═══ */
+(function(){
+  const cv=document.getElementById('hbg'),ctx=cv.getContext('2d');
+  let W,H;
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  resize();new ResizeObserver(resize).observe(cv.parentElement);
+  const pts=Array.from({length:55},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.00025,vy:(Math.random()-.5)*.00025,r:Math.random()*1.4+.4,op:Math.random()*.35+.08}));
+  (function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x=(p.x+p.vx+1)%1;p.y=(p.y+p.vy+1)%1;
+      ctx.beginPath();ctx.arc(p.x*W,p.y*H,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(16,185,129,${p.op})`;ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const dx=(pts[i].x-pts[j].x)*W,dy=(pts[i].y-pts[j].y)*H,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<110){ctx.beginPath();ctx.moveTo(pts[i].x*W,pts[i].y*H);ctx.lineTo(pts[j].x*W,pts[j].y*H);ctx.strokeStyle=`rgba(16,185,129,${(1-d/110)*.07})`;ctx.lineWidth=.5;ctx.stroke()}
     }
-    window.addEventListener('scroll', updateProgress, { passive: true });
+    requestAnimationFrame(draw);
+  })();
+})();
 
-    /* ══════════════════════════════════════════
-       2. NAV SCROLL BEHAVIOUR
-    ══════════════════════════════════════════ */
-    const nav = document.getElementById('main-nav');
-    window.addEventListener('scroll', () => {
-        nav.classList.toggle('scrolled', window.scrollY > 80);
-    }, { passive: true });
+/* ═══ 3D ENERGY ORB ═══ */
+(function(){
+  const cv=document.getElementById('orbc');
+  if(!cv)return;
+  const ctx=cv.getContext('2d');
+  const W=cv.width=600,H=cv.height=600,CX=W/2,CY=H/2;
+  let t=0;
 
-    /* ══════════════════════════════════════════
-       3. SCROLL REVEAL
-    ══════════════════════════════════════════ */
-    const revealObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.classList.add('visible');
-                revealObs.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+  const rings=[
+    {rx:185,ry:48,tilt:.28,speed:.007,phase:0,    c1:'rgba(16,185,129,',c2:'rgba(52,211,153,',w:1.6},
+    {rx:205,ry:58,tilt:-.38,speed:-.0055,phase:1.2,c1:'rgba(6,182,212,', c2:'rgba(34,211,238,',w:1.3},
+    {rx:165,ry:42,tilt:.6,  speed:.012, phase:2.5,c1:'rgba(52,211,153,',c2:'rgba(16,185,129,',w:1.0},
+    {rx:225,ry:65,tilt:-.22,speed:-.0065,phase:.8,c1:'rgba(34,211,238,',c2:'rgba(6,182,212,', w:.8},
+    {rx:145,ry:36,tilt:.75, speed:.014, phase:3.4,c1:'rgba(16,185,129,',c2:'rgba(52,211,153,',w:.65},
+    {rx:248,ry:72,tilt:-.48,speed:-.005,phase:1.9,c1:'rgba(6,182,212,', c2:'rgba(34,211,238,',w:.55},
+  ];
 
-    /* ══════════════════════════════════════════
-       4. ANIMATED STATS COUNTERS
-    ══════════════════════════════════════════ */
-    function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+  (function draw(ts){
+    t=ts*.001;
+    ctx.clearRect(0,0,W,H);
+    const pulse=Math.sin(t*1.5)*.14+.86,pulse2=Math.sin(t*.8+1)*.09+.91;
 
-    function runCounter(el) {
-        const target  = parseFloat(el.dataset.target);
-        const prefix  = el.dataset.prefix  || '';
-        const suffix  = el.dataset.suffix  || '';
-        const isShort = el.dataset.short   === 'true';
-        const isDec   = el.dataset.decimal === 'true';
-        const dur = 1800, start = performance.now();
+    // Outer aura
+    const a3=ctx.createRadialGradient(CX,CY,0,CX,CY,225*pulse2);
+    a3.addColorStop(0,'rgba(16,185,129,0)');a3.addColorStop(.5,'rgba(16,185,129,.04)');a3.addColorStop(.8,'rgba(6,182,212,.05)');a3.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(CX,CY,225,0,Math.PI*2);ctx.fillStyle=a3;ctx.fill();
 
-        if (target === 0 && el.dataset.zeroLabel) {
-            // Animate 9→0 for the "Zero disputes" stat
-            let v = 9;
-            const t = setInterval(() => {
-                el.textContent = v--;
-                if (v < 0) { el.textContent = 'Zero'; clearInterval(t); }
-            }, 60);
-            return;
-        }
+    // Mid aura
+    const a2=ctx.createRadialGradient(CX,CY,0,CX,CY,165*pulse);
+    a2.addColorStop(0,'rgba(52,211,153,.05)');a2.addColorStop(.4,'rgba(16,185,129,.14)');a2.addColorStop(.7,'rgba(6,182,212,.09)');a2.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(CX,CY,165,0,Math.PI*2);ctx.fillStyle=a2;ctx.fill();
 
-        (function tick(now) {
-            const pct = Math.min((now - start) / dur, 1);
-            const val = target * easeOutQuart(pct);
-            let disp;
-            if      (isShort && val >= 1e6) disp = (val/1e6).toFixed(1) + 'M';
-            else if (isShort && val >= 1e3) disp = (val/1e3).toFixed(1) + 'K';
-            else if (isDec)                 disp = val.toFixed(1);
-            else                            disp = Math.round(val).toLocaleString();
-            el.textContent = prefix + disp + suffix;
-            if (pct < 1) requestAnimationFrame(tick);
-        })(start);
-    }
+    // Core
+    const core=ctx.createRadialGradient(CX-30,CY-30,10,CX,CY,115*pulse);
+    core.addColorStop(0,'rgba(255,255,255,.2)');core.addColorStop(.15,'rgba(52,211,153,.5)');core.addColorStop(.4,'rgba(16,185,129,.38)');core.addColorStop(.65,'rgba(6,182,212,.28)');core.addColorStop(.85,'rgba(4,28,18,.65)');core.addColorStop(1,'rgba(4,18,12,.92)');
+    ctx.beginPath();ctx.arc(CX,CY,115,0,Math.PI*2);ctx.fillStyle=core;ctx.fill();
 
-    const statsObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { runCounter(e.target); statsObs.unobserve(e.target); }});
-    }, { threshold: 0.5 });
-    document.querySelectorAll('.stat-number').forEach(el => statsObs.observe(el));
+    // Specular
+    const sp=ctx.createRadialGradient(CX-36,CY-40,2,CX-28,CY-28,48);
+    sp.addColorStop(0,'rgba(255,255,255,.38)');sp.addColorStop(.5,'rgba(200,255,230,.12)');sp.addColorStop(1,'transparent');
+    ctx.beginPath();ctx.arc(CX,CY,115,0,Math.PI*2);ctx.fillStyle=sp;ctx.fill();
 
-    /* ══════════════════════════════════════════
-       5. HERO PROGRESS BAR ANIMATE ON LOAD
-    ══════════════════════════════════════════ */
-    setTimeout(() => {
-        const fill = document.querySelector('.hero-progress-fill');
-        if (fill) fill.classList.add('animated');
-    }, 900);
-
-    /* ══════════════════════════════════════════
-       6. CURSOR GLOW IN HERO
-    ══════════════════════════════════════════ */
-    const heroSection = document.getElementById('hero-section');
-    const cursorGlow  = document.getElementById('cursor-glow');
-    if (heroSection && cursorGlow) {
-        let glowX = 0, glowY = 0, curX = 0, curY = 0;
-        heroSection.addEventListener('mousemove', (e) => {
-            const r = heroSection.getBoundingClientRect();
-            curX = e.clientX - r.left;
-            curY = e.clientY - r.top + window.scrollY;
-        });
-        (function animateGlow() {
-            glowX += (curX - glowX) * 0.08;
-            glowY += (curY - glowY) * 0.08;
-            cursorGlow.style.left = glowX + 'px';
-            cursorGlow.style.top  = glowY + 'px';
-            requestAnimationFrame(animateGlow);
-        })();
-    }
-
-    /* ══════════════════════════════════════════
-       7. 3D TILT HERO CARDS
-    ══════════════════════════════════════════ */
-    const tiltCont  = document.getElementById('tilt-container');
-    const mainCard  = document.getElementById('hero-main-card');
-    const notifCard = document.getElementById('hero-notif-card');
-
-    if (tiltCont && mainCard) {
-        tiltCont.addEventListener('mousemove', (e) => {
-            const r = tiltCont.getBoundingClientRect();
-            const x = (e.clientX - r.left) / r.width  - 0.5;
-            const y = (e.clientY - r.top)  / r.height - 0.5;
-            mainCard.style.transform  = `perspective(1000px) rotateX(${-y*10}deg) rotateY(${x*10}deg) translateZ(6px)`;
-            if (notifCard) notifCard.style.transform = `perspective(1000px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateZ(12px)`;
-        });
-        tiltCont.addEventListener('mouseleave', () => {
-            mainCard.style.transform = '';
-            if (notifCard) notifCard.style.transform = '';
-        });
-    }
-
-    /* ══════════════════════════════════════════
-       8. PARALLAX HERO BLOBS (subtle)
-    ══════════════════════════════════════════ */
-    const blob1 = document.getElementById('blob1');
-    const blob2 = document.getElementById('blob2');
-    const blob3 = document.getElementById('blob3');
-    let lastScrollY = 0;
-    window.addEventListener('scroll', () => {
-        const y = window.scrollY;
-        if (blob1) blob1.style.marginTop = (y * 0.12) + 'px';
-        if (blob2) blob2.style.marginTop = (y * 0.22) + 'px';
-        if (blob3) blob3.style.marginTop = (y * 0.08) + 'px';
-    }, { passive: true });
-
-    /* ══════════════════════════════════════════
-       9. ANIMATED SVG STEP CONNECTOR
-    ══════════════════════════════════════════ */
-    const connObs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                const path = document.getElementById('step-connector');
-                if (path) path.classList.add('drawn');
-                connObs.unobserve(e.target);
-            }
-        });
-    }, { threshold: 0.3 });
-    const stepsGrid = document.getElementById('steps-grid');
-    if (stepsGrid) connObs.observe(stepsGrid);
-
-    /* ══════════════════════════════════════════
-       10. FAQ ACCORDION
-    ══════════════════════════════════════════ */
-    document.querySelectorAll('.faq-trigger').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const item   = btn.closest('.faq-item');
-            const answer = item.querySelector('.faq-answer');
-            const isOpen = item.classList.contains('open');
-
-            // Close all
-            document.querySelectorAll('.faq-item').forEach(i => {
-                i.classList.remove('open');
-                i.querySelector('.faq-answer').classList.remove('open');
-                i.style.borderColor = '';
-            });
-
-            if (!isOpen) {
-                item.classList.add('open');
-                answer.classList.add('open');
-                item.style.borderColor = 'rgba(16,185,129,0.35)';
-            }
-        });
+    // Rings
+    rings.forEach(ring=>{
+      const angle=t*ring.speed*Math.PI*200+ring.phase;
+      ctx.save();ctx.translate(CX,CY);
+      ctx.scale(1,Math.cos(ring.tilt+Math.sin(t*.3)*.08));
+      const alpha=(Math.sin(angle*.5)*.28+.72)*.72;
+      ctx.beginPath();ctx.ellipse(0,0,ring.rx,ring.ry,angle,0,Math.PI*2);
+      ctx.strokeStyle=ring.c1+alpha+')';ctx.lineWidth=ring.w;
+      ctx.shadowBlur=10;ctx.shadowColor=ring.c1+'.5)';ctx.stroke();ctx.shadowBlur=0;
+      // Energy node
+      const nx=Math.cos(angle*3)*ring.rx,ny=Math.sin(angle*3)*ring.ry;
+      ctx.beginPath();ctx.arc(nx,ny,3,0,Math.PI*2);
+      ctx.fillStyle=ring.c2+'.95)';ctx.shadowBlur=14;ctx.shadowColor=ring.c2+'1)';ctx.fill();ctx.shadowBlur=0;
+      ctx.restore();
     });
 
-    /* ══════════════════════════════════════════
-       11. CANVAS PARTICLE NETWORK (CTA section)
-    ══════════════════════════════════════════ */
-    (function initParticles() {
-        const canvas = document.getElementById('particles-canvas');
-        if (!canvas) return;
-        const ctx = canvas.getContext('2d');
-        const COUNT = 55, MAX_DIST = 130;
-        let W, H, particles = [];
+    // Inner wisps
+    for(let i=0;i<5;i++){
+      const wa=t*.38+i*(Math.PI*2/5),wr=88+Math.sin(t*2.2+i)*14;
+      ctx.save();ctx.translate(CX,CY);ctx.beginPath();ctx.arc(0,0,wr,wa,wa+.55);
+      const wa2=Math.sin(t*1.9+i*1.2)*.28+.42;
+      ctx.strokeStyle=i%2===0?`rgba(16,185,129,${wa2})`:`rgba(6,182,212,${wa2})`;ctx.lineWidth=2;ctx.stroke();ctx.restore();
+    }
 
-        function resize() {
-            W = canvas.width  = canvas.offsetWidth;
-            H = canvas.height = canvas.offsetHeight;
-        }
-        resize();
-        new ResizeObserver(resize).observe(canvas.parentElement);
+    // Outer field dots
+    for(let i=0;i<14;i++){
+      const fa=(t*.13+i/14)*Math.PI*2,fr=172+Math.sin(t*1.1+i)*22;
+      const fx=CX+Math.cos(fa)*fr,fy=CY+Math.sin(fa)*fr*.58;
+      const fA=(Math.sin(t*2.2+i)*.38+.62)*.55;
+      ctx.beginPath();ctx.arc(fx,fy,1.8,0,Math.PI*2);ctx.fillStyle=`rgba(52,211,153,${fA})`;ctx.fill();
+    }
 
-        for (let i = 0; i < COUNT; i++) {
-            particles.push({
-                x: Math.random() * W, y: Math.random() * H,
-                vx: (Math.random() - 0.5) * 0.4,
-                vy: (Math.random() - 0.5) * 0.4,
-                r: Math.random() * 1.5 + 0.5
-            });
-        }
+    // Halo ring
+    const hr=Math.sin(t*.6)*.04+.96;
+    ctx.beginPath();ctx.arc(CX,CY,175*hr,0,Math.PI*2);
+    ctx.strokeStyle='rgba(16,185,129,.06)';ctx.lineWidth=1;ctx.stroke();
 
-        (function draw() {
-            ctx.clearRect(0, 0, W, H);
-            particles.forEach(p => {
-                p.x += p.vx; p.y += p.vy;
-                if (p.x < 0 || p.x > W) p.vx *= -1;
-                if (p.y < 0 || p.y > H) p.vy *= -1;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(16,185,129,0.55)';
-                ctx.fill();
-            });
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const d  = Math.sqrt(dx*dx + dy*dy);
-                    if (d < MAX_DIST) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = `rgba(16,185,129,${(1 - d/MAX_DIST) * 0.22})`;
-                        ctx.lineWidth = 0.7;
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(draw);
-        })();
-    })();
-    </script>
+    requestAnimationFrame(draw);
+  })(0);
+})();
 
+/* ═══ CTA NEBULA CANVAS ═══ */
+(function(){
+  const cv=document.getElementById('ctac'),ctx=cv.getContext('2d');
+  let W,H;
+  function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
+  resize();new ResizeObserver(resize).observe(cv.parentElement);
+  const pts=Array.from({length:90},()=>({x:Math.random()*2-.5,y:Math.random()*2-.5,vx:(Math.random()-.5)*.00018,vy:(Math.random()-.5)*.00018,r:Math.random()*2+.5,op:Math.random()*.45+.12}));
+  (function draw(){
+    ctx.clearRect(0,0,W,H);
+    pts.forEach(p=>{
+      p.x=((p.x+p.vx)+1.5)%2-.5;p.y=((p.y+p.vy)+1.5)%2-.5;
+      const px=p.x*W,py=p.y*H;
+      ctx.beginPath();ctx.arc(px,py,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(16,185,129,${p.op})`;ctx.fill();
+    });
+    for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+      const px=pts[i].x*W,py=pts[i].y*H,qx=pts[j].x*W,qy=pts[j].y*H;
+      const dx=px-qx,dy=py-qy,d=Math.sqrt(dx*dx+dy*dy);
+      if(d<120){ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(qx,qy);ctx.strokeStyle=`rgba(16,185,129,${(1-d/120)*.2})`;ctx.lineWidth=.6;ctx.stroke()}
+    }
+    requestAnimationFrame(draw);
+  })();
+})();
+
+/* ═══ STEP CONNECTOR ANIMATE ═══ */
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){const sc=document.getElementById('scl');if(sc)sc.classList.add('go')}});
+},{threshold:.35}).observe(document.getElementById('stg')||document.body);
+
+/* ═══ ORB PARALLAX ═══ */
+const orbc=document.getElementById('orbc');
+window.addEventListener('scroll',()=>{if(orbc)orbc.style.transform=`translateY(calc(-50% + ${window.scrollY*.1}px))`},{passive:true});
+</script>
 </body>
 </html>
