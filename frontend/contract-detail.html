@@ -215,7 +215,7 @@
 
         async function loadContractData() {
             try {
-                currentContract = await AppUtils.apiCall(`/contracts/${contractId}/`, 'GET');
+                currentContract = await AppUtils.apiCall(`/api/contracts/${contractId}/`, 'GET');
                 renderHeader();
                 
                 if (currentContract.status === 'published') {
@@ -276,7 +276,7 @@
         }
 
         async function loadApplications() {
-            const apps = await AppUtils.apiCall(`/applications/?contract=${contractId}`, 'GET');
+            const apps = await AppUtils.apiCall(`/api/applications/?contract=${contractId}`, 'GET');
             const container = document.getElementById('applicationsList');
             
             if(!apps || apps.length === 0) {
@@ -431,15 +431,15 @@
             try {
                 let msg = "";
                 if(action === 'fund') {
-                    await AppUtils.apiCall(`/milestones/${id}/fund/`, 'POST');
+                    await AppUtils.apiCall(`/api/milestones/${id}/fund/`, 'POST');
                 msg = "Escrow Vault funded. Payment secured.";
                 }
                 if(action === 'submit') {
-                    await AppUtils.apiCall(`/milestones/${id}/submit/`, 'POST', {submission_url: 'Submitted via UI'});
+                    await AppUtils.apiCall(`/api/milestones/${id}/submit/`, 'POST', {submission_url: 'Submitted via UI'});
                     msg = "Deliverable pushed to network. Pending approval.";
                 }
                 if(action === 'release') {
-                    await AppUtils.apiCall(`/release-funds/${id}/`, 'POST');
+                    await AppUtils.apiCall(`/api/release-funds/${id}/`, 'POST');
                     msg = "Funds released to freelancer balance.";
                 }
         
@@ -448,7 +448,7 @@
         // Small delay to allow the user to see the success toast before refresh
                 setTimeout(async () => {
             // Re-fetch contract to check if it's finished
-                    const updated = await AppUtils.apiCall(`/contracts/${contractId}/`, 'GET');
+                    const updated = await AppUtils.apiCall(`/api/contracts/${contractId}/`, 'GET');
                     if (updated.status === 'completed') {
                         ToastService.show("CONTRACT COMPLETED: All milestones finalized.", "info");
                         setTimeout(() => window.location.reload(), 2000);
@@ -515,3 +515,4 @@
 </body>
 
 </html>
+
